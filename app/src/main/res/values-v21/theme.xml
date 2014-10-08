@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="android:Theme.Material.Light.DarkActionBar"></style>
+
+    <style name="AppTheme.DetailsActivity" parent="AppTheme">
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:statusBarColor">@color/gradient_start</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+</resources>

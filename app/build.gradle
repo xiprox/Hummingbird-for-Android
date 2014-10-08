@@ -1,0 +1,29 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "20.0.0"
+
+    defaultConfig {
+        applicationId "tr.bcxip.hummingbird"
+        minSdkVersion 14
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:support-v4:21.+'
+    compile 'com.android.support:palette-v7:+'
+    compile 'com.squareup.retrofit:retrofit:+'
+    compile 'com.squareup.picasso:picasso:+'
+    compile 'com.github.manuelpeinado.fadingactionbar:fadingactionbar:+'
+}
