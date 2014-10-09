@@ -2,12 +2,24 @@
 <resources>
 
     <string name="app_name">Hummingbird</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
+
+    <string name="content_view_trailer">View Trailer</string>
+    <string name="content_add_to_list">Add To List</string>
+    <string name="content_update">Update</string>
+    <string name="content_type">Type</string>
+    <string name="content_genre">Genre</string>
+    <string name="content_episode_count">Episode Count</string>
+    <string name="content_episode_duration">Episode Duration</string>
+    <string name="content_age_rating">Age Rating</string>
+    <string name="content_aired">Aired</string>
+    <string name="content_minutes">Minutes</string>
+
+    <string name="content_unknown">Unknown</string>
+    
+    <string name="error_cant_load_data">Can\'t load data!</string>
 
 </resources>

@@ -163,7 +163,7 @@ public class AnimeDetailsActivity extends Activity {
 
                 mEpisodeCount.setText(anime.getEpisodeCount() + "");
 
-                mEpisodeLength.setText(anime.getEpisodeLength() + " minutes");
+                mEpisodeLength.setText(anime.getEpisodeLength() + " " + getString(R.string.content_minutes));
 
                 mAgeRating.setText(anime.getAgeRating());
 
@@ -171,7 +171,7 @@ public class AnimeDetailsActivity extends Activity {
 
                 mSynopsis.setText(anime.getSynopsis());
             } else {
-                Toast.makeText(AnimeDetailsActivity.this, "Can\'t load data!", Toast.LENGTH_LONG).show();
+                Toast.makeText(AnimeDetailsActivity.this, R.string.error_cant_load_data, Toast.LENGTH_LONG).show();
                 finish();
             }
         }

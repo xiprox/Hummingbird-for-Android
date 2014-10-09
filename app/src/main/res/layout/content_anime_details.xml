@@ -21,7 +21,8 @@
             android:layout_weight="1"
             android:background="@drawable/btn_ps_stroke_only_neutral"
             android:fontFamily="sans-serif-light"
-            android:text="VIEW TRAILER"
+            android:text="@string/content_view_trailer"
+            android:textAllCaps="true"
             android:textColor="@color/neutral" />
 
         <Button
@@ -32,7 +33,8 @@
             android:layout_weight="1"
             android:background="@drawable/btn_ps"
             android:fontFamily="sans-serif-light"
-            android:text="ADD TO LIST"
+            android:text="@string/content_add_to_list"
+            android:textAllCaps="true"
             android:textColor="@android:color/white" />
     </LinearLayout>
 
@@ -64,7 +66,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
-                    android:text="Type"
+                    android:text="@string/content_type"
                     android:textColor="@color/text_gray_dark" />
 
                 <TextView
@@ -87,7 +89,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
-                    android:text="Genre"
+                    android:text="@string/content_genre"
                     android:textColor="@color/text_gray_dark" />
 
                 <TextView
@@ -116,7 +118,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
-                    android:text="Episode Count"
+                    android:text="@string/content_episode_count"
                     android:textColor="@color/text_gray_dark" />
 
                 <TextView
@@ -139,7 +141,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
-                    android:text="Episode Duration"
+                    android:text="@string/content_episode_duration"
                     android:textColor="@color/text_gray_dark" />
 
                 <TextView
@@ -168,7 +170,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
-                    android:text="Age Rating"
+                    android:text="@string/content_age_rating"
                     android:textColor="@color/text_gray_dark" />
 
                 <TextView
@@ -191,7 +193,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
-                    android:text="Aired"
+                    android:text="@string/content_aired"
                     android:textColor="@color/text_gray_dark" />
 
                 <TextView
