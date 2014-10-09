@@ -1,9 +1,20 @@
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:choiceMode="singleChoice"
-    android:divider="@android:color/transparent"
-    android:dividerHeight="0dp"
-    android:background="#cccc"
-    tools:context=".NavigationDrawerFragment" />
+    android:background="@android:color/white"
+    tools:context=".NavigationDrawerFragment">
+
+    <RelativeLayout
+        android:id="@+id/nav_drawer_cover_image"
+        android:layout_width="match_parent"
+        android:layout_height="160dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="74dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/anime_details_action_bar_gradient_bottom" />
+    </RelativeLayout>
+
+</LinearLayout>
