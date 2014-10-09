@@ -26,5 +26,7 @@ public class Rating {
         } else {
             return value;
         }
+
+        return ""; // TODO - FIX
     }
 }

@@ -94,11 +94,11 @@ public class AnimeDetailsActivity extends Activity {
             super.onPostExecute(success);
 
             if (success) {
-                PaletteItem darkVibrantColor = mPalette.getVibrantColor();
+                PaletteItem vibrantColor = mPalette.getVibrantColor();
 
                 mActionBarHelper = new FadingActionBarHelper()
-                        .actionBarBackground(darkVibrantColor == null ? new ColorDrawable(R.color.neutral)
-                                : new ColorDrawable(darkVibrantColor.getRgb()))
+                        .actionBarBackground(vibrantColor == null ? new ColorDrawable(R.color.neutral)
+                                : new ColorDrawable(vibrantColor.getRgb()))
                         .headerLayout(R.layout.header_anime_details)
                         .headerOverlayLayout(R.layout.header_overlay_anime_details)
                         .contentLayout(R.layout.content_anime_details);
@@ -116,9 +116,9 @@ public class AnimeDetailsActivity extends Activity {
                 mAired = (TextView) findViewById(R.id.anime_details_aired);
                 mSynopsis = (TextView) findViewById(R.id.anime_details_synopsis);
 
-                mViewTrailer.getBackground().setColorFilter(darkVibrantColor.getRgb(), PorterDuff.Mode.SRC_ATOP);
-                mViewTrailer.setTextColor(darkVibrantColor.getRgb());
-                mAddToList.getBackground().setColorFilter(darkVibrantColor.getRgb(), PorterDuff.Mode.SRC_ATOP);
+                mViewTrailer.getBackground().setColorFilter(vibrantColor.getRgb(), PorterDuff.Mode.SRC_ATOP);
+                mViewTrailer.setTextColor(vibrantColor.getRgb());
+                mAddToList.getBackground().setColorFilter(vibrantColor.getRgb(), PorterDuff.Mode.SRC_ATOP);
 
                 mViewTrailer.setOnClickListener(new View.OnClickListener() {
                     @Override

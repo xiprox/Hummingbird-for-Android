@@ -1,6 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
+
+    // In order to be able to use 21 you need to have the following modified platform directory
+    // in your SDK/platforms directory
+    // https://docs.google.com/file/d/0B3kP5OEGFYUBZWxacV9jVjVKOGs
     compileSdkVersion 21
     buildToolsVersion "20.0.0"
 
