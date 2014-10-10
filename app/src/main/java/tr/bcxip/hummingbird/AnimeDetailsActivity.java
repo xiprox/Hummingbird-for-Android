@@ -2,15 +2,21 @@ package tr.bcxip.hummingbird;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.graphics.Palette;
 import android.support.v7.graphics.PaletteItem;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -61,6 +67,31 @@ public class AnimeDetailsActivity extends Activity {
 
         ANIME_ID = getIntent().getIntExtra(ARG_ID, 0);
         new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_anime_details, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_copy_title) {
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText(getResources().getString
+                    (R.string.toast_copy_title), anime.getCanonicalTitle());
+            clipboard.setPrimaryClip(clip);
+            Toast.makeText(
+                    AnimeDetailsActivity.this,
+                    getResources().getString(R.string.toast_copy_title)
+                    + " \"" + anime.getCanonicalTitle() +  "\"",
+                    Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -120,14 +151,14 @@ public class AnimeDetailsActivity extends Activity {
                 mViewTrailer.setTextColor(vibrantColor.getRgb());
                 mAddToList.getBackground().setColorFilter(vibrantColor.getRgb(), PorterDuff.Mode.SRC_ATOP);
 
+                if (anime.getTrailer() == "") {
+                    mViewTrailer.setVisibility(View.INVISIBLE);
+                }
                 mViewTrailer.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(
-                                AnimeDetailsActivity.this,
-                                "Trailer id on youtube: " + anime.getTrailer(),
-                                Toast.LENGTH_SHORT
-                        ).show();
+                        startActivity(new Intent(Intent.ACTION_VIEW,
+                                Uri.parse("http://www.youtube.com/watch?v=" + anime.getTrailer())));
                     }
                 });
 
