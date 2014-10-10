@@ -242,7 +242,7 @@ public class LoginActivity extends Activity {
 
             if (result.equals(RESULT_SUCCESS)) {
                 /* Store the token for later use */
-                prefMan.setAuthToken(authToken);gi
+                prefMan.setAuthToken(authToken);
 
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
