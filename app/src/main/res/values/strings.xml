@@ -7,6 +7,9 @@
     <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
 
+    <string name="action_copy_title">Copy Title</string>
+    <string name="toast_copy_title"> Copied</string>
+
     <string name="content_view_trailer">View Trailer</string>
     <string name="content_add_to_list">Add To List</string>
     <string name="content_update">Update</string>
