@@ -23,54 +23,78 @@ public class User {
     String title_language_preference;
     String last_library_update;
     boolean online;
-    boolean following;
+    boolean following; // Should be ignored according to the API docs
     List<Favorite> favorites;
 
     public String getName() {
         return name;
     }
-    /*
+
+    public String getWaifu() {
+        return waifu;
+    }
+
+    public String getWaifuOrHusbando() {
+        return waifu_or_husbando;
+    }
+
+    public String getWaifuSlug() {
+        return waifu_slug;
+    }
+
+    public String getWaifuCharId() {
+        return waituf_char_id;
+    }
+
     public String getLocation() {
         return location;
     }
+
     public String getWebsite() {
         return website;
     }
+
     public String getAvatar() {
         return avatar;
     }
-    public String getCover() {
+
+    public String getCoverImage() {
         return cover_image;
     }
+
     public String getAbout() {
         return about;
     }
+
     public String getBio() {
         return bio;
     }
+
     public int getKarma() {
         return karma;
     }
-    public int getLifeSpent() {
+
+    public int getLifeSpentOnAnime() {
         return life_spent_on_anime;
     }
-    public boolean getAdultConent() {
+
+    public boolean showAdultAdultContent() {
         return show_adult_content;
     }
-    public String getTitleLanguage() {
+
+    public String getTitleLanguagePreference() {
         return title_language_preference;
     }
-    public String getLastLibaryUpdate() {
+
+    public String getLastLibraryUpdate() {
         return last_library_update;
     }
-    public boolean getOnline() {
+
+    public boolean isOnline() {
         return online;
     }
-    public boolean getFollowing() {
-        return following;
-    }
+
     public List<Favorite> getFavorites() {
         return favorites;
     }
-    */
 }

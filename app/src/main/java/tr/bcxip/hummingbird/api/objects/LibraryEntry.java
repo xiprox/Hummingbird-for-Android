@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by Hikari on 10/8/14.
  */
 public class LibraryEntry {
-    String id;
+    String id; // Should be ignored according to the API docs
     int episodes_watched;
     String last_watched;
     int rewatched_times;
@@ -45,4 +45,19 @@ public class LibraryEntry {
         return status;
     }
 
+    public boolean isPrivate() {
+        return isPrivate;
+    }
+
+    public boolean isRewatching() {
+        return rewatching;
+    }
+
+    public Anime getAnime() {
+        return anime;
+    }
+
+    public Rating getRating() {
+        return rating;
+    }
 }

@@ -21,7 +21,7 @@ import com.manuelpeinado.fadingactionbar.FadingActionBarHelper;
 import com.squareup.picasso.Picasso;
 
 import tr.bcxip.hummingbird.api.HummingbirdApi;
-import tr.bcxip.hummingbird.api.objects.Anime;
+import tr.bcxip.hummingbird.api.objects.AnimeV2;
 
 /**
  * Created by Hikari on 10/8/14.
@@ -50,7 +50,7 @@ public class AnimeDetailsActivity extends Activity {
 
     int ANIME_ID;
 
-    Anime anime;
+    AnimeV2 anime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
