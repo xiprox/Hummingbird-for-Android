@@ -10,9 +10,15 @@
     <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
 
+    <!-- Anime Details -->
     <string name="action_copy_title">Copy Title</string>
     <string name="toast_copy_title"> Copied</string>
-
+    <string name="action_share">Share Link</string>
+    <string name="share_title">Share Link</string>
+    <!-- Programatically -->
+    <string name="not_rated">Not Rated Yet</string>
+    <string name="finish_date">Still Airing</string>
+    <!-- Contents -->
     <string name="content_view_trailer">View Trailer</string>
     <string name="content_add_to_list">Add To List</string>
     <string name="content_update">Update</string>

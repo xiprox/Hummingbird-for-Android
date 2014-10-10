@@ -15,6 +15,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.graphics.Palette;
 import android.support.v7.graphics.PaletteItem;
+import android.text.format.Time;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -92,6 +93,21 @@ public class AnimeDetailsActivity extends Activity {
                     Toast.LENGTH_SHORT).show();
             return true;
         }
+        if (id == R.id.action_share) {
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            String sSlug = anime.getCanonicalTitle().toLowerCase().replaceAll
+                    ("[^0-9a-z]", "-").replaceAll("-+", "-");
+            String slugCheck = sSlug.substring(sSlug.length() - 1, sSlug.length());
+            //check if there is "-" at the end of slug
+            if (slugCheck.equals("-")){
+                sSlug = sSlug.substring(0, sSlug.length()-1);
+            }
+            intent.putExtra(Intent.EXTRA_TEXT, anime.getCanonicalTitle() + " at hummingbird.me/anime/" + sSlug);
+            startActivity(Intent.createChooser(intent,
+                    getResources().getString(R.string.share_title)));
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -154,7 +170,7 @@ public class AnimeDetailsActivity extends Activity {
                 mAddToList.getBackground().setColorFilter(vibrantColor.getRgb(), PorterDuff.Mode.SRC_ATOP);
 
                 if (anime.getTrailer().equals("")) {
-                    mViewTrailer.setVisibility(View.INVISIBLE);
+                    mViewTrailer.setVisibility(View.GONE);
                 }
                 mViewTrailer.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -196,11 +212,22 @@ public class AnimeDetailsActivity extends Activity {
                 mEpisodeCount.setText(anime.getEpisodeCount() + "");
                 mEpisodeLength.setText(anime.getEpisodeLength() + " " + getString(R.string.content_minutes));
                 mAgeRating.setText(anime.getAgeRating());
-                mAired.setText(anime.getAiringStartDate() + " - " + anime.getAiringFinishedDate());
+
+                String sFinishDate = String.valueOf(anime.getAiringFinishedDate());
+                if (sFinishDate.equals("null")){
+                    sFinishDate = getResources().getString(R.string.finish_date);
+                }
+                mAired.setText(anime.getAiringStartDate() + " - " + sFinishDate);
+
                 String ComRating = String.valueOf(anime.getCommunityRating());
-                ComRating = ComRating.substring(0, 4);
+                if (ComRating.length() > 3){
+                    ComRating = ComRating.substring(0, 4);
+                }else if (ComRating.equals("0.0")){
+                    ComRating = getResources().getString(R.string.not_rated);
+                }
                 mCommunityRating.setText(ComRating);
                 mSynopsis.setText(anime.getSynopsis());
+
             } else {
                 Toast.makeText(AnimeDetailsActivity.this, R.string.error_cant_load_data, Toast.LENGTH_LONG).show();
                 finish();
