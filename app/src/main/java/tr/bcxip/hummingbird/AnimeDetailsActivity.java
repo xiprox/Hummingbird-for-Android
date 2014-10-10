@@ -52,6 +52,7 @@ public class AnimeDetailsActivity extends Activity {
     TextView mEpisodeLength;
     TextView mAgeRating;
     TextView mAired;
+    TextView mCommunityRating;
     TextView mSynopsis;
 
     int ANIME_ID;
@@ -145,13 +146,14 @@ public class AnimeDetailsActivity extends Activity {
                 mEpisodeLength = (TextView) findViewById(R.id.anime_details_episode_duration);
                 mAgeRating = (TextView) findViewById(R.id.anime_details_age_rating);
                 mAired = (TextView) findViewById(R.id.anime_details_aired);
+                mCommunityRating = (TextView) findViewById(R.id.anime_details_community_rating);
                 mSynopsis = (TextView) findViewById(R.id.anime_details_synopsis);
 
                 mViewTrailer.getBackground().setColorFilter(vibrantColor.getRgb(), PorterDuff.Mode.SRC_ATOP);
                 mViewTrailer.setTextColor(vibrantColor.getRgb());
                 mAddToList.getBackground().setColorFilter(vibrantColor.getRgb(), PorterDuff.Mode.SRC_ATOP);
 
-                if (anime.getTrailer() == "") {
+                if (anime.getTrailer().equals("")) {
                     mViewTrailer.setVisibility(View.INVISIBLE);
                 }
                 mViewTrailer.setOnClickListener(new View.OnClickListener() {
@@ -191,15 +193,13 @@ public class AnimeDetailsActivity extends Activity {
                         genres += ", " + anime.getGenres().get(i);
                 }
                 mGenre.setText(genres);
-
                 mEpisodeCount.setText(anime.getEpisodeCount() + "");
-
                 mEpisodeLength.setText(anime.getEpisodeLength() + " " + getString(R.string.content_minutes));
-
                 mAgeRating.setText(anime.getAgeRating());
-
                 mAired.setText(anime.getAiringStartDate() + " - " + anime.getAiringFinishedDate());
-
+                String ComRating = String.valueOf(anime.getCommunityRating());
+                ComRating = ComRating.substring(0, 4);
+                mCommunityRating.setText(ComRating);
                 mSynopsis.setText(anime.getSynopsis());
             } else {
                 Toast.makeText(AnimeDetailsActivity.this, R.string.error_cant_load_data, Toast.LENGTH_LONG).show();

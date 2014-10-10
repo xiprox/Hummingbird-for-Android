@@ -74,7 +74,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
-                    android:text="TV"
                     android:textColor="@color/text_gray" />
             </LinearLayout>
 
@@ -97,7 +96,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
-                    android:text="Comedy, Drama, Mystery, Sci-Fi, Thriller"
                     android:textColor="@color/text_gray" />
             </LinearLayout>
         </LinearLayout>
@@ -126,7 +124,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
-                    android:text="24"
                     android:textColor="@color/text_gray" />
             </LinearLayout>
 
@@ -149,7 +146,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
-                    android:text="24 minutes"
                     android:textColor="@color/text_gray" />
             </LinearLayout>
         </LinearLayout>
@@ -178,7 +174,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
-                    android:text="17+"
                     android:textColor="@color/text_gray" />
             </LinearLayout>
 
@@ -201,7 +196,34 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
-                    android:text="6 Apr 2011 to 14 Sep 2011"
+                    android:textColor="@color/text_gray" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="26dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="@string/content_community_rating"
+                    android:textColor="@color/text_gray_dark" />
+
+                <TextView
+                    android:id="@+id/anime_details_community_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-condensed"
                     android:textColor="@color/text_gray" />
             </LinearLayout>
         </LinearLayout>
@@ -221,11 +243,6 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:fontFamily="sans-serif-light"
-        android:text="Steins;Gate is set in the summer of 2010, approximately one year after the events that took place in Chaos;Head, in Akihabara.
-
-Steins;Gate is about a group of friends who have customized their microwave into a device that can send text messages to the past. As they perform different experiments, an organization named SERN, who has been doing their own research on time travel, tracks them down and now the characters have to find a way to avoid being captured by them.
-
-(Sources: VNDB, Wikipedia)"
         android:textColor="@color/text_gray"
         android:textSize="16sp" />
 </LinearLayout>
