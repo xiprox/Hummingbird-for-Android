@@ -29,4 +29,48 @@ public class User {
     public String getName() {
         return name;
     }
+    /*
+    public String getLocation() {
+        return location;
+    }
+    public String getWebsite() {
+        return website;
+    }
+    public String getAvatar() {
+        return avatar;
+    }
+    public String getCover() {
+        return cover_image;
+    }
+    public String getAbout() {
+        return about;
+    }
+    public String getBio() {
+        return bio;
+    }
+    public int getKarma() {
+        return karma;
+    }
+    public int getLifeSpent() {
+        return life_spent_on_anime;
+    }
+    public boolean getAdultConent() {
+        return show_adult_content;
+    }
+    public String getTitleLanguage() {
+        return title_language_preference;
+    }
+    public String getLastLibaryUpdate() {
+        return last_library_update;
+    }
+    public boolean getOnline() {
+        return online;
+    }
+    public boolean getFollowing() {
+        return following;
+    }
+    public List<Favorite> getFavorites() {
+        return favorites;
+    }
+    */
 }
