@@ -16,8 +16,8 @@
     <color name="neutral">#888888</color>
     <color name="neutral_pressed">#666666</color>
 
-    <!--login.xml + btn_login_selector!-->
-    <color name="login_text">#333333</color>
     <color name="login_border">#dddddd</color>
     <color name="login_btn">#b2dfdb</color>
+
+    <color name="window_background">#dddddd</color>
 </resources>

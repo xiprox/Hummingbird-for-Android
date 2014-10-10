@@ -28,9 +28,11 @@ public class HummingbirdApi {
         Map<String, String> params = new HashMap<String, String>();
 
         if (nameOrEmail.contains("@"))
-            params.put("email", password);
+            params.put("email", nameOrEmail);
         else
-            params.put("username", password);
+            params.put("username", nameOrEmail);
+
+        params.put("password", password);
 
         return service.authenticate(params);
     }

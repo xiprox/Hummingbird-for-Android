@@ -2,6 +2,9 @@
 <resources>
 
     <string name="app_name">Hummingbird</string>
+
+    <string name="hummingbird_slogan">Track, share and discover new anime!</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
@@ -18,8 +21,19 @@
     <string name="content_aired">Aired</string>
     <string name="content_minutes">Minutes</string>
 
+    <!-- Content (Login) Strings -->
+    <string name="content_username_or_email">Username or Email</string>
+    <string name="content_password">Password</string>
+    <string name="content_sign_in">Sign In</string>
+
     <string name="content_unknown">Unknown</string>
-    
+
     <string name="error_cant_load_data">Can\'t load data!</string>
+    <string name="error_connection_error">Connection error!</string>
+    <string name="error_invalid_credentials">Invalid login credentials. Please check and try again.</string>
+
+    <string name="error_login_fields_cant_be_empty">Login fields can\'t be empty</string>
+    <string name="error_username_or_email_cant_be_empty">Username or Email can\'t be empty</string>
+    <string name="error_password_cant_be_empty">Password can\'t be empty</string>
 
 </resources>

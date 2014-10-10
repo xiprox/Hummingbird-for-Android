@@ -28,4 +28,15 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
+    <style name="AppTheme_Login" parent="AppTheme">
+        <item name="android:actionBarStyle">@style/AppTheme_Login_ActionBar</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:homeAsUpIndicator">@android:color/transparent</item>
+    </style>
+
+    <style name="AppTheme_Login_ActionBar" parent="android:Widget.Holo.ActionBar.Solid">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
 </resources>
