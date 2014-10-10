@@ -2,6 +2,9 @@ package tr.bcxip.hummingbird.api;
 
 import android.content.Context;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import retrofit.RestAdapter;
 import tr.bcxip.hummingbird.api.objects.AnimeV2;
 
@@ -21,6 +24,17 @@ public class HummingbirdApi {
         setupServices();
     }
 
+    public String authenticate(String nameOrEmail, String password) {
+        Map<String, String> params = new HashMap<String, String>();
+
+        if (nameOrEmail.contains("@"))
+            params.put("email", password);
+        else
+            params.put("username", password);
+
+        return service.authenticate(params);
+    }
+
     private void setupServices() {
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(API_HOST_v1)
@@ -37,4 +51,6 @@ public class HummingbirdApi {
     public AnimeV2 getAnimeById(int id) {
         return serviceV2.getAnime(id);
     }
+
+
 }

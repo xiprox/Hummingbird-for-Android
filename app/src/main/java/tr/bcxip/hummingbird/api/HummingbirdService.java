@@ -1,11 +1,13 @@
 package tr.bcxip.hummingbird.api;
 
 import java.util.List;
+import java.util.Map;
 
 import retrofit.http.GET;
 import retrofit.http.POST;
 import retrofit.http.Path;
 import retrofit.http.Query;
+import retrofit.http.QueryMap;
 import tr.bcxip.hummingbird.api.objects.Anime;
 import tr.bcxip.hummingbird.api.objects.Favorite;
 import tr.bcxip.hummingbird.api.objects.LibraryEntry;
@@ -18,12 +20,7 @@ import tr.bcxip.hummingbird.api.objects.User;
 public interface HummingbirdService {
 
     @POST("/users/authenticate")
-    public String authenticate(
-            @Path("id") String id,
-            @Query("username") String username,
-            @Query("email") String email,
-            @Query("password") String password
-    );
+    public String authenticate(@QueryMap Map<String, String> options);
 
     @GET("/users/{username}")
     public User getUser(@Path("username") String username);
