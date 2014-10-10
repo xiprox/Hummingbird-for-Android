@@ -3,7 +3,7 @@ package tr.bcxip.hummingbird.api;
 import android.content.Context;
 
 import retrofit.RestAdapter;
-import tr.bcxip.hummingbird.api.objects.Anime;
+import tr.bcxip.hummingbird.api.objects.AnimeV2;
 
 /**
  * Created by Hikari on 10/8/14.
@@ -34,7 +34,7 @@ public class HummingbirdApi {
         serviceV2 = restAdapterV2.create(HummingbirdServiceV2.class);
     }
 
-    public Anime getAnimeById(int id) {
+    public AnimeV2 getAnimeById(int id) {
         return serviceV2.getAnime(id);
     }
 }

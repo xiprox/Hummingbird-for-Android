@@ -1,30 +1,24 @@
 package tr.bcxip.hummingbird.api.objects;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
- * Created by Hikari on 10/8/14.
+ * Created by Hikari on 10/10/14.
  */
 public class Anime {
-    int id;
+    String id;
     String slug;
-    String canonical_title;
-    String english_title;
-    String romaji_title;
-    String synopsis;
-    String poster_image;
-    List<String> genres;
-    String type;
-    String started_airing;
-    String finished_airing;
-    List<String> screencaps;
-    String youtube_trailer_id;
-    double community_rating;
-    String age_rating;
+    String status;
+    String url;
+    String title;
+    String alternate_title;
     int episode_count;
-    int episode_length;
+    String cover_image;
+    String synopsis;
+    String show_type;
+    ArrayList<String> genres;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -32,63 +26,39 @@ public class Anime {
         return slug;
     }
 
-    public String getCanonicalTitle() {
-        return canonical_title;
+    public String getStatus() {
+        return status;
     }
 
-    public String getEnglishTitle() {
-        return english_title;
+    public String getUrl() {
+        return url;
     }
 
-    public String getRomajiTitle() {
-        return romaji_title;
+    public String getTitle() {
+        return title;
     }
 
-    public String getSynopsis() {
-        return synopsis;
-    }
-
-    public String getCoverImageLink() {
-        return poster_image;
-    }
-
-    public List<String> getGenres() {
-        return genres;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public String getAiringStartDate() {
-        return started_airing; // TODO - parse into a timestamp
-    }
-
-    public String getAiringFinishedDate() {
-        return finished_airing; // TODO - parse into a timestamp
-    }
-
-    public List<String> getSreencaps() {
-        return screencaps;
-    }
-
-    public String getTrailer() {
-        return youtube_trailer_id; // TODO - return full link or something
-    }
-
-    public double getCommunityRating() {
-        return community_rating;
-    }
-
-    public String getAgeRating() {
-        return age_rating;
+    public String getAlternateTitle() {
+        return alternate_title;
     }
 
     public int getEpisodeCount() {
         return episode_count;
     }
 
-    public int getEpisodeLength() {
-        return episode_length;
+    public String getCoverImage() {
+        return cover_image;
+    }
+
+    public String getSynopsis() {
+        return synopsis;
+    }
+
+    public String getShowType() {
+        return show_type;
+    }
+
+    public ArrayList<String> getGenres() {
+        return genres;
     }
 }
