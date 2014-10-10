@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="239dp">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="239dp"
+            android:id="@+id/image_bg"
+            android:src="@drawable/hbg"
+            android:scaleType="centerCrop"/>
+        <ImageView
+            android:layout_width="126dp"
+            android:layout_height="134.50dp"
+            android:id="@+id/image_logo"
+            android:layout_centerInParent="true"
+            android:src="@drawable/hlogo" />
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:textSize="20sp"
+            android:text="Track, share and discover new anime."/>
+
+        <Space
+            android:layout_width="fill_parent"
+            android:layout_height="16dp"/>
+
+        <EditText
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="Username"
+            android:textSize="15sp"
+            android:textColor="@color/login_text"
+            android:id="@+id/edit_user" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:hint="Password"
+            android:textSize="15sp"
+            android:textColor="@color/login_text"
+            android:id="@+id/edit_pass" />
+
+        <Space
+            android:layout_weight="1"
+            android:layout_width="fill_parent"
+            android:layout_height="16dp"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sign In"
+            android:id="@+id/btn_signin"
+            android:background="@drawable/btn_login_selector"/>
+        <Button
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sign up for Hummingbird"
+            android:id="@+id/btn_signup"
+            android:background="@drawable/btn_login_selector"/>
+
+    </LinearLayout>
+
+</LinearLayout>
