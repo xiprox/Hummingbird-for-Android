@@ -23,6 +23,8 @@
     <string name="content_age_rating">Age Rating</string>
     <string name="content_aired">Aired</string>
     <string name="content_minutes">Minutes</string>
+    <string name="content_community_rating">Community Rating</string>
+
 
     <!-- Content (Login) Strings -->
     <string name="content_username_or_email">Username or Email</string>
