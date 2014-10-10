@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <style name="AppTheme" parent="android:Theme.Material.Light.DarkActionBar">
         <item name="android:colorPrimary">@color/apptheme_primary</item>
         <item name="android:colorPrimaryDark">@color/apptheme_primary_dark</item>
         <item name="android:colorAccent">@color/apptheme_primary</item>
+        <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
     </style>
 
     <style name="AppTheme.DetailsActivity" parent="AppTheme">
