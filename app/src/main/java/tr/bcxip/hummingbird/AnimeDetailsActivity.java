@@ -121,13 +121,13 @@ public class AnimeDetailsActivity extends Activity {
                 mViewTrailer.getBackground().setColorFilter(vibrantColor.getRgb(), PorterDuff.Mode.SRC_ATOP);
                 mViewTrailer.setTextColor(vibrantColor.getRgb());
                 mAddToList.getBackground().setColorFilter(vibrantColor.getRgb(), PorterDuff.Mode.SRC_ATOP);
+
                 if (anime.getTrailer() == "") {
                     mViewTrailer.setVisibility(View.INVISIBLE);
                 }
                 mViewTrailer.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
                         startActivity(new Intent(Intent.ACTION_VIEW,
                                 Uri.parse("http://www.youtube.com/watch?v=" + anime.getTrailer())));
                     }
