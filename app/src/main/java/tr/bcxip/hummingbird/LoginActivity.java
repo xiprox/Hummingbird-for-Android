@@ -135,7 +135,7 @@ public class LoginActivity extends Activity {
     public void adjustHeaderSizes() {
         Point size = new Point();
         getWindowManager().getDefaultDisplay().getSize(size);
-        mHeaderBackground.getLayoutParams().height = (size.y / 3);
+        mHeaderBackground.getLayoutParams().height = (size.y / 2);
         mHeaderLogo.getLayoutParams().height = mHeaderBackground.getLayoutParams().height / 3;
         mHeaderLogo.getLayoutParams().width = mHeaderLogo.getLayoutParams().height
                 + mHeaderLogo.getLayoutParams().height / 6;
