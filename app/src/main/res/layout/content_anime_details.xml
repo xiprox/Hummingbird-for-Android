@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="36dp"
             android:layout_marginLeft="8dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:background="@drawable/btn_ps"
             android:fontFamily="sans-serif-light"
             android:text="@string/content_add_to_list"
