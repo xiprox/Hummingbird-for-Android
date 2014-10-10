@@ -2,11 +2,13 @@ package tr.bcxip.hummingbird;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.graphics.Palette;
@@ -119,15 +121,15 @@ public class AnimeDetailsActivity extends Activity {
                 mViewTrailer.getBackground().setColorFilter(vibrantColor.getRgb(), PorterDuff.Mode.SRC_ATOP);
                 mViewTrailer.setTextColor(vibrantColor.getRgb());
                 mAddToList.getBackground().setColorFilter(vibrantColor.getRgb(), PorterDuff.Mode.SRC_ATOP);
-
+                if (anime.getTrailer() == "") {
+                    mViewTrailer.setVisibility(View.INVISIBLE);
+                }
                 mViewTrailer.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(
-                                AnimeDetailsActivity.this,
-                                "Trailer id on youtube: " + anime.getTrailer(),
-                                Toast.LENGTH_SHORT
-                        ).show();
+
+                        startActivity(new Intent(Intent.ACTION_VIEW,
+                                Uri.parse("http://www.youtube.com/watch?v=" + anime.getTrailer())));
                     }
                 });
 
