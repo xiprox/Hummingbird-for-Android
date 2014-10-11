@@ -17,6 +17,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 
 public class NavigationDrawerFragment extends Fragment {
 
@@ -33,6 +38,10 @@ public class NavigationDrawerFragment extends Fragment {
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
+
+    //
+    TextView mUsername;
+    ImageView mAvatar;
 
     public NavigationDrawerFragment() {
 
@@ -63,7 +72,37 @@ public class NavigationDrawerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_navigation_drawer, null);
+        //
+        String[] ArrayMain = getResources().getStringArray(R.array.list_main_strings);
+        String[] ArraySecond = getResources().getStringArray(R.array.list_secondary_strings);
 
+        ListView mListMain = (ListView) rootView.findViewById(R.id.nav_list_main);
+        ListView mListSecondary = (ListView) rootView.findViewById(R.id.nav_list_second);
+
+        mUsername = (TextView) rootView.findViewById(R.id.navigation_drawer_username);
+        mAvatar = (ImageView) rootView.findViewById(R.id.navigation_drawer_avatar);
+        // TODO - Username + Avatar
+
+        mListMain.setAdapter(new ArrayAdapter<String>
+                (getActivity(), R.layout.nav_list_item_main, ArrayMain));
+        mListSecondary.setAdapter(new ArrayAdapter<String>
+                (getActivity(), R.layout.nav_list_item_secondary, ArraySecond));
+
+
+        mListMain.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                // TODO - Layout Changing
+            }
+        });
+
+        mListSecondary.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                // TODO - Settings
+                // TODO - Logout
+            }
+        });
 
         return rootView;
     }

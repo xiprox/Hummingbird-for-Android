@@ -2,141 +2,110 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="20dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/login_header_bg"
-            android:layout_width="match_parent"
-            android:layout_height="239dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/hbg" />
-
-        <ImageView
-            android:id="@+id/login_header_logo"
-            android:layout_width="126dp"
-            android:layout_height="134.50dp"
-            android:layout_centerInParent="true"
-            android:scaleType="fitCenter"
-            android:src="@drawable/hlogo" />
-    </RelativeLayout>
-
-    <ProgressBar
-        android:id="@+id/login_progress_bar"
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="16dp"
-        android:visibility="gone" />
+        android:fontFamily="sans-serif"
+        android:text="@string/app_name"
+        android:textColor="@color/text_gray_dark"
+        android:textSize="20sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:fontFamily="sans-serif-light"
+        android:text="Track, share and discover new anime."
+        android:textColor="@color/text_gray"
+        android:textSize="20sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:animateLayoutChanges="true"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:background="@drawable/login_holder"
+        android:orientation="vertical"
+        android:paddingBottom="20dp"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
+        android:paddingTop="20dp">
 
-        <LinearLayout
-            android:id="@+id/login_message_holder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:animateLayoutChanges="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <ImageView
-                android:id="@+id/login_message_indicator"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginLeft="12dp"
-                android:src="@drawable/oval_neutral" />
-
-            <TextView
-                android:id="@+id/login_message_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:text="This is a message" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/login_username_or_email_hint"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="-10dp"
-            android:layout_marginLeft="12dp"
-            android:text="@string/content_username_or_email"
-            android:textColor="@color/apptheme_primary"
-            android:visibility="invisible" />
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:src="@drawable/avatar" />
 
         <EditText
-            android:id="@+id/login_username_or_email"
+            android:id="@+id/edit_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
             android:hint="@string/content_username_or_email"
             android:inputType="textPersonName|textEmailAddress|textNoSuggestions"
             android:textColor="@color/text_gray"
             android:textSize="15sp" />
 
-        <TextView
-            android:id="@+id/login_password_hint"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="-10dp"
-            android:layout_marginLeft="12dp"
-            android:text="@string/content_password"
-            android:textColor="@color/apptheme_primary"
-            android:visibility="invisible" />
-
         <EditText
-            android:id="@+id/login_password"
+            android:id="@+id/edit_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/content_password"
             android:inputType="textPassword"
+            android:paddingTop="10dp"
             android:textColor="@color/text_gray"
             android:textSize="15sp" />
 
-        <Space
-            android:layout_width="1dp"
-            android:layout_height="1dp"
-            android:layout_weight="1" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/error_text"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="end"
-            android:orientation="horizontal">
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="Enter your password"
+            android:textColor="@color/error_color"
+            android:visibility="gone" />
 
-            <Button
-                android:id="@+id/login_sign_up"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/button_borderless_neutral"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:text="@string/content_sign_up"
-                android:textColor="@color/apptheme_primary_dark" />
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/btn_login"
+            android:enabled="false"
+            android:text="@string/content_login"
+            android:textColor="@color/apptheme_accent"
+            android:textSize="17sp" />
 
-            <Button
-                android:id="@+id/login_sign_in"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/button_borderless_apptheme"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:text="@string/content_sign_in"
-                android:textColor="@color/apptheme_accent" />
-        </LinearLayout>
+        <Button
+            android:id="@+id/btn_help"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/btn_signup"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/content_help"
+            android:textColor="@color/apptheme_primary_dark"
+            android:textSize="13sp" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_new"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/btn_signup"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="@string/content_new"
+        android:textColor="@color/apptheme_primary_dark"
+        android:textSize="13sp" />
 </LinearLayout>

@@ -13,7 +13,9 @@
 
     <color name="divider">#507a7a7a</color>
 
+    <!-- button_borderless_neutral.xml -->
     <color name="button_neutral">#15000000</color>
+
     <color name="neutral">#888888</color>
     <color name="neutral_pressed">#666666</color>
 
@@ -31,4 +33,12 @@
     <color name="card_stroke">#f4f4f4</color>
     <color name="card_stroke_pressed">#e7e7e7</color>
     <color name="card_stroke_disabled">#ccf4f4f4</color>
+
+    <color name="flat_button_bg">#EBEBEB</color>
+    <color name="button_disabled">#ffab40</color>
+    <color name="error_color">#dd191d</color>
+
+    <!-- List -->
+    <color name="list_selected">#EBEBEB</color>
+    <color name="list_text_color">#212121</color>
 </resources>
