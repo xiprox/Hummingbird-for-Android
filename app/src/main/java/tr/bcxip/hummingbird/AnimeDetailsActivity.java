@@ -128,7 +128,7 @@ public class AnimeDetailsActivity extends Activity {
             try {
                 if (ANIME_ID != null && !ANIME_ID.equals("") && !ANIME_ID.trim().equals("")) {
                     Log.i(TAG, "Fetching data for Anime with ID " + ANIME_ID);
-                    anime = api.getAnimeById(ANIME_ID);
+                    anime = api.getAnime(ANIME_ID);
                     coverBitmap = Picasso.with(AnimeDetailsActivity.this)
                             .load(anime.getCoverImageLink()).get();
                     mPalette = Palette.generate(coverBitmap);

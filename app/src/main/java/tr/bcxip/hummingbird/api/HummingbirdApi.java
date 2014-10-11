@@ -52,8 +52,8 @@ public class HummingbirdApi {
         serviceV2 = restAdapterV2.create(HummingbirdServiceV2.class);
     }
 
-    public AnimeV2 getAnimeById(String id) {
-        return serviceV2.getAnime(id);
+    public AnimeV2 getAnime(String idOrSlug) {
+        return serviceV2.getAnime(idOrSlug);
     }
 
     public List<Story> getFeed(String username) {
