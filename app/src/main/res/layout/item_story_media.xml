@@ -71,6 +71,7 @@
             android:layout_marginRight="16dp"
             android:background="@drawable/button_borderless_neutral"
             android:text="view more"
+            android:textAllCaps="true"
             android:textColor="@color/apptheme_primary" />
     </FrameLayout>
 </RelativeLayout>
