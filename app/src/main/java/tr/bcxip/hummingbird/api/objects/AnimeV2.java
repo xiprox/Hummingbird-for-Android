@@ -6,7 +6,7 @@ import java.util.List;
  * Created by Hikari on 10/8/14.
  */
 public class AnimeV2 {
-    int id;
+    String id;
     String slug;
     String canonical_title;
     String english_title;
@@ -24,7 +24,7 @@ public class AnimeV2 {
     int episode_count;
     int episode_length;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 

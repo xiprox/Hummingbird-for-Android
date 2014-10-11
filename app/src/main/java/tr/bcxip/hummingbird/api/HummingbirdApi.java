@@ -3,10 +3,12 @@ package tr.bcxip.hummingbird.api;
 import android.content.Context;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import retrofit.RestAdapter;
 import tr.bcxip.hummingbird.api.objects.AnimeV2;
+import tr.bcxip.hummingbird.api.objects.Story;
 
 /**
  * Created by Hikari on 10/8/14.
@@ -50,9 +52,12 @@ public class HummingbirdApi {
         serviceV2 = restAdapterV2.create(HummingbirdServiceV2.class);
     }
 
-    public AnimeV2 getAnimeById(int id) {
+    public AnimeV2 getAnimeById(String id) {
         return serviceV2.getAnime(id);
     }
 
+    public List<Story> getFeed(String username) {
+        return service.getFeed(username);
+    }
 
 }

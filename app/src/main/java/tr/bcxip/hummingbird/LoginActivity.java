@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import retrofit.RetrofitError;
 import tr.bcxip.hummingbird.api.HummingbirdApi;
+import tr.bcxip.hummingbird.api.Results;
 import tr.bcxip.hummingbird.managers.PrefManager;
 
 /**
@@ -199,10 +200,6 @@ public class LoginActivity extends Activity {
 
     protected class AuthenticationTask extends AsyncTask<Void, Void, String> {
 
-        String RESULT_SUCCESS = "success";
-        String RESULT_UNAUTHORIZED = "401 Unauthorized";
-        String RESULT_UNABLE_TO_RESOLVE_HOST = "Unable to resolve host";
-
         String authToken;
 
         @Override
@@ -220,7 +217,7 @@ public class LoginActivity extends Activity {
                         mPassword.getText().toString()
                 );
 
-                return RESULT_SUCCESS;
+                return Results.RESULT_SUCCESS;
             } catch (RetrofitError e) {
                 Log.e("AUTHENTICATION ERROR", e.getMessage());
                 return e.getMessage();
@@ -235,17 +232,22 @@ public class LoginActivity extends Activity {
 
             int red = getResources().getColor(android.R.color.holo_red_dark);
 
-            if (result.equals(RESULT_SUCCESS)) {
+            if (result.equals(Results.RESULT_SUCCESS)) {
                 /* Store the token for later use */
                 prefMan.setAuthToken(authToken);
 
+                /* Store the username as well */
+                // TODO - Will have to disable email login...
+                if (!mUsernameOrEmail.getText().toString().contains("@"))
+                    prefMan.setUsername(mUsernameOrEmail.getText().toString());
+
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
-            } else if (result.equals(RESULT_UNAUTHORIZED)) {
+            } else if (result.equals(Results.RESULT_UNAUTHORIZED)) {
                 mMessageText.setText(R.string.error_invalid_credentials);
                 mMessageIndicator.setColorFilter(red, PorterDuff.Mode.SRC_ATOP);
                 mMessageHolder.setVisibility(View.VISIBLE);
-            } else if (result.contains(RESULT_UNABLE_TO_RESOLVE_HOST)) {
+            } else if (result.contains(Results.RESULT_UNABLE_TO_RESOLVE_HOST)) {
                 mMessageText.setText(R.string.error_connection_error);
                 mMessageIndicator.setColorFilter(red, PorterDuff.Mode.SRC_ATOP);
                 mMessageHolder.setVisibility(View.VISIBLE);

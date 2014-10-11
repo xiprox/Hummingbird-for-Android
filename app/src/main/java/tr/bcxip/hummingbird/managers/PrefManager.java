@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 public class PrefManager {
 
     public static final String PREF_AUTH_TOKEN = "pref_auth_token";
+    public static final String PREF_USERNAME = "pref_username";
 
     private static Context context;
     private static SharedPreferences prefs;
@@ -31,5 +32,13 @@ public class PrefManager {
 
     public String getAuthToken() {
         return prefs.getString(PREF_AUTH_TOKEN, null);
+    }
+
+    public void setUsername(String username) {
+        prefeditor.putString(PREF_USERNAME, username).commit();
+    }
+
+    public String getUsername() {
+        return prefs.getString(PREF_USERNAME, null);
     }
 }

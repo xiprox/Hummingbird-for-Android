@@ -41,6 +41,16 @@
             android:name=".LoginActivity"
             android:label=""
             android:theme="@style/AppTheme_Login" />
+
+        <activity
+            android:name=".FeedAnimeDetails"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme_FeedAnimeDetailsActivity">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
     </application>
 
 </manifest>

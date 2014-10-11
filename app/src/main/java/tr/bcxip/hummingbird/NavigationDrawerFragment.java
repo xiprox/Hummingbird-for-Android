@@ -63,6 +63,8 @@ public class NavigationDrawerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_navigation_drawer, null);
+
+
         return rootView;
     }
 

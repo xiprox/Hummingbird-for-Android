@@ -1,5 +1,6 @@
 package tr.bcxip.hummingbird.api.objects;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -15,6 +16,9 @@ public class Story {
     Anime media;
     int substories_count;
     List<Substory> substories;
+
+    public static final String STORY_TYPE_COMMENT = "comment";
+    public static final String STORY_TYPE_MEDIA = "media_story";
 
     public String getId() {
         return id;
@@ -51,4 +55,5 @@ public class Story {
     public List<Substory> getSubstories() {
         return substories;
     }
+
 }

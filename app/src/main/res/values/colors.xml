@@ -17,8 +17,18 @@
     <color name="neutral">#888888</color>
     <color name="neutral_pressed">#666666</color>
 
+    <color name="cover_image_overlay">#50ffffff</color>
+
     <color name="login_border">#dddddd</color>
     <color name="login_btn">#b2dfdb</color>
 
     <color name="window_background">#dddddd</color>
+
+    <!-- Card colors -->
+    <color name="card_content">#fafafa</color>
+    <color name="card_content_pressed">#ededed</color>
+    <color name="card_content_disabled">#ccfafafa</color>
+    <color name="card_stroke">#f4f4f4</color>
+    <color name="card_stroke_pressed">#e7e7e7</color>
+    <color name="card_stroke_disabled">#ccf4f4f4</color>
 </resources>

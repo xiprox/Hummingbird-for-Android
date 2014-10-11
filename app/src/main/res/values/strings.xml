@@ -33,6 +33,14 @@
     <string name="content_minutes">Minutes</string>
     <string name="content_community_rating">Community Rating</string>
 
+    <!-- Content (Feed) Strings -->
+    <string name="content_watched_episode">watched episode</string>
+    <string name="content_is_planning_to_watch">is planning to watch</string>
+    <string name="content_has_completed">has completed</string>
+    <string name="content_has_dropped">has dropped</string>
+    <string name="content_has_placed_on_hold">has placed on hold</string>
+    <string name="content_is_currently_watching">is currently watching</string>
+
     <!-- Content (Login) Strings -->
     <string name="content_username_or_email">Username or Email</string>
     <string name="content_password">Password</string>

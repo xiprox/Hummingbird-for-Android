@@ -5,4 +5,8 @@ package tr.bcxip.hummingbird.api.objects;
  */
 public class Genre {
     String name;
+
+    public String getName() {
+        return name;
+    }
 }

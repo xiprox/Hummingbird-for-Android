@@ -50,7 +50,7 @@ public class MainActivity extends Activity
     public void onNavigationDrawerItemSelected(int position) {
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.container, new MainFragment())
+                .replace(R.id.container, new FeedFragment())
                 .commit();
     }
 

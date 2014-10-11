@@ -1,6 +1,7 @@
 package tr.bcxip.hummingbird.api.objects;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Hikari on 10/10/14.
@@ -16,7 +17,7 @@ public class Anime {
     String cover_image;
     String synopsis;
     String show_type;
-    ArrayList<String> genres;
+    List<Genre> genres;
 
     public String getId() {
         return id;
@@ -58,7 +59,7 @@ public class Anime {
         return show_type;
     }
 
-    public ArrayList<String> getGenres() {
+    public List<Genre> getGenres() {
         return genres;
     }
 }

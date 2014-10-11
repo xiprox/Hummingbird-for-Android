@@ -15,7 +15,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.graphics.Palette;
 import android.support.v7.graphics.PaletteItem;
-import android.text.format.Time;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,6 +37,8 @@ public class AnimeDetailsActivity extends Activity {
 
     public static final String ARG_ID = "arg_id";
 
+    final String TAG = "ANIME DETAILS ACTIVITY";
+
     ActionBar mActionBar;
     FadingActionBarHelper mActionBarHelper;
 
@@ -56,7 +58,7 @@ public class AnimeDetailsActivity extends Activity {
     TextView mCommunityRating;
     TextView mSynopsis;
 
-    int ANIME_ID;
+    String ANIME_ID;
 
     AnimeV2 anime;
 
@@ -67,7 +69,7 @@ public class AnimeDetailsActivity extends Activity {
         mActionBar = getActionBar();
         api = new HummingbirdApi(this);
 
-        ANIME_ID = getIntent().getIntExtra(ARG_ID, 0);
+        ANIME_ID = getIntent().getStringExtra(ARG_ID);
         new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
@@ -124,7 +126,8 @@ public class AnimeDetailsActivity extends Activity {
         @Override
         protected Boolean doInBackground(Void... voids) {
             try {
-                if (ANIME_ID != 0) {
+                if (ANIME_ID != null && !ANIME_ID.equals("") && !ANIME_ID.trim().equals("")) {
+                    Log.i(TAG, "Fetching data for Anime with ID " + ANIME_ID);
                     anime = api.getAnimeById(ANIME_ID);
                     coverBitmap = Picasso.with(AnimeDetailsActivity.this)
                             .load(anime.getCoverImageLink()).get();
@@ -169,9 +172,9 @@ public class AnimeDetailsActivity extends Activity {
                 mViewTrailer.setTextColor(vibrantColor.getRgb());
                 mAddToList.getBackground().setColorFilter(vibrantColor.getRgb(), PorterDuff.Mode.SRC_ATOP);
 
-                if (anime.getTrailer().equals("")) {
+                if (anime.getTrailer() == null || anime.getTrailer().equals(""))
                     mViewTrailer.setVisibility(View.GONE);
-                }
+
                 mViewTrailer.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

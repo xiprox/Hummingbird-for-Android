@@ -10,6 +10,6 @@ import tr.bcxip.hummingbird.api.objects.AnimeV2;
 public interface HummingbirdServiceV2 {
 
     @GET("/anime/{id}")
-    AnimeV2 getAnime(@Path("id") int id);
+    AnimeV2 getAnime(@Path("id") String id);
 
 }
