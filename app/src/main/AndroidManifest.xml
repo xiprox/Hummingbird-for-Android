@@ -28,6 +28,18 @@
         </activity>
 
         <activity
+            android:name=".CatchLink"
+            android:parentActivityName=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="http" android:host="hummingbird.me" />
+            </intent-filter>
+        </activity>
+
+
+        <activity
             android:name=".AnimeDetailsActivity"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.DetailsActivity">
