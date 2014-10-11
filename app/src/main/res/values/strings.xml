@@ -31,9 +31,12 @@
     <string name="content_minutes">Minutes</string>
     <string name="content_community_rating">Community Rating</string>
 
-
+    <!-- will be using them -->
     <string name="content_login">Log In</string>
     <string name="content_signup">Sign Up</string>
+    <string name="error_username">Username can\'t be empty</string>
+    <string name="error_password">Password can\'t be empty</string>
+
     <!-- Content (Login) Strings -->
     <string name="content_username_or_email">Username or Email</string>
     <string name="content_password">Password</string>

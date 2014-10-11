@@ -20,4 +20,6 @@
     <color name="login_btn">#b2dfdb</color>
 
     <color name="window_background">#dddddd</color>
+
+    <color name="flat_button_bg">#EBEBEB</color>
 </resources>
