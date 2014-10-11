@@ -4,7 +4,9 @@ package tr.bcxip.hummingbird;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -24,7 +26,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import tr.bcxip.hummingbird.api.HummingbirdApi;
+import tr.bcxip.hummingbird.api.objects.User;
 import tr.bcxip.hummingbird.managers.PrefManager;
+import com.squareup.picasso.Picasso;
 
 public class NavigationDrawerFragment extends Fragment {
 
@@ -45,7 +50,13 @@ public class NavigationDrawerFragment extends Fragment {
     //
     TextView mUsername;
     ImageView mAvatar;
+    ImageView mCoverImage;
 
+    User User;
+    String sUsername;
+
+    Context context;
+    HummingbirdApi api;
     PrefManager prefMan;
 
     public NavigationDrawerFragment() {
@@ -56,7 +67,9 @@ public class NavigationDrawerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        prefMan = new PrefManager(getActivity());
+        context = getActivity();
+        api = new HummingbirdApi(context);
+        prefMan = new PrefManager(context);
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
@@ -89,7 +102,13 @@ public class NavigationDrawerFragment extends Fragment {
 
         mUsername = (TextView) rootView.findViewById(R.id.navigation_drawer_username);
         mAvatar = (ImageView) rootView.findViewById(R.id.navigation_drawer_avatar);
-        // TODO - Username + Avatar
+        mCoverImage = (ImageView) rootView.findViewById(R.id.navigation_drawer_cover);
+
+        sUsername = prefMan.getUsername();
+        //User = api.getUser(sUsername); TODO - BURA
+        mUsername.setText(sUsername);
+        //Picasso.with(context).load("" + User.getAvatar()).into(mAvatar);
+        //Picasso.with(context).load("" + User.getCoverImage()).into(mCoverImage);
 
         mListMain.setAdapter(new ArrayAdapter<String>
                 (getActivity(), R.layout.nav_list_item_main, ArrayMain));

@@ -9,6 +9,7 @@ import java.util.Map;
 import retrofit.RestAdapter;
 import tr.bcxip.hummingbird.api.objects.AnimeV2;
 import tr.bcxip.hummingbird.api.objects.Story;
+import tr.bcxip.hummingbird.api.objects.User;
 
 /**
  * Created by Hikari on 10/8/14.
@@ -29,6 +30,7 @@ public class HummingbirdApi {
     public String authenticate(String nameOrEmail, String password) {
         Map<String, String> params = new HashMap<String, String>();
 
+        // TODO - Silcen Mi ? :D
         if (nameOrEmail.contains("@"))
             params.put("email", nameOrEmail);
         else
@@ -50,6 +52,11 @@ public class HummingbirdApi {
 
         service = restAdapter.create(HummingbirdService.class);
         serviceV2 = restAdapterV2.create(HummingbirdServiceV2.class);
+    }
+
+    //TODO - AHADA BURA
+    public User getUser(String username) {
+        return service.getUser(username);
     }
 
     public AnimeV2 getAnime(String idOrSlug) {
