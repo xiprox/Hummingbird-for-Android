@@ -9,9 +9,8 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -42,9 +41,10 @@ public class LoginActivity extends Activity {
     ImageView mMessageIndicator;
     TextView mMessageText;
 
-    MenuItem mSignInItem;
-
     ProgressBar mProgressBar;
+
+    Button mSignUp;
+    Button mSignIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +68,23 @@ public class LoginActivity extends Activity {
         mMessageText = (TextView) findViewById(R.id.login_message_text);
 
         mProgressBar = (ProgressBar) findViewById(R.id.login_progress_bar);
+
+        mSignUp = (Button) findViewById(R.id.login_sign_up);
+        mSignIn = (Button) findViewById(R.id.login_sign_in);
+
+        mSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO - Send to a sign up
+            }
+        });
+
+        mSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AuthenticationTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
+        });
 
         mUsernameOrEmail.addTextChangedListener(new TextWatcher() {
             @Override
@@ -114,28 +131,10 @@ public class LoginActivity extends Activity {
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.login, menu);
-        mSignInItem = menu.findItem(R.id.action_sign_in);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.action_sign_in:
-                new AuthenticationTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     public void adjustHeaderSizes() {
         Point size = new Point();
         getWindowManager().getDefaultDisplay().getSize(size);
-        mHeaderBackground.getLayoutParams().height = (size.y / 2);
+        mHeaderBackground.getLayoutParams().height = (size.y / 3);
         mHeaderLogo.getLayoutParams().height = mHeaderBackground.getLayoutParams().height / 3;
         mHeaderLogo.getLayoutParams().width = mHeaderLogo.getLayoutParams().height
                 + mHeaderLogo.getLayoutParams().height / 6;
@@ -154,8 +153,7 @@ public class LoginActivity extends Activity {
             mMessageText.setTextColor(red);
             mMessageHolder.setVisibility(View.VISIBLE);
 
-            if (mSignInItem != null)
-                mSignInItem.setEnabled(false);
+            mSignIn.setEnabled(false);
         }
 
         if ((mPassword.getText().toString().length() == 0 ||
@@ -169,8 +167,7 @@ public class LoginActivity extends Activity {
             mMessageText.setTextColor(red);
             mMessageHolder.setVisibility(View.VISIBLE);
 
-            if (mSignInItem != null)
-                mSignInItem.setEnabled(false);
+            mSignIn.setEnabled(false);
         }
 
         if ((mPassword.getText().toString().length() == 0 ||
@@ -184,8 +181,7 @@ public class LoginActivity extends Activity {
             mMessageText.setTextColor(red);
             mMessageHolder.setVisibility(View.VISIBLE);
 
-            if (mSignInItem != null)
-                mSignInItem.setEnabled(false);
+            mSignIn.setEnabled(false);
         }
 
         if ((mPassword.getText().toString().length() != 0 &&
@@ -195,8 +191,7 @@ public class LoginActivity extends Activity {
                         mUsernameOrEmail.getText().toString().trim().length() != 0)) {
             mMessageHolder.setVisibility(View.GONE);
 
-            if (mSignInItem != null)
-                mSignInItem.setEnabled(true);
+            mSignIn.setEnabled(true);
         }
 
 

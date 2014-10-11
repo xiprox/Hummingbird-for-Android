@@ -15,9 +15,11 @@
     <string name="toast_copy_title"> Copied</string>
     <string name="action_share">Share Link</string>
     <string name="share_title">Share Link</string>
+
     <!-- Programatically -->
     <string name="not_rated">Not Rated Yet</string>
     <string name="finish_date">Still Airing</string>
+
     <!-- Contents -->
     <string name="content_view_trailer">View Trailer</string>
     <string name="content_add_to_list">Add To List</string>
@@ -31,16 +33,11 @@
     <string name="content_minutes">Minutes</string>
     <string name="content_community_rating">Community Rating</string>
 
-    <!-- will be using them -->
-    <string name="content_login">Log In</string>
-    <string name="content_signup">Sign Up</string>
-    <string name="error_username">Username can\'t be empty</string>
-    <string name="error_password">Password can\'t be empty</string>
-
     <!-- Content (Login) Strings -->
     <string name="content_username_or_email">Username or Email</string>
     <string name="content_password">Password</string>
     <string name="content_sign_in">Sign In</string>
+    <string name="content_sign_up">Sign Up</string>
 
     <string name="content_unknown">Unknown</string>
 

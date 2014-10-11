@@ -40,7 +40,6 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:animateLayoutChanges="true"
-        android:gravity="center_vertical"
         android:orientation="vertical">
 
         <LinearLayout
@@ -106,5 +105,38 @@
             android:inputType="textPassword"
             android:textColor="@color/text_gray"
             android:textSize="15sp" />
+
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/login_sign_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_borderless_neutral"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="@string/content_sign_up"
+                android:textColor="@color/apptheme_primary_dark" />
+
+            <Button
+                android:id="@+id/login_sign_in"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/button_borderless_apptheme"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="@string/content_sign_in"
+                android:textColor="@color/apptheme_accent" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
