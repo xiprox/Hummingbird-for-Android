@@ -6,102 +6,96 @@
     android:orientation="vertical"
     tools:context=".NavigationDrawerFragment">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fadingEdge="none">
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/navigation_drawer_profile"
+            android:layout_width="match_parent"
+            android:layout_height="150dp">
+
+            <ImageView
+                android:id="@+id/navigation_drawer_cover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/anime_details_action_bar_gradient_bottom" />
+
+            <ImageView
+                android:id="@+id/navigation_drawer_avatar"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/oval_avatar"
+                android:padding="2dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/avatar" />
+
+            <TextView
+                android:id="@+id/navigation_drawer_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="16dp"
+                android:ellipsize="marquee"
+                android:text="Username"
+                android:textAppearance="@android:style/TextAppearance.Large"
+                android:textColor="@color/list_text_color" />
+
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:orientation="vertical">
 
-            <RelativeLayout
-                android:id="@+id/navigation_drawer_profile"
-                android:layout_width="match_parent"
-                android:layout_height="150dp">
-
-                <ImageView
-                    android:id="@+id/navigation_drawer_cover"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_alignParentBottom="true"
-                    android:background="@drawable/anime_details_action_bar_gradient_bottom" />
-
-                <ImageView
-                    android:id="@+id/navigation_drawer_avatar"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/oval_avatar"
-                    android:padding="2dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/avatar" />
-
-                <TextView
-                    android:id="@+id/navigation_drawer_username"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="16dp"
-                    android:ellipsize="marquee"
-                    android:text="Username"
-                    android:textAppearance="@android:style/TextAppearance.Large"
-                    android:textColor="@color/list_text_color" />
-
-            </RelativeLayout>
-
-            <LinearLayout
+            <ListView
+                android:id="@+id/nav_list_main"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical">
+                android:divider="@android:color/transparent"
+                android:dividerHeight="0dp"
+                android:listSelector="@drawable/nav_list_selector" />
 
-                <ListView
-                    android:id="@+id/nav_list_main"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:divider="@android:color/transparent"
-                    android:dividerHeight="0dp"
-                    android:listSelector="@drawable/nav_list_selector" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="7dp"
+                android:background="@color/divider" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="7dp"
-                    android:background="@color/divider" />
+            <ListView
+                android:id="@+id/nav_list_second"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#F7F7F7"
+                android:divider="@color/divider"
+                android:dividerHeight="1dp"
+                android:footerDividersEnabled="true"
+                android:headerDividersEnabled="true"
+                android:listSelector="@drawable/nav_list_selector" />
 
-                <ListView
-                    android:id="@+id/nav_list_second"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#F7F7F7"
-                    android:divider="@color/divider"
-                    android:dividerHeight="1dp"
-                    android:footerDividersEnabled="true"
-                    android:headerDividersEnabled="true"
-                    android:listSelector="@drawable/nav_list_selector" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/divider" />
-
-            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/divider" />
 
         </LinearLayout>
-    </ScrollView>
+
+    </LinearLayout>
 
 
 </LinearLayout>
