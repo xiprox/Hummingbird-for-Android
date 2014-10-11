@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
-        android:background="@drawable/login_holder"
+        android:background="@drawable/card_neutral"
         android:orientation="vertical"
         android:paddingBottom="20dp"
         android:paddingLeft="25dp"
@@ -43,12 +43,12 @@
             android:src="@drawable/avatar" />
 
         <EditText
-            android:id="@+id/edit_email"
+            android:id="@+id/edit_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
-            android:hint="@string/content_username_or_email"
-            android:inputType="textPersonName|textEmailAddress|textNoSuggestions"
+            android:hint="@string/content_username"
+            android:inputType="textPersonName|textNoSuggestions"
             android:textColor="@color/text_gray"
             android:textSize="15sp" />
 
@@ -78,7 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/btn_login"
+            android:background="@drawable/button_raised"
             android:enabled="false"
             android:text="@string/content_login"
             android:textColor="@color/apptheme_accent"
@@ -86,12 +86,10 @@
 
         <Button
             android:id="@+id/btn_help"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
             android:layout_marginTop="5dp"
-            android:background="@drawable/btn_signup"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            android:background="@drawable/button_flat"
             android:text="@string/content_help"
             android:textColor="@color/apptheme_primary_dark"
             android:textSize="13sp" />
@@ -100,11 +98,9 @@
     <Button
         android:id="@+id/btn_new"
         android:layout_width="wrap_content"
-        android:layout_height="35dp"
+        android:layout_height="@dimen/button_height"
         android:layout_marginTop="5dp"
-        android:background="@drawable/btn_signup"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:background="@drawable/button_flat"
         android:text="@string/content_new"
         android:textColor="@color/apptheme_primary_dark"
         android:textSize="13sp" />

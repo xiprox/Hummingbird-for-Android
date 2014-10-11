@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/btn_ps_pressed" android:state_pressed="true" />
-    <item android:drawable="@drawable/btn_ps_neutral" />
+    <item android:state_pressed="true" >
+        <shape>
+            <corners android:radius="2dp" />
+            <solid android:color="@color/neutral_pressed" />
+        </shape>
+    </item>
+
+    <item >
+        <shape>
+            <corners android:radius="2dp" />
+        </shape>
+    </item>
 </selector>

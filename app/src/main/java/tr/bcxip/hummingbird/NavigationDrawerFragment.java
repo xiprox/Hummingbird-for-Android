@@ -4,6 +4,7 @@ package tr.bcxip.hummingbird;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.Intent;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -22,6 +23,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import tr.bcxip.hummingbird.managers.PrefManager;
 
 public class NavigationDrawerFragment extends Fragment {
 
@@ -43,6 +46,8 @@ public class NavigationDrawerFragment extends Fragment {
     TextView mUsername;
     ImageView mAvatar;
 
+    PrefManager prefMan;
+
     public NavigationDrawerFragment() {
 
     }
@@ -50,6 +55,8 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        prefMan = new PrefManager(getActivity());
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
@@ -63,16 +70,17 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_navigation_drawer, null);
-        //
+
+
         String[] ArrayMain = getResources().getStringArray(R.array.list_main_strings);
         String[] ArraySecond = getResources().getStringArray(R.array.list_secondary_strings);
 
@@ -100,7 +108,9 @@ public class NavigationDrawerFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 // TODO - Settings
-                // TODO - Logout
+                prefMan.setAuthToken(null);
+                prefMan.setUsername(null);
+                startActivity(new Intent(getActivity(), LoginActivity.class));
             }
         });
 

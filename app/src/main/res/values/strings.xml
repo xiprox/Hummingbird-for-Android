@@ -40,14 +40,14 @@
     <string name="content_is_currently_watching">is currently watching</string>
 
     <!-- Content (Login) Strings -->
-    <string name="content_username_or_email">Username or Email</string>
+    <string name="content_username">Username</string>
     <string name="content_password">Password</string>
     <string name="content_login">Log In</string>
 
     <string name="content_help">Need help?</string>
     <string name="content_new">Create an account</string>
 
-    <string name="error_invalid_credentials">The email or passowrd you entered is incorret</string>
+    <string name="error_invalid_credentials">The username or passowrd you entered is incorrect.</string>
     <string name="error_connection">Connection error!</string>
     <string name="error_cant_load_data">Can\'t load data!</string>
 

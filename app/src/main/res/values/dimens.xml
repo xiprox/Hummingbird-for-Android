@@ -12,4 +12,8 @@
     <dimen name="margin_card_side">12dp</dimen>
     <dimen name="margin_card_end">12dp</dimen>
     <dimen name="margin_card_between">8dp</dimen>
+
+    <!-- Buttons -->
+    <dimen name="button_width">88dp</dimen>
+    <dimen name="button_height">36dp</dimen>
 </resources>

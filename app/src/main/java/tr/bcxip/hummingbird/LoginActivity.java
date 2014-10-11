@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,7 +32,7 @@ public class LoginActivity extends Activity {
     HummingbirdApi api;
     PrefManager prefMan;
 
-    EditText mUsernameOrEmail;
+    EditText mUsername;
     EditText mPassword;
     TextView mErrorMessage;
     Button mSignIn;
@@ -48,7 +49,7 @@ public class LoginActivity extends Activity {
         api = new HummingbirdApi(this);
         prefMan = new PrefManager(this);
 
-        mUsernameOrEmail = (EditText) findViewById(R.id.edit_email);
+        mUsername = (EditText) findViewById(R.id.edit_username);
         mPassword = (EditText) findViewById(R.id.edit_password);
         mSignIn = (Button) findViewById(R.id.btn_login);
         mSignUp = (Button) findViewById(R.id.btn_new);
@@ -79,7 +80,7 @@ public class LoginActivity extends Activity {
             }
         });
 
-        mUsernameOrEmail.addTextChangedListener(new TextWatcher() {
+        mUsername.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
                 /* empty */
@@ -127,7 +128,7 @@ public class LoginActivity extends Activity {
     }
 
     public void updateState() {
-        if (mUsernameOrEmail.getText().toString().length() != 0 ){
+        if (mUsername.getText().toString().length() != 0 ){
             if(mPassword.getText().toString().length() != 0 ){
                 mSignIn.setEnabled(true);
             }else{
@@ -155,7 +156,7 @@ public class LoginActivity extends Activity {
         protected String doInBackground(Void... voids) {
             try {
                 authToken = api.authenticate(
-                        mUsernameOrEmail.getText().toString(),
+                        mUsername.getText().toString(),
                         mPassword.getText().toString()
                 );
 
@@ -177,7 +178,7 @@ public class LoginActivity extends Activity {
             if (result.equals(RESULT_SUCCESS)) {
                 /* Store the token for later use */
                 prefMan.setAuthToken(authToken);
-                prefMan.setUsername(mUsernameOrEmail.getText().toString());
+                prefMan.setUsername(mUsername.getText().toString());
 
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
@@ -189,5 +190,13 @@ public class LoginActivity extends Activity {
                 mErrorMessage.setVisibility(View.VISIBLE);
             }
         }
+    }
+
+    @Override
+    public  boolean onKeyDown(int keyCode, KeyEvent event){
+        if((keyCode == KeyEvent.KEYCODE_BACK)){
+            // TODO - Exit Application
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
