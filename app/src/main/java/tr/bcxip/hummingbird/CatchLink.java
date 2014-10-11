@@ -14,23 +14,27 @@ public class CatchLink extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         mLink = getIntent().getDataString();
-        if(mLink.contains("/anime/")){
+
+        if (mLink.contains("/anime/")) {
             mLink = mLink.replace("http://hummingbird.me/anime/", "");
-            String sCheck = mLink.substring(mLink.length() -1, mLink.length());
-            //check if url ends with /fate-zero'/'
-            if (sCheck.contains("/")){
+
+            String sCheck = mLink.substring(mLink.length() - 1, mLink.length());
+
+            if (sCheck.contains("/")) {
                 mLink = mLink.substring(0, mLink.length() - 1);
             }
+
             Intent intent = new Intent(CatchLink.this, AnimeDetailsActivity.class);
-            //intent.putExtra(AnimeDetailsActivity.ARG_ID, Integer.parseInt(mLink));
             intent.putExtra(AnimeDetailsActivity.ARG_ID, mLink);
             startActivity(intent);
+            finish();
+
             Toast.makeText(getApplicationContext(), mLink, Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
             Toast.makeText(getApplicationContext(), mLink, Toast.LENGTH_SHORT).show();
         }
-
 
 
     }
