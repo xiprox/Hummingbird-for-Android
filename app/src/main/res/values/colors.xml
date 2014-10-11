@@ -13,7 +13,9 @@
 
     <color name="divider">#507a7a7a</color>
 
-    <color name="button_neutral">#15000000</color>
+    <!-- button_borderless_neutral.xml -->
+    <color name="button_neutral">#888888</color>
+
     <color name="neutral">#888888</color>
     <color name="neutral_pressed">#666666</color>
 
@@ -21,4 +23,8 @@
     <color name="login_btn">#b2dfdb</color>
 
     <color name="window_background">#dddddd</color>
+
+    <color name="flat_button_bg">#EBEBEB</color>
+    <color name="button_disabled">#ffab40</color>
+    <color name="error_color">#dd191d</color>
 </resources>

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -29,60 +30,52 @@ public class LoginActivity extends Activity {
     HummingbirdApi api;
     PrefManager prefMan;
 
-    ImageView mHeaderBackground;
-    ImageView mHeaderLogo;
-
     EditText mUsernameOrEmail;
-    TextView mUsernameOrEmailHint;
     EditText mPassword;
-    TextView mPasswordHint;
-
-    LinearLayout mMessageHolder;
-    ImageView mMessageIndicator;
-    TextView mMessageText;
-
-    ProgressBar mProgressBar;
-
-    Button mSignUp;
+    TextView mErrorMessage;
     Button mSignIn;
+    Button mSignUp;
+    Button mHelp;
+    //ProgressBar mProgressBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        getActionBar().hide();
 
         api = new HummingbirdApi(this);
         prefMan = new PrefManager(this);
 
-        mHeaderBackground = (ImageView) findViewById(R.id.login_header_bg);
-        mHeaderLogo = (ImageView) findViewById(R.id.login_header_logo);
-        adjustHeaderSizes();
+        mUsernameOrEmail = (EditText) findViewById(R.id.edit_email);
+        mPassword = (EditText) findViewById(R.id.edit_password);
+        mSignIn = (Button) findViewById(R.id.btn_login);
+        mSignUp = (Button) findViewById(R.id.btn_new);
+        mHelp = (Button) findViewById(R.id.btn_help);
+        mErrorMessage = (TextView) findViewById(R.id.error_text);
+        //mProgressBar = (ProgressBar) findViewById(R.id.login_progress_bar);
 
-        mUsernameOrEmail = (EditText) findViewById(R.id.login_username_or_email);
-        mUsernameOrEmailHint = (TextView) findViewById(R.id.login_username_or_email_hint);
-        mPassword = (EditText) findViewById(R.id.login_password);
-        mPasswordHint = (TextView) findViewById(R.id.login_password_hint);
 
-        mMessageHolder = (LinearLayout) findViewById(R.id.login_message_holder);
-        mMessageIndicator = (ImageView) findViewById(R.id.login_message_indicator);
-        mMessageText = (TextView) findViewById(R.id.login_message_text);
-
-        mProgressBar = (ProgressBar) findViewById(R.id.login_progress_bar);
-
-        mSignUp = (Button) findViewById(R.id.login_sign_up);
-        mSignIn = (Button) findViewById(R.id.login_sign_in);
-
-        mSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // TODO - Send to a sign up
-            }
-        });
 
         mSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new AuthenticationTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
+        });
+
+        mSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendLink(2);
+            }
+        });
+
+        mHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendLink(1);
             }
         });
 
@@ -100,14 +93,8 @@ public class LoginActivity extends Activity {
             @Override
             public void afterTextChanged(Editable editable) {
                 updateState();
-
-                if (mUsernameOrEmail.getText().length() != 0)
-                    mUsernameOrEmailHint.setVisibility(View.VISIBLE);
-                else
-                    mUsernameOrEmailHint.setVisibility(View.INVISIBLE);
             }
         });
-
         mPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -122,79 +109,33 @@ public class LoginActivity extends Activity {
             @Override
             public void afterTextChanged(Editable editable) {
                 updateState();
-
-                if (mPassword.getText().length() != 0)
-                    mPasswordHint.setVisibility(View.VISIBLE);
-                else
-                    mPasswordHint.setVisibility(View.INVISIBLE);
             }
+
         });
     }
+    //1 help, 2 sign up
+    public void sendLink(int i) {
+        switch (i){
+            case 1:
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("http://hummingbird.me/users/password/new")));
+            break;
+            case 2:
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("http://hummingbird.me/users/sign_up")));
+            break;
+        }
 
-    public void adjustHeaderSizes() {
-        Point size = new Point();
-        getWindowManager().getDefaultDisplay().getSize(size);
-        mHeaderBackground.getLayoutParams().height = (size.y / 3);
-        mHeaderLogo.getLayoutParams().height = mHeaderBackground.getLayoutParams().height / 3;
-        mHeaderLogo.getLayoutParams().width = mHeaderLogo.getLayoutParams().height
-                + mHeaderLogo.getLayoutParams().height / 6;
     }
 
     public void updateState() {
-        int red = getResources().getColor(android.R.color.holo_red_dark);
-
-        if ((mUsernameOrEmail.getText().toString().length() == 0 ||
-                mUsernameOrEmail.getText().toString().trim().length() == 0)
-                &&
-                (mPassword.getText().toString().length() != 0 &&
-                        mPassword.getText().toString().trim().length() != 0)) {
-
-            mMessageText.setText(R.string.error_username_or_email_cant_be_empty);
-            mMessageText.setTextColor(red);
-            mMessageHolder.setVisibility(View.VISIBLE);
-
-            mSignIn.setEnabled(false);
+        if (mUsernameOrEmail.getText().toString().length() != 0 ){
+            if(mPassword.getText().toString().length() != 0 ){
+                mSignIn.setEnabled(true);
+            }else{
+                mSignIn.setEnabled(false);
+            }
         }
-
-        if ((mPassword.getText().toString().length() == 0 ||
-                mPassword.getText().toString().trim().length() == 0)
-                &&
-                (mUsernameOrEmail.getText().toString().length() != 0 &&
-                        mUsernameOrEmail.getText().toString().trim().length() != 0)) {
-
-            mMessageIndicator.setColorFilter(red, PorterDuff.Mode.SRC_ATOP);
-            mMessageText.setText(R.string.error_password_cant_be_empty);
-            mMessageText.setTextColor(red);
-            mMessageHolder.setVisibility(View.VISIBLE);
-
-            mSignIn.setEnabled(false);
-        }
-
-        if ((mPassword.getText().toString().length() == 0 ||
-                mPassword.getText().toString().trim().length() == 0)
-                &&
-                (mUsernameOrEmail.getText().toString().length() == 0 ||
-                        mUsernameOrEmail.getText().toString().trim().length() == 0)) {
-
-            mMessageIndicator.setColorFilter(red, PorterDuff.Mode.SRC_ATOP);
-            mMessageText.setText(R.string.error_login_fields_cant_be_empty);
-            mMessageText.setTextColor(red);
-            mMessageHolder.setVisibility(View.VISIBLE);
-
-            mSignIn.setEnabled(false);
-        }
-
-        if ((mPassword.getText().toString().length() != 0 &&
-                mPassword.getText().toString().trim().length() != 0)
-                &&
-                (mUsernameOrEmail.getText().toString().length() != 0 &&
-                        mUsernameOrEmail.getText().toString().trim().length() != 0)) {
-            mMessageHolder.setVisibility(View.GONE);
-
-            mSignIn.setEnabled(true);
-        }
-
-
     }
 
     protected class AuthenticationTask extends AsyncTask<Void, Void, String> {
@@ -208,8 +149,8 @@ public class LoginActivity extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mProgressBar.setVisibility(View.VISIBLE);
-            mMessageHolder.setVisibility(View.GONE);
+            //mProgressBar.setVisibility(View.VISIBLE);
+            //mMessageHolder.setVisibility(View.GONE);
         }
 
         @Override
@@ -231,9 +172,9 @@ public class LoginActivity extends Activity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
-            mProgressBar.setVisibility(View.GONE);
+            //mProgressBar.setVisibility(View.GONE);
 
-            int red = getResources().getColor(android.R.color.holo_red_dark);
+            //int red = getResources().getColor(android.R.color.holo_red_dark);
 
             if (result.equals(RESULT_SUCCESS)) {
                 /* Store the token for later use */
@@ -242,13 +183,11 @@ public class LoginActivity extends Activity {
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
             } else if (result.equals(RESULT_UNAUTHORIZED)) {
-                mMessageText.setText(R.string.error_invalid_credentials);
-                mMessageIndicator.setColorFilter(red, PorterDuff.Mode.SRC_ATOP);
-                mMessageHolder.setVisibility(View.VISIBLE);
+                mErrorMessage.setText(R.string.error_invalid_credentials);
+                mErrorMessage.setVisibility(View.VISIBLE);
             } else if (result.contains(RESULT_UNABLE_TO_RESOLVE_HOST)) {
-                mMessageText.setText(R.string.error_connection_error);
-                mMessageIndicator.setColorFilter(red, PorterDuff.Mode.SRC_ATOP);
-                mMessageHolder.setVisibility(View.VISIBLE);
+                mErrorMessage.setText(R.string.error_connection);
+                mErrorMessage.setVisibility(View.VISIBLE);
             }
         }
     }
