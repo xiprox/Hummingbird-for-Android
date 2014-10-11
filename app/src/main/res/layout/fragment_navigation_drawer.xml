@@ -11,51 +11,60 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <RelativeLayout
+        <FrameLayout
             android:id="@+id/navigation_drawer_profile"
             android:layout_width="match_parent"
-            android:layout_height="150dp">
+            android:layout_height="74dp"
+            android:foreground="@drawable/selector_background_neutral">
 
-            <ImageView
-                android:id="@+id/navigation_drawer_cover"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop" />
+                android:layout_height="74dp">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_alignParentBottom="true"
-                android:background="@drawable/anime_details_action_bar_gradient_bottom" />
+                <ImageView
+                    android:id="@+id/navigation_drawer_cover"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop" />
 
-            <ImageView
-                android:id="@+id/navigation_drawer_avatar"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/oval_shape"
-                android:padding="2dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/avatar" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/anime_details_action_bar_gradient_bottom" />
 
-            <TextView
-                android:id="@+id/navigation_drawer_username"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_gravity="center"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="16dp"
-                android:ellipsize="marquee"
-                android:text="Username"
-                android:textAppearance="@android:style/TextAppearance.Large"
-                android:textColor="@color/list_text_color" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-        </RelativeLayout>
+                    <ImageView
+                        android:id="@+id/navigation_drawer_avatar"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginLeft="16dp"
+                        android:background="@drawable/oval_shape"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/avatar" />
+
+                    <TextView
+                        android:id="@+id/navigation_drawer_username"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="8dp"
+                        android:ellipsize="marquee"
+                        android:padding="8dp"
+                        android:shadowColor="@android:color/black"
+                        android:shadowDx="1"
+                        android:shadowDy="1"
+                        android:shadowRadius="10"
+                        android:text="Username"
+                        android:textAppearance="@android:style/TextAppearance.Large"
+                        android:textColor="@android:color/white" />
+                </LinearLayout>
+            </RelativeLayout>
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

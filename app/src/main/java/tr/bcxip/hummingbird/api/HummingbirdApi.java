@@ -54,7 +54,6 @@ public class HummingbirdApi {
         serviceV2 = restAdapterV2.create(HummingbirdServiceV2.class);
     }
 
-    //TODO - AHADA BURA
     public User getUser(String username) {
         return service.getUser(username);
     }

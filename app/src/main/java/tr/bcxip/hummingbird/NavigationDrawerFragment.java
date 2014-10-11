@@ -1,19 +1,20 @@
 package tr.bcxip.hummingbird;
 
 
-import android.app.Activity;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,19 +23,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
+import retrofit.RetrofitError;
 import tr.bcxip.hummingbird.api.HummingbirdApi;
+import tr.bcxip.hummingbird.api.Results;
 import tr.bcxip.hummingbird.api.objects.User;
 import tr.bcxip.hummingbird.managers.PrefManager;
-import com.squareup.picasso.Picasso;
+import tr.bcxip.hummingbird.utils.CircleTransformation;
 
 public class NavigationDrawerFragment extends Fragment {
 
     private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
+
+    final String TAG = "NAVIGATION DRAWER";
 
     private NavigationDrawerCallbacks mCallbacks;
 
@@ -47,13 +55,13 @@ public class NavigationDrawerFragment extends Fragment {
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
-    //
     TextView mUsername;
     ImageView mAvatar;
     ImageView mCoverImage;
+    FrameLayout mProfile;
 
-    User User;
-    String sUsername;
+    User user;
+    String username;
 
     Context context;
     HummingbirdApi api;
@@ -103,12 +111,19 @@ public class NavigationDrawerFragment extends Fragment {
         mUsername = (TextView) rootView.findViewById(R.id.navigation_drawer_username);
         mAvatar = (ImageView) rootView.findViewById(R.id.navigation_drawer_avatar);
         mCoverImage = (ImageView) rootView.findViewById(R.id.navigation_drawer_cover);
+        mProfile = (FrameLayout) rootView.findViewById(R.id.navigation_drawer_profile);
 
-        sUsername = prefMan.getUsername();
-        //User = api.getUser(sUsername); TODO - BURA
-        mUsername.setText(sUsername);
-        //Picasso.with(context).load("" + User.getAvatar()).into(mAvatar);
-        //Picasso.with(context).load("" + User.getCoverImage()).into(mCoverImage);
+        mProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO - Navigate to profile
+            }
+        });
+
+        username = prefMan.getUsername();
+        mUsername.setText(username);
+
+        new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         mListMain.setAdapter(new ArrayAdapter<String>
                 (getActivity(), R.layout.nav_list_item_main, ArrayMain));
@@ -268,5 +283,36 @@ public class NavigationDrawerFragment extends Fragment {
 
     public static interface NavigationDrawerCallbacks {
         void onNavigationDrawerItemSelected(int position);
+    }
+
+    protected class LoadTask extends AsyncTask<Void, Void, String> {
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            try {
+                user = api.getUser(username);
+                return Results.RESULT_SUCCESS;
+            } catch (RetrofitError e) {
+                Log.e(TAG, e.getMessage());
+                return e.getMessage();
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            if (result.equals(Results.RESULT_SUCCESS)) {
+                Picasso.with(context)
+                        .load(user.getAvatar())
+                        .transform(new CircleTransformation())
+                        .into(mAvatar);
+                Picasso.with(context)
+                        .load(user.getCoverImage())
+                        .into(mCoverImage);
+            } else {
+                // TODO - failure
+            }
+        }
     }
 }
