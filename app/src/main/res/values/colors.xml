@@ -27,4 +27,8 @@
     <color name="flat_button_bg">#EBEBEB</color>
     <color name="button_disabled">#ffab40</color>
     <color name="error_color">#dd191d</color>
+
+    <!-- List -->
+    <color name="list_selected">#EBEBEB</color>
+    <color name="list_text_color">#212121</color>
 </resources>

@@ -44,4 +44,15 @@
     <string name="error_cant_load_data">Can\'t load data!</string>
 
     <string name="content_unknown">Unknown</string>
+
+    <!-- Navigation Drawer -->
+    <string-array name="list_main_strings">
+        <item>Main</item>
+        <item>Update</item>
+        <item>Library</item>
+    </string-array>
+    <string-array name="list_secondary_strings">
+        <item>Settings</item>
+        <item>Log Out</item>
+    </string-array>
 </resources>
