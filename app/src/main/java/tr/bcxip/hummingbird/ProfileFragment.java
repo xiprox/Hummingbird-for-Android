@@ -135,7 +135,11 @@ public class ProfileFragment extends Fragment {
                 coverBitmap = Picasso.with(context)
                         .load(user.getCoverImage())
                         .get();
-                vibrantColor = Palette.generate(coverBitmap).getVibrantColor().getRgb();
+                try {
+                    vibrantColor = Palette.generate(coverBitmap).getVibrantColor().getRgb();
+                } catch (Exception e) {
+                    vibrantColor = getResources().getColor(R.color.neutral);
+                }
                 return Results.RESULT_SUCCESS;
             } catch (RetrofitError e) {
                 Log.e(TAG, e.getMessage());
