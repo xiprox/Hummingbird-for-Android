@@ -116,7 +116,9 @@ public class NavigationDrawerFragment extends Fragment {
         mProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO - Navigate to profile
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container, new ProfileFragment()).commit();
+                mDrawerLayout.closeDrawer(mFragmentContainerView);
             }
         });
 

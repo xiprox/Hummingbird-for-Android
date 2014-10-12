@@ -10,6 +10,7 @@
 
     <color name="text_gray_dark">#CC000000</color>
     <color name="text_gray">#656565</color>
+    <color name="text_gray_light">#858585</color>
 
     <color name="divider">#507a7a7a</color>
 

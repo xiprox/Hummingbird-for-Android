@@ -44,6 +44,10 @@
     <string name="content_password">Password</string>
     <string name="content_login">Log In</string>
 
+    <!-- Content (Profile) Strings-->
+    <string name="content_favorites">favorites</string>
+    <string name="content_online">online</string>
+
     <string name="content_help">Need help?</string>
     <string name="content_new">Create an account</string>
 

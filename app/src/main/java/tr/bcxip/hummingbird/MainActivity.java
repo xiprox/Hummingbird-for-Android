@@ -19,7 +19,7 @@ public class MainActivity extends Activity
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
-    private CharSequence mTitle;
+    public static CharSequence mTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
