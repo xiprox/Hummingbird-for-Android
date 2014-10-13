@@ -77,7 +77,7 @@ public class FeedFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        loadTask.cancel(true);
+        if (loadTask != null) loadTask.cancel(true);
     }
 
     protected class LoadTask extends AsyncTask<Void, Void, String> {
