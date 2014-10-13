@@ -81,9 +81,6 @@ public class ProfileFragment extends Fragment {
         api = new HummingbirdApi(context);
         prefMan = new PrefManager(context);
 
-        ((Activity) context).getActionBar().setBackgroundDrawable(
-                getResources().getDrawable(R.drawable.anime_details_action_bar_gradient_top));
-
         setHasOptionsMenu(true);
     }
 
