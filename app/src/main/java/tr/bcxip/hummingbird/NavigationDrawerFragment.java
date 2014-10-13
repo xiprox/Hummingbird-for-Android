@@ -43,8 +43,8 @@ public class NavigationDrawerFragment extends Fragment {
     private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
 
-    // Dedicate 1000 as some kind of "list position" profile
-    private static final int ITEM_POSITION_PROFILE = 1000;
+    // We dedicate 1000 as some kind of "list position" for profile
+    public static final int ITEM_POSITION_PROFILE = 1000;
 
     final String TAG = "NAVIGATION DRAWER";
 
@@ -55,7 +55,7 @@ public class NavigationDrawerFragment extends Fragment {
     private DrawerLayout mDrawerLayout;
     private View mFragmentContainerView;
 
-    private int mCurrentSelectedPosition = 0;
+    public static int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
@@ -86,8 +86,6 @@ public class NavigationDrawerFragment extends Fragment {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
             mFromSavedInstanceState = true;
         }
-
-        selectItem(mCurrentSelectedPosition);
     }
 
     @Override
@@ -100,7 +98,6 @@ public class NavigationDrawerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_navigation_drawer, null);
-
 
         String[] ArrayMain = getResources().getStringArray(R.array.list_main_strings);
         String[] ArraySecond = getResources().getStringArray(R.array.list_secondary_strings);
@@ -156,6 +153,8 @@ public class NavigationDrawerFragment extends Fragment {
                 }
             }
         });
+
+        selectItem(mCurrentSelectedPosition);
 
         return rootView;
     }

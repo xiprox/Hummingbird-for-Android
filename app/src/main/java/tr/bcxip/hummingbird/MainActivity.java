@@ -17,6 +17,8 @@ import tr.bcxip.hummingbird.managers.PrefManager;
 public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
+    private static final String STATE_ACTIONBAR_TITLE = "action_bar_title";
+
     PrefManager prefMan;
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
@@ -40,15 +42,15 @@ public class MainActivity extends Activity
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
-        mTitle = getTitle();
+
+        if (savedInstanceState != null) {
+            mTitle = savedInstanceState.getString(STATE_ACTIONBAR_TITLE);
+            setTitle(mTitle.toString());
+        }
 
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
-
-        // Select default item. Thus, settings the actionbar title...
-        onNavigationDrawerItemSelected(0);
-
     }
 
     @Override
@@ -99,5 +101,11 @@ public class MainActivity extends Activity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(STATE_ACTIONBAR_TITLE, mTitle.toString());
     }
 }
