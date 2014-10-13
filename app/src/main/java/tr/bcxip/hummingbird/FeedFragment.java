@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ViewFlipper;
 
 import java.util.List;
 
@@ -34,6 +35,7 @@ public class FeedFragment extends Fragment {
     PrefManager prefMan;
 
     ListView mList;
+    ViewFlipper mFlipper;
 
     List<Story> mItems;
 
@@ -53,6 +55,7 @@ public class FeedFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_feed, null);
 
         mList = (ListView) rootView.findViewById(R.id.feed_list);
+        mFlipper = (ViewFlipper) rootView.findViewById(R.id.feed_view_flipper);
 
         /**
          * Check for any username arguments being passed to the fragment. If one is passed, we will
@@ -89,6 +92,7 @@ public class FeedFragment extends Fragment {
 
             if (result.equals(Results.RESULT_SUCCESS)) {
                 mList.setAdapter(new FeedAdapter(context, R.layout.item_story_comment, mItems, username));
+                if (mFlipper.getDisplayedChild() == 0) mFlipper.showNext();
             }
         }
     }

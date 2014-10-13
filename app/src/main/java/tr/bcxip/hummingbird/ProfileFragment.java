@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import com.squareup.picasso.Picasso;
 
@@ -67,6 +68,8 @@ public class ProfileFragment extends Fragment {
     TextView mTimeWatched;
     ExpandableHeightGridView mFavorites;
 
+    ViewFlipper mFlipper;
+
     int vibrantColor;
 
     @Override
@@ -112,6 +115,8 @@ public class ProfileFragment extends Fragment {
         mWebsiteHolder = (LinearLayout) rootView.findViewById(R.id.profile_website_holder);
         mTimeWatched = (TextView) rootView.findViewById(R.id.profile_watched_time);
         mFavorites = (ExpandableHeightGridView) rootView.findViewById(R.id.profile_favorites);
+
+        mFlipper = (ViewFlipper) rootView.findViewById(R.id.profile_view_flipper);
 
         new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
@@ -222,6 +227,8 @@ public class ProfileFragment extends Fragment {
                         context.startActivity(intent);
                     }
                 });
+
+                if (mFlipper.getDisplayedChild() == 0) mFlipper.showNext();
             } else {
                 // TODO - Better handling...
                 Toast.makeText(context, R.string.error_cant_load_data, Toast.LENGTH_LONG).show();

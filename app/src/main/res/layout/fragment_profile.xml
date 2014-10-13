@@ -2,230 +2,243 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <ViewFlipper
+        android:id="@+id/profile_view_flipper"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:animateLayoutChanges="true"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:inAnimation="@android:anim/fade_in"
+        android:outAnimation="@android:anim/fade_out">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="148dp"
-            android:animateLayoutChanges="true">
-
-            <ImageView
-                android:id="@+id/profile_cover"
-                android:layout_width="match_parent"
-                android:layout_height="84dp"
-                android:scaleType="centerCrop"
-                android:src="@color/text_gray_light" />
-
-            <ImageView
-                android:id="@+id/profile_avatar"
-                android:layout_width="84dp"
-                android:layout_height="84dp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="16dp"
-                android:elevation="2dp"
-                android:src="@drawable/avatar" />
-
-            <LinearLayout
-                android:id="@+id/profile_online"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginBottom="32dp"
-                android:layout_marginRight="16dp"
-                android:orientation="horizontal"
-                android:visibility="invisible">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
-                    android:text="@string/content_online"
-                    android:textAllCaps="true"
-                    android:textColor="@android:color/holo_green_dark"
-                    android:textStyle="bold" />
-
-                <View
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:background="@drawable/oval_green" />
-            </LinearLayout>
-        </RelativeLayout>
-
-        <TextView
-            android:id="@+id/profile_username"
+        <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="-16dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="username"
-            android:textColor="@color/apptheme_primary"
-            android:textSize="22sp" />
-
-        <TextView
-            android:id="@+id/profile_bio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:text="user bio" />
+            android:layout_gravity="center" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
             android:animateLayoutChanges="true"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/profile_waifu_holder"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:layout_height="148dp"
+                android:animateLayoutChanges="true">
 
                 <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:src="@drawable/ic_waifu" />
-
-                <TextView
-                    android:id="@+id/profile_waifu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="24dp"
-                    android:text="waifu or husbando"
-                    android:textAllCaps="true"
-                    android:textColor="@color/text_gray_light"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/profile_location_holder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                    android:id="@+id/profile_cover"
+                    android:layout_width="match_parent"
+                    android:layout_height="84dp"
+                    android:scaleType="centerCrop"
+                    android:src="@color/text_gray_light" />
 
                 <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:src="@drawable/ic_home" />
+                    android:id="@+id/profile_avatar"
+                    android:layout_width="84dp"
+                    android:layout_height="84dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:elevation="2dp"
+                    android:src="@drawable/avatar" />
 
-                <TextView
-                    android:id="@+id/profile_location"
+                <LinearLayout
+                    android:id="@+id/profile_online"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="24dp"
-                    android:text="location"
-                    android:textAllCaps="true"
-                    android:textColor="@color/text_gray_light"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="32dp"
+                    android:layout_marginRight="16dp"
+                    android:orientation="horizontal"
+                    android:visibility="invisible">
 
-            <LinearLayout
-                android:id="@+id/profile_website_holder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:text="@string/content_online"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/holo_green_dark"
+                        android:textStyle="bold" />
 
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:src="@drawable/ic_link" />
-
-                <TextView
-                    android:id="@+id/profile_website"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="24dp"
-                    android:text="website"
-                    android:textAllCaps="true"
-                    android:textColor="@color/text_gray_light"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:src="@drawable/ic_eye" />
-
-                <TextView
-                    android:id="@+id/profile_watched_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="24dp"
-                    android:text="life spent on a!#$%"
-                    android:textAllCaps="true"
-                    android:textColor="@color/text_gray_light"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="36dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:src="@drawable/ic_star" />
+                    <View
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:background="@drawable/oval_green" />
+                </LinearLayout>
+            </RelativeLayout>
 
             <TextView
+                android:id="@+id/profile_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
-                android:text="@string/content_favorites"
-                android:textAllCaps="true"
-                android:textColor="@color/text_gray_light"
-                android:textStyle="bold" />
-        </LinearLayout>
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="-16dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="username"
+                android:textColor="@color/apptheme_primary"
+                android:textSize="22sp" />
 
-        <tr.bcxip.hummingbird.widget.ExpandableHeightGridView
-            android:id="@+id/profile_favorites"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@android:color/black"
-            android:columnWidth="136dp"
-            android:drawSelectorOnTop="true"
-            android:horizontalSpacing="1dp"
-            android:listSelector="@drawable/selector_background_neutral"
-            android:numColumns="auto_fit"
-            android:stretchMode="columnWidth"
-            android:verticalSpacing="1dp" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/profile_bio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:text="user bio" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:animateLayoutChanges="true"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/profile_waifu_holder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_waifu" />
+
+                    <TextView
+                        android:id="@+id/profile_waifu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:text="waifu or husbando"
+                        android:textAllCaps="true"
+                        android:textColor="@color/text_gray_light"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/profile_location_holder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_home" />
+
+                    <TextView
+                        android:id="@+id/profile_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:text="location"
+                        android:textAllCaps="true"
+                        android:textColor="@color/text_gray_light"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/profile_website_holder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_link" />
+
+                    <TextView
+                        android:id="@+id/profile_website"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:text="website"
+                        android:textAllCaps="true"
+                        android:textColor="@color/text_gray_light"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_eye" />
+
+                    <TextView
+                        android:id="@+id/profile_watched_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:text="life spent on a!#$%"
+                        android:textAllCaps="true"
+                        android:textColor="@color/text_gray_light"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="36dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_star" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="24dp"
+                    android:text="@string/content_favorites"
+                    android:textAllCaps="true"
+                    android:textColor="@color/text_gray_light"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <tr.bcxip.hummingbird.widget.ExpandableHeightGridView
+                android:id="@+id/profile_favorites"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@android:color/black"
+                android:columnWidth="136dp"
+                android:drawSelectorOnTop="true"
+                android:horizontalSpacing="1dp"
+                android:listSelector="@drawable/selector_background_neutral"
+                android:numColumns="auto_fit"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="1dp" />
+        </LinearLayout>
+    </ViewFlipper>
 </ScrollView>
