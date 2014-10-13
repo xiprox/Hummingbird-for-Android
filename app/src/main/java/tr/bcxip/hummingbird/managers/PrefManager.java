@@ -41,4 +41,9 @@ public class PrefManager {
     public String getUsername() {
         return prefs.getString(PREF_USERNAME, null);
     }
+
+    public void logout() {
+        setAuthToken(null);
+        setUsername(null);
+    }
 }

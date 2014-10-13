@@ -1,9 +1,9 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    android:orientation="vertical"
+    android:clickable="true"
     tools:context=".NavigationDrawerFragment">
 
     <LinearLayout
@@ -69,13 +69,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="12dp"
             android:orientation="vertical">
 
             <ListView
                 android:id="@+id/nav_list_main"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="162dp"
                 android:divider="@android:color/transparent"
                 android:dividerHeight="0dp"
                 android:listSelector="@drawable/nav_list_selector" />
@@ -83,28 +83,17 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="7dp"
-                android:background="@color/divider" />
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/divider_light" />
 
             <ListView
                 android:id="@+id/nav_list_second"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#F7F7F7"
-                android:divider="@color/divider"
-                android:dividerHeight="1dp"
-                android:footerDividersEnabled="true"
-                android:headerDividersEnabled="true"
+                android:layout_height="108dp"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="0dp"
                 android:listSelector="@drawable/nav_list_selector" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/divider" />
-
         </LinearLayout>
-
     </LinearLayout>
-
-
-</LinearLayout>
+</ScrollView>

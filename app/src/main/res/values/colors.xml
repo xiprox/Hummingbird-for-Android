@@ -13,6 +13,7 @@
     <color name="text_gray_light">#858585</color>
 
     <color name="divider">#507a7a7a</color>
+    <color name="divider_light">#307a7a7a</color>
 
     <!-- button_borderless_neutral.xml -->
     <color name="button_neutral">#15000000</color>

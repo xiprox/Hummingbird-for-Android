@@ -27,6 +27,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -41,6 +42,9 @@ public class NavigationDrawerFragment extends Fragment {
 
     private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
+
+    // Dedicate 1000 as some kind of "list position" profile
+    private static final int ITEM_POSITION_PROFILE = 1000;
 
     final String TAG = "NAVIGATION DRAWER";
 
@@ -66,10 +70,6 @@ public class NavigationDrawerFragment extends Fragment {
     Context context;
     HummingbirdApi api;
     PrefManager prefMan;
-
-    public NavigationDrawerFragment() {
-
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -119,6 +119,7 @@ public class NavigationDrawerFragment extends Fragment {
                 getFragmentManager().beginTransaction()
                         .replace(R.id.container, new ProfileFragment()).commit();
                 mDrawerLayout.closeDrawer(mFragmentContainerView);
+                selectItem(ITEM_POSITION_PROFILE);
             }
         });
 
@@ -128,25 +129,31 @@ public class NavigationDrawerFragment extends Fragment {
         new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         mListMain.setAdapter(new ArrayAdapter<String>
-                (getActivity(), R.layout.nav_list_item_main, ArrayMain));
+                (getActivity(), R.layout.item_nav_main, ArrayMain));
         mListSecondary.setAdapter(new ArrayAdapter<String>
-                (getActivity(), R.layout.nav_list_item_secondary, ArraySecond));
-
+                (getActivity(), R.layout.item_nav_secondary, ArraySecond));
 
         mListMain.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                // TODO - Layout Changing
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                selectItem(position);
             }
         });
 
         mListSecondary.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                // TODO - Settings
-                prefMan.setAuthToken(null);
-                prefMan.setUsername(null);
-                startActivity(new Intent(getActivity(), LoginActivity.class));
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                switch (position) {
+                    case 0:
+                        // TODO - Settings
+                        Toast.makeText(context, "YOU SHALL NOT PASS!", Toast.LENGTH_LONG).show();
+                        break;
+                    case 1:
+                        prefMan.logout();
+                        startActivity(new Intent(getActivity(), LoginActivity.class));
+                        getActivity().finish();
+                        break;
+                }
             }
         });
 
