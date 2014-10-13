@@ -72,6 +72,8 @@ public class ProfileFragment extends Fragment {
 
     int vibrantColor;
 
+    LoadTask loadTask;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,7 +120,8 @@ public class ProfileFragment extends Fragment {
 
         mFlipper = (ViewFlipper) rootView.findViewById(R.id.profile_view_flipper);
 
-        new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        loadTask = new LoadTask();
+        loadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         return rootView;
     }
@@ -127,6 +130,12 @@ public class ProfileFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.profile, menu);
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (loadTask != null) loadTask.cancel(true);
     }
 
     protected class LoadTask extends AsyncTask<Void, Void, String> {
