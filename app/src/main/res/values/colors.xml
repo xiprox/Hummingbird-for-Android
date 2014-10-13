@@ -20,6 +20,7 @@
 
     <color name="neutral">#888888</color>
     <color name="neutral_pressed">#666666</color>
+    <color name="neutral_darker">#555555</color>
 
     <color name="cover_image_overlay">#50ffffff</color>
 

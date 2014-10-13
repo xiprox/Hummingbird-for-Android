@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +40,8 @@ public class FeedFragment extends Fragment {
 
     String username;
 
+    LoadTask loadTask;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +50,6 @@ public class FeedFragment extends Fragment {
         prefMan = new PrefManager(context);
     }
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_feed, null);
@@ -66,11 +66,18 @@ public class FeedFragment extends Fragment {
             username = getArguments().getString(ARG_USERNAME);
         else if (prefMan.getUsername() != null) {
             username = prefMan.getUsername();
-            new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            loadTask = new LoadTask();
+            loadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } else
             Log.e(TAG, "Username not found! Is there a problem with the logged user?");
 
         return rootView;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        loadTask.cancel(true);
     }
 
     protected class LoadTask extends AsyncTask<Void, Void, String> {

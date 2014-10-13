@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import com.squareup.picasso.Picasso;
 
@@ -33,7 +34,6 @@ public class FavoritesAdapter extends ArrayAdapter<Favorite> {
 
     HummingbirdApi api;
 
-
     public FavoritesAdapter(Context context, int resource, List<Favorite> list) {
         super(context, resource, list);
         this.context = context;
@@ -52,9 +52,10 @@ public class FavoritesAdapter extends ArrayAdapter<Favorite> {
 
         ImageView mCover = (ImageView) rootView.findViewById(R.id.item_favorite_cover);
         TextView mTitle = (TextView) rootView.findViewById(R.id.item_favorite_title);
+        ViewFlipper mFlipper = (ViewFlipper) rootView.findViewById(R.id.item_favorite_flipper);
 
         AnimeTask animeTask = new AnimeTask();
-        animeTask.putViews(mCover, mTitle);
+        animeTask.putViews(mCover, mTitle, mFlipper);
         animeTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,
                 fav.getItemId());
 
@@ -67,6 +68,7 @@ public class FavoritesAdapter extends ArrayAdapter<Favorite> {
 
         ImageView mCover;
         TextView mTitle;
+        ViewFlipper mFlipper;
 
         @Override
         protected AnimeV2 doInBackground(String... strings) {
@@ -86,9 +88,10 @@ public class FavoritesAdapter extends ArrayAdapter<Favorite> {
             }
         }
 
-        public void putViews(ImageView cover, TextView title) {
+        public void putViews(ImageView cover, TextView title, ViewFlipper flipper) {
             this.mCover = cover;
             this.mTitle = title;
+            this.mFlipper = flipper;
         }
 
         @Override
@@ -102,6 +105,7 @@ public class FavoritesAdapter extends ArrayAdapter<Favorite> {
             mTitle.setText(anime.getCanonicalTitle());
             mTitle.setBackgroundDrawable(new ColorDrawable(darkVibrantColor));
 
+            if (mFlipper.getDisplayedChild() == 0) mFlipper.showNext();
         }
     }
 }
