@@ -75,7 +75,7 @@ public class AnimeDetailsActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_anime_details, menu);
+        getMenuInflater().inflate(R.menu.anime_details, menu);
 
         return super.onCreateOptionsMenu(menu);
     }
