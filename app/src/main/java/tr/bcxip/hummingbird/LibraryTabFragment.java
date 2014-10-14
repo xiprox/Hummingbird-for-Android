@@ -66,14 +66,14 @@ public class LibraryTabFragment extends Fragment {
         if (args != null)
             FILTER = args.getString(LibraryTabFragment.ARG_LIBRARY_FILTER);
 
-        if (savedInstanceState != null)
-            mGrid.onRestoreInstanceState(savedInstanceState.getParcelable(STATE_GRID_STATE));
-
         mGrid = (GridView) rootView.findViewById(R.id.library_grid);
         mFlipper = (ViewFlipper) rootView.findViewById(R.id.library_flipper);
 
         loadTask = new LoadTask();
         loadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+        if (savedInstanceState != null)
+            mGrid.onRestoreInstanceState(savedInstanceState.getParcelable(STATE_GRID_STATE));
 
         return rootView;
     }
