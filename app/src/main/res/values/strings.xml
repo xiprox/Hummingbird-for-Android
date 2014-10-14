@@ -13,6 +13,7 @@
     <!-- Titles -->
     <string name="title_feed">Feed</string>
     <string name="title_profile">Profile</string>
+    <string name="title_library">Library</string>
 
     <!-- Anime Details -->
     <string name="action_copy_title">Copy Title</string>
@@ -24,7 +25,7 @@
     <string name="not_rated">Not Rated Yet</string>
     <string name="finish_date">Still Airing</string>
 
-    <!-- Contents -->
+    <!-- Content -->
     <string name="content_view_trailer">View Trailer</string>
     <string name="content_add_to_list">Add To List</string>
     <string name="content_update">Update</string>
@@ -53,6 +54,16 @@
     <!-- Content (Profile) Strings-->
     <string name="content_favorites">favorites</string>
     <string name="content_online">online</string>
+
+    <!-- Content (Library) Strings -->
+    <string name="content_library_all">All</string>
+    <string name="content_library_watching">Watching</string>
+    <string name="content_library_planned">Planned</string>
+    <string name="content_library_completed">Completed</string>
+    <string name="content_library_on_hold">On Hold</string>
+    <string name="content_library_dropped">Dropped</string>
+    <string name="content_library_watching_at">Watching at</string>
+    <string name="content_library_planning_to_watch">Planning To Watch</string>
 
     <string name="content_help">Need help?</string>
     <string name="content_new">Create an account</string>

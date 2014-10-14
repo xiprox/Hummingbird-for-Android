@@ -8,6 +8,7 @@
     <dimen name="navigation_drawer_width">300dp</dimen>
 
     <dimen name="action_bar_height">56dp</dimen>
+    <dimen name="action_bar_shadow_height">4dp</dimen>
 
     <dimen name="margin_card_side">12dp</dimen>
     <dimen name="margin_card_end">12dp</dimen>

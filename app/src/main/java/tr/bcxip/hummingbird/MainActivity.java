@@ -67,6 +67,10 @@ public class MainActivity extends Activity
                 fragment = new FeedFragment();
                 mTitle = getString(R.string.title_feed);
                 break;
+            case 1:
+                fragment = new LibraryFragment();
+                mTitle = getString(R.string.title_library);
+                break;
         }
 
         if (fragment != null)

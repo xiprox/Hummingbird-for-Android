@@ -4,7 +4,7 @@
         <item name="android:windowBackground">@color/window_background</item>
         <item name="android:actionBarStyle">@style/AppTheme_ActionBar</item>
         <item name="android:actionBarSize">@dimen/action_bar_height</item>
-        <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
+        <item name="android:windowContentOverlay">@null</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_ab_up_compat</item>
         <item name="android:actionOverflowButtonStyle">@style/AppTheme_ActionBar_Overflow</item>
     </style>

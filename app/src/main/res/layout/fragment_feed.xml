@@ -5,27 +5,38 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ViewFlipper
-        android:id="@+id/feed_view_flipper"
+    <!-- For action bar shadow, don't remove -->
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:inAnimation="@android:anim/fade_in"
-        android:outAnimation="@android:anim/fade_out">
+        android:layout_height="match_parent">
 
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-        <ListView
-            android:id="@+id/feed_list"
+        <ViewFlipper
+            android:id="@+id/feed_view_flipper"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="4dp"
-            android:listSelector="@android:color/transparent"
-            android:padding="8dp"
-            android:scrollbarStyle="outsideOverlay" />
-    </ViewFlipper>
+            android:inAnimation="@android:anim/fade_in"
+            android:outAnimation="@android:anim/fade_out">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+            <ListView
+                android:id="@+id/feed_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="4dp"
+                android:listSelector="@android:color/transparent"
+                android:padding="8dp"
+                android:scrollbarStyle="outsideOverlay" />
+        </ViewFlipper>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/action_bar_shadow_height"
+            android:background="@drawable/actionbar_shadow" />
+    </FrameLayout>
 </LinearLayout>

@@ -2,9 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="136dp"
     android:layout_height="200dp"
-    android:background="@color/neutral_darker"
-    android:minHeight="200dp"
-    android:minWidth="136dp">
+    android:background="@color/neutral_darker">
 
     <ViewFlipper
         android:id="@+id/item_favorite_flipper"
