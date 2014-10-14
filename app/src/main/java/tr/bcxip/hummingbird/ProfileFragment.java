@@ -149,7 +149,7 @@ public class ProfileFragment extends Fragment {
                 try {
                     vibrantColor = Palette.generate(coverBitmap).getVibrantColor().getRgb();
                 } catch (Exception e) {
-                    vibrantColor = getResources().getColor(R.color.neutral);
+                    vibrantColor = getResources().getColor(R.color.apptheme_primary);
                 }
 
                 return Results.RESULT_SUCCESS;
