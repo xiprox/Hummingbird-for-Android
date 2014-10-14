@@ -24,7 +24,6 @@ import android.widget.ViewFlipper;
 
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
 import java.util.List;
 
 import retrofit.RetrofitError;
@@ -132,7 +131,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        if (loadTask != null) loadTask.cancel(true);
+        if (loadTask != null) loadTask.cancel(false);
     }
 
     protected class LoadTask extends AsyncTask<Void, Void, String> {
@@ -146,18 +145,20 @@ public class ProfileFragment extends Fragment {
                 coverBitmap = Picasso.with(context)
                         .load(user.getCoverImage())
                         .get();
+
                 try {
                     vibrantColor = Palette.generate(coverBitmap).getVibrantColor().getRgb();
                 } catch (Exception e) {
                     vibrantColor = getResources().getColor(R.color.neutral);
                 }
+
                 return Results.RESULT_SUCCESS;
             } catch (RetrofitError e) {
                 Log.e(TAG, e.getMessage());
                 return e.getMessage();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
-                return Results.RESULT_IO_EXCEPTION;
+                return Results.RESULT_EXCEPTION;
             }
         }
 
