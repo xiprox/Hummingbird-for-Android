@@ -54,7 +54,6 @@
                 android:layout_marginTop="16dp"
                 android:orientation="vertical" />
         </LinearLayout>
-
     </LinearLayout>
 
     <FrameLayout
@@ -68,10 +67,14 @@
             android:layout_width="wrap_content"
             android:layout_height="36dp"
             android:layout_marginBottom="8dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginRight="8dp"
             android:background="@drawable/button_borderless_neutral"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
             android:text="view more"
             android:textAllCaps="true"
-            android:textColor="@color/apptheme_primary" />
+            android:textColor="@color/apptheme_primary"
+            android:textSize="14sp"
+            android:textStyle="bold" />
     </FrameLayout>
 </RelativeLayout>
