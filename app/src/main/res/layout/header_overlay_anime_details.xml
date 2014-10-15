@@ -7,12 +7,53 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="74dp"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/anime_details_action_bar_gradient_bottom" />
+        android:layout_alignParentTop="true"
+        android:background="@drawable/anime_details_action_bar_gradient_top" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="74dp"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/anime_details_action_bar_gradient_top" />
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/anime_details_action_bar_gradient_bottom" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true">
+
+        <LinearLayout
+            android:id="@+id/header_anime_details_favorited"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/selector_background_neutral"
+                android:padding="16dp"
+                android:src="@drawable/ic_heart"
+                android:tint="@android:color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/content_favorited"
+                android:textColor="@android:color/white"
+                android:textSize="18dp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/header_anime_details_remove"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/selector_background_neutral"
+            android:padding="16dp"
+            android:src="@drawable/ic_trash"
+            android:tint="@android:color/white" />
+    </RelativeLayout>
 </RelativeLayout>

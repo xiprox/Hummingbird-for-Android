@@ -4,4 +4,4 @@
     android:layout_width="match_parent"
     android:layout_height="230dp"
     android:scaleType="centerCrop"
-    android:src="@color/neutral" /><!-- TODO - Proper default background color -->
+    android:src="@color/neutral" />

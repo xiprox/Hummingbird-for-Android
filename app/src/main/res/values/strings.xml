@@ -15,11 +15,16 @@
     <string name="title_profile">Profile</string>
     <string name="title_library">Library</string>
 
-    <!-- Anime Details -->
+    <!-- Content (Anime Details) Strings -->
     <string name="action_copy_title">Copy Title</string>
     <string name="toast_copy_title"> Copied</string>
     <string name="action_share">Share Link</string>
     <string name="share_title">Share Link</string>
+    <string name="content_favorited">Favorited</string>
+    <string name="content_episodes">Episodes</string>
+    <string name="content_private">Private</string>
+    <string name="content_rewatching">Rewatching</string>
+    <string name="content_rewatched">Rewatched</string>
 
     <!-- Programatically -->
     <string name="not_rated">Not Rated Yet</string>
@@ -83,5 +88,14 @@
     <string-array name="list_secondary_strings">
         <item>Settings</item>
         <item>Log Out</item>
+    </string-array>
+
+    <!-- Library Entry status items -->
+    <string-array name="library_watch_status_items">
+        <item>Currently Watching</item>
+        <item>Plan To Watch</item>
+        <item>Completed</item>
+        <item>On Hold</item>
+        <item>Dropped</item>
     </string-array>
 </resources>

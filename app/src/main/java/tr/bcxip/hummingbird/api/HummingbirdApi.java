@@ -11,6 +11,7 @@ import tr.bcxip.hummingbird.api.objects.AnimeV2;
 import tr.bcxip.hummingbird.api.objects.LibraryEntry;
 import tr.bcxip.hummingbird.api.objects.Story;
 import tr.bcxip.hummingbird.api.objects.User;
+import tr.bcxip.hummingbird.managers.PrefManager;
 
 /**
  * Created by Hikari on 10/8/14.
@@ -22,9 +23,11 @@ public class HummingbirdApi {
     Context context;
     HummingbirdService service;
     HummingbirdServiceV2 serviceV2;
+    PrefManager prefMan;
 
     public HummingbirdApi(Context context) {
         this.context = context;
+        prefMan = new PrefManager(context);
         setupServices();
     }
 
@@ -69,6 +72,14 @@ public class HummingbirdApi {
 
     public List<LibraryEntry> getLibrary(String username, String status) {
         return service.getLibrary(username, status != null ? status : "");
+    }
+
+    public LibraryEntry getLibraryEntryIfAnimeExists(String animeId) {
+        for (LibraryEntry entry : getLibrary(prefMan.getUsername(), null)) {
+            if (entry.getAnime().getId().equals(animeId))
+                return entry;
+        }
+        return null;
     }
 
 }
