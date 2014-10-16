@@ -48,10 +48,12 @@ public class HummingbirdApi {
     private void setupServices() {
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(API_HOST_v1)
+                .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
 
         RestAdapter restAdapterV2 = new RestAdapter.Builder()
                 .setEndpoint(API_HOST_v2)
+                .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
 
         service = restAdapter.create(HummingbirdService.class);
@@ -80,6 +82,10 @@ public class HummingbirdApi {
                 return entry;
         }
         return null;
+    }
+
+    public LibraryEntry addUpdateLibraryEntry(String id, Map params) {
+        return service.addUpdateLibraryEntry(id, params);
     }
 
 }

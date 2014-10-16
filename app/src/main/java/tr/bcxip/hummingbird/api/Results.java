@@ -5,6 +5,7 @@ package tr.bcxip.hummingbird.api;
  */
 public class Results {
     public static final String RESULT_SUCCESS = "success";
+    public static final String RESULT_FAILURE = "failure";
     public static final String RESULT_UNAUTHORIZED = "401 Unauthorized";
     public static final String RESULT_UNABLE_TO_RESOLVE_HOST = "Unable to resolve host";
     public static final String RESULT_EXCEPTION = "Exception";

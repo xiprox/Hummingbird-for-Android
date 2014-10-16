@@ -34,19 +34,9 @@ public interface HummingbirdService {
             @Query("status") String status
     );
 
-    // TODO - This will probably require a lot of work. Might be better to have a QueryMap too...
     @POST("/libraries/{id}")
-    public LibraryEntry addUpdateLibraryEntry(
-            @Path("id") String id,
-            @Query("auth_token") String authToken,
-            @Query("status") String status,
-            @Query("privacy") String privacy,
-            @Query("sane_rating_update") String rating,
-            @Query("rewatched_times") int rewatchedTimes,
-            @Query("notes") String notes,
-            @Query("episodes_watched") int episodesWatched,
-            @Query("increment_episodes") boolean increment
-    );
+    public LibraryEntry addUpdateLibraryEntry(@Path("id") String id,
+                                              @QueryMap Map<String, String> params);
 
     @POST("/libraries/{id}/remove")
     public boolean removeLibraryEntry(

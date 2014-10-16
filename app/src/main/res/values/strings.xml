@@ -25,6 +25,7 @@
     <string name="content_private">Private</string>
     <string name="content_rewatching">Rewatching</string>
     <string name="content_rewatched">Rewatched</string>
+    <string name="content_rating">Rating</string>
 
     <!-- Programatically -->
     <string name="not_rated">Not Rated Yet</string>
