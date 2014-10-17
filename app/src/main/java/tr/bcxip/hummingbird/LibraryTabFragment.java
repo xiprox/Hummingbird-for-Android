@@ -28,11 +28,9 @@ import tr.bcxip.hummingbird.managers.PrefManager;
  */
 public class LibraryTabFragment extends Fragment {
 
-    public static final String ARG_LIBRARY_FILTER = "library_filter";
-
     private static final String TAG = "LIBRARY TAB FRAGMENT";
 
-    private static final String STATE_GRID_STATE = "grid_state";
+    public static final String ARG_LIBRARY_FILTER = "library_filter";
 
     Context context;
     PrefManager prefMan;
@@ -53,8 +51,6 @@ public class LibraryTabFragment extends Fragment {
         context = getActivity();
         prefMan = new PrefManager(context);
         api = new HummingbirdApi(context);
-
-
     }
 
     @Override
@@ -72,25 +68,14 @@ public class LibraryTabFragment extends Fragment {
         loadTask = new LoadTask();
         loadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
-        if (savedInstanceState != null)
-            mGrid.onRestoreInstanceState(savedInstanceState.getParcelable(STATE_GRID_STATE));
-
         return rootView;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-//        if (loadTask != null) loadTask.cancel(true);
+        if (loadTask != null) loadTask.cancel(true);
     }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Parcelable state = mGrid.onSaveInstanceState();
-        outState.putParcelable(STATE_GRID_STATE, state);
-    }
-
 
     private class LoadTask extends AsyncTask<Void, Void, String> {
 

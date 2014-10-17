@@ -4,7 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v13.app.FragmentStatePagerAdapter;
 
 import tr.bcxip.hummingbird.LibraryFragment;
 import tr.bcxip.hummingbird.LibraryTabFragment;
@@ -13,7 +13,7 @@ import tr.bcxip.hummingbird.R;
 /**
  * Created by Hikari on 10/14/14.
  */
-public class LibraryTabsPagerAdapter extends FragmentPagerAdapter {
+public class LibraryTabsPagerAdapter extends FragmentStatePagerAdapter {
 
     Context context;
 
