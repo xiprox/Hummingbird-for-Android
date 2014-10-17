@@ -83,6 +83,7 @@
     <string name="content_library_on_hold">On Hold</string>
     <string name="content_library_dropped">Dropped</string>
     <string name="content_library_watching_at">Watching at</string>
+    <string name="content_library_rewatching_at">Rewatching at</string>
     <string name="content_library_planning_to_watch">Planning To Watch</string>
 
     <string name="content_help">Need help?</string>

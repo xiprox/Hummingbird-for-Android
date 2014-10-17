@@ -86,19 +86,25 @@ public class LibraryAdapter extends ArrayAdapter<LibraryEntry> {
 
         holder.title.setText(item.getAnime().getTitle());
 
-        String status = item.getStatus();
-        if (status.equals(LibraryFragment.FILTER_CURRENTLY_WATCHING))
-            holder.desc.setText(getString(R.string.content_library_watching_at)
+        if (item.isRewatching()) {
+            holder.desc.setText(getString(R.string.content_library_rewatching_at)
                     + " " + item.getEpisodesWatched()
                     + "/" + item.getAnime().getEpisodeCount());
-        if (status.equals(LibraryFragment.FILTER_PLAN_TO_WATCH))
-            holder.desc.setText(getString(R.string.content_library_planning_to_watch));
-        if (status.equals(LibraryFragment.FILTER_COMPLETED))
-            holder.desc.setText(getString(R.string.content_library_completed));
-        if (status.equals(LibraryFragment.FILTER_ON_HOLD))
-            holder.desc.setText(getString(R.string.content_library_on_hold));
-        if (status.equals(LibraryFragment.FILTER_DROPPED))
-            holder.desc.setText(getString(R.string.content_library_dropped));
+        } else {
+            String status = item.getStatus();
+            if (status.equals(LibraryFragment.FILTER_CURRENTLY_WATCHING))
+                holder.desc.setText(getString(R.string.content_library_watching_at)
+                        + " " + item.getEpisodesWatched()
+                        + "/" + item.getAnime().getEpisodeCount());
+            if (status.equals(LibraryFragment.FILTER_PLAN_TO_WATCH))
+                holder.desc.setText(getString(R.string.content_library_planning_to_watch));
+            if (status.equals(LibraryFragment.FILTER_COMPLETED))
+                holder.desc.setText(getString(R.string.content_library_completed));
+            if (status.equals(LibraryFragment.FILTER_ON_HOLD))
+                holder.desc.setText(getString(R.string.content_library_on_hold));
+            if (status.equals(LibraryFragment.FILTER_DROPPED))
+                holder.desc.setText(getString(R.string.content_library_dropped));
+        }
 
         return convertView;
     }
