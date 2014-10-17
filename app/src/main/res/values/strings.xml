@@ -73,6 +73,7 @@
 
     <!-- Content (Profile) Strings-->
     <string name="content_favorites">favorites</string>
+    <string name="content_favorite_anime">favorite anime</string>
     <string name="content_online">online</string>
 
     <!-- Content (Library) Strings -->

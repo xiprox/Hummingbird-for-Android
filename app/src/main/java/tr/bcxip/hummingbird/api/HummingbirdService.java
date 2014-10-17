@@ -10,6 +10,7 @@ import retrofit.http.Query;
 import retrofit.http.QueryMap;
 import tr.bcxip.hummingbird.api.objects.Anime;
 import tr.bcxip.hummingbird.api.objects.Favorite;
+import tr.bcxip.hummingbird.api.objects.FavoriteAnime;
 import tr.bcxip.hummingbird.api.objects.LibraryEntry;
 import tr.bcxip.hummingbird.api.objects.Story;
 import tr.bcxip.hummingbird.api.objects.User;
@@ -48,5 +49,5 @@ public interface HummingbirdService {
     public List<Story> getFeed(@Path("username") String username);
 
     @GET("/users/{username}/favorite_anime")
-    public List<Favorite> getFavorites(@Path("username") String username);
+    public List<FavoriteAnime> getFavoriteAnime(@Path("username") String username);
 }

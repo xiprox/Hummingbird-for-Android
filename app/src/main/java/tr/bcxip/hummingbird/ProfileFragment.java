@@ -27,10 +27,10 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import retrofit.RetrofitError;
-import tr.bcxip.hummingbird.adapters.FavoritesAdapter;
+import tr.bcxip.hummingbird.adapters.FavoriteAnimeAdapter;
 import tr.bcxip.hummingbird.api.HummingbirdApi;
 import tr.bcxip.hummingbird.api.Results;
-import tr.bcxip.hummingbird.api.objects.Favorite;
+import tr.bcxip.hummingbird.api.objects.FavoriteAnime;
 import tr.bcxip.hummingbird.api.objects.User;
 import tr.bcxip.hummingbird.managers.PrefManager;
 import tr.bcxip.hummingbird.utils.CircleTransformation;
@@ -138,6 +138,8 @@ public class ProfileFragment extends Fragment {
 
         Bitmap coverBitmap;
 
+        List<FavoriteAnime> favsList;
+
         @Override
         protected String doInBackground(Void... voids) {
             try {
@@ -145,6 +147,7 @@ public class ProfileFragment extends Fragment {
                 coverBitmap = Picasso.with(context)
                         .load(user.getCoverImage())
                         .get();
+                favsList = api.getFavoriteAnime(username);
 
                 try {
                     vibrantColor = Palette.generate(coverBitmap).getVibrantColor().getRgb();
@@ -220,9 +223,8 @@ public class ProfileFragment extends Fragment {
                 int timeWatched = user.getLifeSpentOnAnime(); // TODO - Parse into readable language
                 mTimeWatched.setText(timeWatched + "");
 
-                final List<Favorite> favs = user.getFavorites();
-                if (favs != null && favs.size() != 0)
-                    mFavorites.setAdapter(new FavoritesAdapter(context, R.layout.item_favorite_grid, favs));
+                if (favsList != null && favsList.size() != 0)
+                    mFavorites.setAdapter(new FavoriteAnimeAdapter(context, R.layout.item_favorite_grid, favsList));
 
                 mFavorites.setExpanded(true);
 
@@ -230,7 +232,7 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                         Intent intent = new Intent(context, AnimeDetailsActivity.class);
-                        intent.putExtra(AnimeDetailsActivity.ARG_ID, favs.get(position).getItemId());
+                        intent.putExtra(AnimeDetailsActivity.ARG_ID, favsList.get(position).getId());
                         context.startActivity(intent);
                     }
                 });

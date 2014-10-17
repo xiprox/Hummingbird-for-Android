@@ -8,6 +8,7 @@ import java.util.Map;
 
 import retrofit.RestAdapter;
 import tr.bcxip.hummingbird.api.objects.AnimeV2;
+import tr.bcxip.hummingbird.api.objects.FavoriteAnime;
 import tr.bcxip.hummingbird.api.objects.LibraryEntry;
 import tr.bcxip.hummingbird.api.objects.Story;
 import tr.bcxip.hummingbird.api.objects.User;
@@ -92,4 +93,7 @@ public class HummingbirdApi {
         return service.removeLibraryEntry(id, authToken);
     }
 
+    public List<FavoriteAnime> getFavoriteAnime(String username) {
+        return service.getFavoriteAnime(username);
+    }
 }
