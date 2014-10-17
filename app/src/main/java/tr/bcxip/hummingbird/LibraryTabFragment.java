@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +20,6 @@ import tr.bcxip.hummingbird.adapters.LibraryAdapter;
 import tr.bcxip.hummingbird.api.HummingbirdApi;
 import tr.bcxip.hummingbird.api.Results;
 import tr.bcxip.hummingbird.api.objects.LibraryEntry;
-import tr.bcxip.hummingbird.managers.PrefManager;
 
 /**
  * Created by Hikari on 10/14/14.
@@ -31,12 +29,10 @@ public class LibraryTabFragment extends Fragment {
     private static final String TAG = "LIBRARY TAB FRAGMENT";
 
     public static final String ARG_LIBRARY_FILTER = "library_filter";
+    public static final String ARG_USERNAME = "username";
 
     Context context;
-    PrefManager prefMan;
     HummingbirdApi api;
-
-    String FILTER;
 
     List<LibraryEntry> mLibrary;
 
@@ -45,12 +41,16 @@ public class LibraryTabFragment extends Fragment {
     GridView mGrid;
     ViewFlipper mFlipper;
 
+    String USERNAME;
+    String FILTER;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getActivity();
-        prefMan = new PrefManager(context);
         api = new HummingbirdApi(context);
+
+        USERNAME = getArguments().getString(ARG_USERNAME);
     }
 
     @Override
@@ -82,7 +82,7 @@ public class LibraryTabFragment extends Fragment {
         @Override
         protected String doInBackground(Void... voids) {
             try {
-                mLibrary = api.getLibrary(prefMan.getUsername(), FILTER);
+                mLibrary = api.getLibrary(USERNAME, FILTER);
                 return Results.RESULT_SUCCESS;
             } catch (RetrofitError e) {
                 Log.e(TAG, e.getMessage());

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.astuetz.PagerSlidingTabStrip;
 
 import tr.bcxip.hummingbird.adapters.LibraryTabsPagerAdapter;
+import tr.bcxip.hummingbird.managers.PrefManager;
 
 /**
  * Created by Hikari on 10/14/14.
@@ -26,15 +27,28 @@ public class LibraryFragment extends Fragment {
     public static final String FILTER_ON_HOLD = "on-hold";
     public static final String FILTER_DROPPED = "dropped";
 
+    public static final String ARG_USERNAME = "username";
+
     Context context;
+    PrefManager prefMan;
 
     ViewPager mViewPager;
     PagerSlidingTabStrip mTabs;
+
+    String username;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getActivity();
+        prefMan = new PrefManager(context);
+
+        /* Check if any username argument is passed. If one is passed, load the library for it;
+        * if not, load for the currently logged in user.
+        * */
+        Bundle args = getArguments();
+        String argUsername = args != null ? args.getString(ARG_USERNAME) : null;
+        username = argUsername != null ? argUsername : prefMan.getUsername();
     }
 
     @Override
@@ -42,7 +56,7 @@ public class LibraryFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_library, null);
 
         mViewPager = (ViewPager) rootView.findViewById(R.id.library_view_pager);
-        mViewPager.setAdapter(new LibraryTabsPagerAdapter(context, getFragmentManager()));
+        mViewPager.setAdapter(new LibraryTabsPagerAdapter(context, getFragmentManager(), username));
 
         mTabs = (PagerSlidingTabStrip) rootView.findViewById(R.id.library_tabs);
         mTabs.setViewPager(mViewPager);

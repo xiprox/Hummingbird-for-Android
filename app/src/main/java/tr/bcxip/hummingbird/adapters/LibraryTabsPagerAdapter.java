@@ -17,9 +17,12 @@ public class LibraryTabsPagerAdapter extends FragmentStatePagerAdapter {
 
     Context context;
 
-    public LibraryTabsPagerAdapter(Context context, FragmentManager fm) {
+    String username;
+
+    public LibraryTabsPagerAdapter(Context context, FragmentManager fm, String username) {
         super(fm);
         this.context = context;
+        this.username = username;
     }
 
     @Override
@@ -50,6 +53,8 @@ public class LibraryTabsPagerAdapter extends FragmentStatePagerAdapter {
                         LibraryFragment.FILTER_DROPPED);
                 break;
         }
+
+        args.putString(LibraryTabFragment.ARG_USERNAME, username);
 
         LibraryTabFragment fragment = new LibraryTabFragment();
         fragment.setArguments(args);
