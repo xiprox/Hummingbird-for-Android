@@ -56,6 +56,7 @@ public class LibraryFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_library, null);
 
         mViewPager = (ViewPager) rootView.findViewById(R.id.library_view_pager);
+        mViewPager.setOffscreenPageLimit(5);
         mViewPager.setAdapter(new LibraryTabsPagerAdapter(context, getFragmentManager(), username));
 
         mTabs = (PagerSlidingTabStrip) rootView.findViewById(R.id.library_tabs);
