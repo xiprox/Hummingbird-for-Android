@@ -8,9 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_margin="16dp"
         android:orientation="horizontal">
 
         <Button
@@ -38,12 +36,6 @@
             android:textColor="@android:color/white"
             android:textSize="14sp" />
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_margin="16dp"
-        android:background="@color/divider" />
 
     <LinearLayout
         android:id="@+id/anime_details_library_holder"
@@ -76,7 +68,7 @@
                 android:layout_weight="1"
                 android:text="@string/content_episodes"
                 android:textAllCaps="true"
-                android:textColor="@android:color/white"
+                android:textColor="@color/text_dark"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -86,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:text="0/0"
                 android:textAllCaps="true"
-                android:textColor="@android:color/white"
+                android:textColor="@color/text_dark"
                 android:textSize="14sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -105,7 +97,7 @@
                 android:layout_weight="1"
                 android:text="@string/content_rewatching"
                 android:textAllCaps="true"
-                android:textColor="@android:color/white"
+                android:textColor="@color/text_dark"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -133,7 +125,7 @@
                 android:layout_weight="1"
                 android:text="@string/content_rewatched"
                 android:textAllCaps="true"
-                android:textColor="@android:color/white"
+                android:textColor="@color/text_dark"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -143,7 +135,7 @@
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:textAllCaps="true"
-                android:textColor="@android:color/white"
+                android:textColor="@color/text_dark"
                 android:textSize="14sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -155,7 +147,7 @@
             android:orientation="horizontal"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -163,7 +155,7 @@
                 android:layout_weight="1"
                 android:text="@string/content_private"
                 android:textAllCaps="true"
-                android:textColor="@android:color/white"
+                android:textColor="@color/text_dark"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -189,7 +181,7 @@
                 android:layout_weight="1"
                 android:text="@string/content_rating"
                 android:textAllCaps="true"
-                android:textColor="@android:color/white"
+                android:textColor="@color/text_dark"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -202,10 +194,11 @@
             <TextView
                 android:id="@+id/anime_deatails_library_rating_simple"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="end"
-                android:text="neutral"
+                android:background="@drawable/selector_background_neutral"
+                android:gravity="end|center_vertical"
+                android:text="unknown"
                 android:textAllCaps="true"
                 android:textColor="@android:color/white"
                 android:textSize="14sp"
@@ -215,9 +208,18 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/anime_details_library_holder_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/anime_details_action_bar_gradient_top" />
+
+    <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_margin="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:background="@color/divider" />
 
     <LinearLayout

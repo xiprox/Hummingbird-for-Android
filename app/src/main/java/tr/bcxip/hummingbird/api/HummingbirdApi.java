@@ -88,4 +88,8 @@ public class HummingbirdApi {
         return service.addUpdateLibraryEntry(id, params);
     }
 
+    public boolean removeLibraryEntry(String id, String authToken) {
+        return service.removeLibraryEntry(id, authToken);
+    }
+
 }

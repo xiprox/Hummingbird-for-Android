@@ -10,12 +10,23 @@
     <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
 
+    <!-- Generic Strings -->
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="adding">Adding</string>
+    <string name="loading">Loading</string>
+    <string name="updating">Updating</string>
+    <string name="removing">Removing</string>
+    <string name="please_wait___">Please wait…</string>
+
     <!-- Titles -->
     <string name="title_feed">Feed</string>
     <string name="title_profile">Profile</string>
     <string name="title_library">Library</string>
 
-    <!-- Content (Anime Details) Strings -->
+    <!--  Anime Details Strings -->
     <string name="action_copy_title">Copy Title</string>
     <string name="toast_copy_title"> Copied</string>
     <string name="action_share">Share Link</string>
@@ -26,6 +37,9 @@
     <string name="content_rewatching">Rewatching</string>
     <string name="content_rewatched">Rewatched</string>
     <string name="content_rating">Rating</string>
+    <string name="title_remove">Remove</string>
+    <string name="content_remove_are_you_sure">Are you sure you\'d like to remove {anime-name} from your library?</string>
+
 
     <!-- Programatically -->
     <string name="not_rated">Not Rated Yet</string>
@@ -33,7 +47,7 @@
 
     <!-- Content -->
     <string name="content_view_trailer">View Trailer</string>
-    <string name="content_add_to_list">Add To List</string>
+    <string name="content_add_to_list">Add To Library</string>
     <string name="content_update">Update</string>
     <string name="content_type">Type</string>
     <string name="content_genre">Genre</string>
@@ -77,6 +91,11 @@
     <string name="error_invalid_credentials">The username or passowrd you entered is incorrect.</string>
     <string name="error_connection">Connection error!</string>
     <string name="error_cant_load_data">Can\'t load data!</string>
+    <string name="error_cant_remove_item">Can\'t remove item!</string>
+    <string name="error_couldnt_update_item">Couldn\'t update item!</string>
+    <string name="error_couldnt_add_item">Couldn\'t add item!</string>
+
+    <string name="info_successfully_updated">Updated {anime-name}!</string>
 
     <string name="content_unknown">Unknown</string>
 

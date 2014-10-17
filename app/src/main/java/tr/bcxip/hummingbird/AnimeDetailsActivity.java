@@ -2,6 +2,7 @@ package tr.bcxip.hummingbird;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
@@ -38,8 +39,8 @@ import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 import java.util.Map;
 
+import retrofit.RetrofitError;
 import tr.bcxip.hummingbird.api.HummingbirdApi;
-import tr.bcxip.hummingbird.api.Results;
 import tr.bcxip.hummingbird.api.objects.AnimeV2;
 import tr.bcxip.hummingbird.api.objects.Favorite;
 import tr.bcxip.hummingbird.api.objects.LibraryEntry;
@@ -66,7 +67,7 @@ public class AnimeDetailsActivity extends Activity {
     Palette mPalette;
 
     Button mViewTrailer;
-    Button mAddToList;
+    Button mAddToLibrary;
     ImageView mHeaderImage;
     TextView mType;
     TextView mGenre;
@@ -77,15 +78,34 @@ public class AnimeDetailsActivity extends Activity {
     TextView mCommunityRating;
     TextView mSynopsis;
 
+    ImageView mRemove;
+    LinearLayout mFavoritedHolder;
+
+    LinearLayout mLibraryHolder;
+    View mLibraryHolderShadow;
+    Spinner mStatusSpinner;
+    LinearLayout mEpisodesHolder;
+    TextView mEpisodes;
+    Switch mRewatching;
+    LinearLayout mRewatchedTimesHolder;
+    TextView mRewatchedTimes;
+    Switch mPrivate;
+    RatingBar mRatingBar;
+    TextView mRatingSimple;
+
     String ANIME_ID;
 
     AnimeV2 anime;
+    LibraryEntry libraryEntry;
+    User user;
 
     String newWatchStatus;
     int newEpisodesWatched;
     boolean newIsRewatching;
     int newRewatchedTimes;
     String newRating;
+
+    PaletteItem vibrantColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,12 +169,13 @@ public class AnimeDetailsActivity extends Activity {
         String oldWatchStatus = entry.getStatus();
         int oldEpisodesWatched = entry.getEpisodesWatched();
         int oldRewatchedTimes = entry.getNumberOfRewatches();
+        boolean oldIsRewatching = entry.isRewatching();
 
         Map map = new HashMap<String, String>();
 
         String authToken = prefMan.getAuthToken();
         if (authToken == null || authToken.equals("") || authToken.trim().equals("")) {
-            Log.e(TAG, "Authentication token was not found. Update request can't be sent!");
+            Log.e(TAG, "Authentication token was not found. Update request can't be made!");
             return;
         } else
             map.put("auth_token", authToken);
@@ -166,7 +187,8 @@ public class AnimeDetailsActivity extends Activity {
         if (newEpisodesWatched != oldEpisodesWatched)
             map.put("episodes_watched", newEpisodesWatched + "");
 
-        map.put("rewatching", newIsRewatching);
+        if (newIsRewatching != oldIsRewatching)
+            map.put("rewatching", newIsRewatching);
 
         if (newRewatchedTimes != oldRewatchedTimes)
             map.put("rewatched_times", newRewatchedTimes + "");
@@ -174,7 +196,8 @@ public class AnimeDetailsActivity extends Activity {
         if (!newRating.equals(entry.getRating().getAdvancedRating()))
             map.put("sane_rating_update", newRating);
 
-        new UpdateTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, map);
+        if (map.size() != 0)
+            new UpdateTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, map);
     }
 
     public void updateUpdateButtonStatus(LibraryEntry entry) {
@@ -182,17 +205,28 @@ public class AnimeDetailsActivity extends Activity {
                 newEpisodesWatched != entry.getEpisodesWatched() ||
                 newIsRewatching != entry.isRewatching() ||
                 newRewatchedTimes != entry.getNumberOfRewatches() ||
-                !newRating.equals(entry.getRating().getAdvancedRating())) {
-            mAddToList.setEnabled(true);
+                !newRating.equals(entry.getRating().getAdvancedRating() != null ?
+                        entry.getRating().getAdvancedRating() : "0")) {
+            mAddToLibrary.setEnabled(true);
         } else
-            mAddToList.setEnabled(false);
+            mAddToLibrary.setEnabled(false);
     }
 
     protected class LoadTask extends AsyncTask<Void, Void, Boolean> {
 
         Bitmap coverBitmap = null;
-        LibraryEntry libraryEntry;
-        User user;
+
+        ProgressDialog dialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = ProgressDialog.show(AnimeDetailsActivity.this,
+                    getString(R.string.loading),
+                    getString(R.string.please_wait___),
+                    true
+            );
+        }
 
         @Override
         protected Boolean doInBackground(Void... voids) {
@@ -224,7 +258,7 @@ public class AnimeDetailsActivity extends Activity {
             super.onPostExecute(success);
 
             if (success) {
-                final PaletteItem vibrantColor = mPalette.getVibrantColor();
+                vibrantColor = mPalette.getVibrantColor();
 
                 mActionBarHelper = new FadingActionBarHelper()
                         .actionBarBackground(vibrantColor == null ? new ColorDrawable(R.color.neutral)
@@ -236,7 +270,7 @@ public class AnimeDetailsActivity extends Activity {
                 mActionBarHelper.initActionBar(AnimeDetailsActivity.this);
 
                 mViewTrailer = (Button) findViewById(R.id.anime_details_view_trailer_button);
-                mAddToList = (Button) findViewById(R.id.anime_details_add_to_list_button);
+                mAddToLibrary = (Button) findViewById(R.id.anime_details_add_to_list_button);
                 mHeaderImage = (ImageView) findViewById(R.id.anime_details_cover_image);
                 mType = (TextView) findViewById(R.id.anime_details_type);
                 mGenre = (TextView) findViewById(R.id.anime_details_genres);
@@ -247,24 +281,25 @@ public class AnimeDetailsActivity extends Activity {
                 mCommunityRating = (TextView) findViewById(R.id.anime_details_community_rating);
                 mSynopsis = (TextView) findViewById(R.id.anime_details_synopsis);
 
-                ImageView mRemove = (ImageView) findViewById(R.id.header_anime_details_remove);
-                LinearLayout mFavoritedHolder = (LinearLayout) findViewById(R.id.header_anime_details_favorited);
+                mRemove = (ImageView) findViewById(R.id.header_anime_details_remove);
+                mFavoritedHolder = (LinearLayout) findViewById(R.id.header_anime_details_favorited);
 
-                LinearLayout mLibraryHolder = (LinearLayout) findViewById(R.id.anime_details_library_holder);
-                final Spinner mStatusSpinner = (Spinner) findViewById(R.id.anime_details_status_spinner);
-                LinearLayout mEpisodesHolder = (LinearLayout) findViewById(R.id.anime_details_library_episodes_holder);
-                final TextView mEpisodes = (TextView) findViewById(R.id.anime_details_library_episodes);
-                Switch mRewatching = (Switch) findViewById(R.id.anime_details_library_rewatching);
-                LinearLayout mRewatchedTimesHolder = (LinearLayout) findViewById(R.id.anime_details_library_rewatched_holder);
-                final TextView mRewatchedTimes = (TextView) findViewById(R.id.anime_details_library_rewatched);
-                Switch mPrivate = (Switch) findViewById(R.id.anime_details_library_private);
-                RatingBar mRatingBar = (RatingBar) findViewById(R.id.anime_details_library_rating);
-                TextView mRatingSimple = (TextView) findViewById(R.id.anime_deatails_library_rating_simple);
+                mLibraryHolder = (LinearLayout) findViewById(R.id.anime_details_library_holder);
+                mLibraryHolderShadow = findViewById(R.id.anime_details_library_holder_shadow);
+                mStatusSpinner = (Spinner) findViewById(R.id.anime_details_status_spinner);
+                mEpisodesHolder = (LinearLayout) findViewById(R.id.anime_details_library_episodes_holder);
+                mEpisodes = (TextView) findViewById(R.id.anime_details_library_episodes);
+                mRewatching = (Switch) findViewById(R.id.anime_details_library_rewatching);
+                mRewatchedTimesHolder = (LinearLayout) findViewById(R.id.anime_details_library_rewatched_holder);
+                mRewatchedTimes = (TextView) findViewById(R.id.anime_details_library_rewatched);
+                mPrivate = (Switch) findViewById(R.id.anime_details_library_private);
+                mRatingBar = (RatingBar) findViewById(R.id.anime_details_library_rating);
+                mRatingSimple = (TextView) findViewById(R.id.anime_deatails_library_rating_simple);
 
                 mViewTrailer.getBackground().setColorFilter(vibrantColor.getRgb(), PorterDuff.Mode.SRC_ATOP);
                 mViewTrailer.setTextColor(vibrantColor.getRgb());
-                mAddToList.getBackground().setColorFilter(vibrantColor.getRgb(), PorterDuff.Mode.SRC_ATOP);
-                mAddToList.setOnClickListener(new OnAddToListClickListener());
+                mAddToLibrary.getBackground().setColorFilter(vibrantColor.getRgb(), PorterDuff.Mode.SRC_ATOP);
+                mAddToLibrary.setOnClickListener(new OnAddToLibraryClickListener());
 
                 if (anime.getTrailer() == null || anime.getTrailer().equals(""))
                     mViewTrailer.setVisibility(View.GONE);
@@ -316,278 +351,459 @@ public class AnimeDetailsActivity extends Activity {
 
                 mSynopsis.setText(anime.getSynopsis());
 
-                /* Anime exist in user library. Show library related elements... */
-                if (libraryEntry != null) {
-                    mRemove.setVisibility(View.VISIBLE);
-                    mRemove.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            // TODO - Remove entry
-                        }
-                    });
+                displayLibraryElements();
 
-                    for (Favorite fav : user.getFavorites())
-                        if (fav.getItemId().equals(ANIME_ID))
-                            mFavoritedHolder.setVisibility(View.VISIBLE);
+            } else {
+                Toast.makeText(AnimeDetailsActivity.this, R.string.error_cant_load_data, Toast.LENGTH_LONG).show();
+                finish();
+            }
 
-                    mLibraryHolder.setVisibility(View.VISIBLE);
-                    mLibraryHolder.setBackgroundDrawable(vibrantColor != null ?
-                                    new ColorDrawable(vibrantColor.getRgb()) :
-                                    new ColorDrawable(getResources().getColor(R.color.neutral))
-                    );
+            dialog.dismiss();
+        }
+    }
 
-                    mEpisodes.setText(libraryEntry.getEpisodesWatched() + "/" + anime.getEpisodeCount());
-
-                    mRewatching.setChecked(libraryEntry.isRewatching());
-
-                    mRewatchedTimes.setText(libraryEntry.getNumberOfRewatches() + "");
-
-                    mPrivate.setChecked(libraryEntry.isPrivate());
-
-                    Rating rating = libraryEntry.getRating();
-                    if (rating.isAdvanced() && rating.getAdvancedRating() != null) {
-                        mRatingBar.setRating(Float.parseFloat(rating.getAdvancedRating()));
-                        mRatingBar.setVisibility(View.VISIBLE);
-                        mRatingSimple.setVisibility(View.GONE);
-                    } else {
-                        mRatingBar.setVisibility(View.GONE);
-                        mRatingSimple.setVisibility(View.VISIBLE);
-                        mRatingSimple.setText(rating.getSimpleRating());
-                    }
-
-                    newWatchStatus = libraryEntry.getStatus();
-                    newEpisodesWatched = libraryEntry.getEpisodesWatched();
-                    newIsRewatching = libraryEntry.isRewatching();
-                    newRewatchedTimes = libraryEntry.getNumberOfRewatches();
-                    newRating = libraryEntry.getRating().getAdvancedRating();
-
-                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+    /* If Anime exist in user library, show library related elements... */
+    public void displayLibraryElements() {
+        if (libraryEntry != null) {
+            mRemove.setVisibility(View.VISIBLE);
+            mRemove.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    CustomDialog.Builder builder = new CustomDialog.Builder(
                             AnimeDetailsActivity.this,
-                            R.array.library_watch_status_items,
-                            R.layout.item_spinner_library_status);
-                    adapter.setDropDownViewResource(R.layout.item_spinner_item_library_status);
-                    mStatusSpinner.setAdapter(adapter);
+                            R.string.title_remove,
+                            R.string.yes);
+                    builder.negativeText(R.string.no);
+                    builder.positiveColor(getResources().getColor(R.color.apptheme_primary));
+                    String contentText = getString(R.string.content_remove_are_you_sure);
+                    contentText = contentText.replace("{anime-name}", anime.getCanonicalTitle());
+                    builder.content(contentText);
 
-                    String watchStatus = libraryEntry.getStatus();
-                    if (watchStatus.equals("currently-watching"))
-                        mStatusSpinner.setSelection(0);
-                    if (watchStatus.equals("plan-to-watch"))
-                        mStatusSpinner.setSelection(1);
-                    if (watchStatus.equals("completed"))
-                        mStatusSpinner.setSelection(2);
-                    if (watchStatus.equals("on-hold"))
-                        mStatusSpinner.setSelection(3);
-                    if (watchStatus.equals("dropped"))
-                        mStatusSpinner.setSelection(4);
+                    CustomDialog dialog = builder.build();
 
-                    mEpisodesHolder.setOnClickListener(new View.OnClickListener() {
+                    dialog.setClickListener(new CustomDialog.ClickListener() {
                         @Override
-                        public void onClick(View view) {
-                            CustomDialog.Builder builder = new CustomDialog.Builder(
-                                    AnimeDetailsActivity.this,
-                                    R.string.content_episodes,
-                                    android.R.string.ok);
-                            builder.negativeText(android.R.string.cancel);
-                            builder.positiveColor(getResources().getColor(R.color.apptheme_primary));
+                        public void onConfirmClick() {
+                            new RemoveTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        }
 
-                            CustomDialog dialog = builder.build();
-
-                            View dialogView = getLayoutInflater().inflate(R.layout.number_picker, null);
-                            final NumberPicker mNumberPicker = (NumberPicker)
-                                    dialogView.findViewById(R.id.number_picker);
-
-                            dialog.setCustomView(dialogView);
-
-                            mNumberPicker.setMaxValue(anime.getEpisodeCount());
-                            mNumberPicker.setValue(newEpisodesWatched);
-                            mNumberPicker.setWrapSelectorWheel(false);
-
-                            dialog.setClickListener(new CustomDialog.ClickListener() {
-                                @Override
-                                public void onConfirmClick() {
-                                    newEpisodesWatched = mNumberPicker.getValue();
-                                    mEpisodes.setText(newEpisodesWatched + "/" + anime.getEpisodeCount());
-
-                                    if (newEpisodesWatched == anime.getEpisodeCount())
-                                        mStatusSpinner.setSelection(2); // (completed)
-
-                                    updateUpdateButtonStatus(libraryEntry);
-                                }
-
-                                @Override
-                                public void onCancelClick() {
+                        @Override
+                        public void onCancelClick() {
                                     /* empty */
-                                }
-                            });
-
-                            dialog.show();
                         }
                     });
 
-                    mRewatching.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    dialog.show();
+                }
+            });
+
+            for (Favorite fav : user.getFavorites())
+                if (fav.getItemId().equals(ANIME_ID))
+                    mFavoritedHolder.setVisibility(View.VISIBLE);
+
+            mLibraryHolderShadow.setVisibility(View.VISIBLE);
+            mLibraryHolder.setVisibility(View.VISIBLE);
+            mLibraryHolder.setBackgroundDrawable(vibrantColor != null ?
+                            new ColorDrawable(vibrantColor.getRgb()) :
+                            new ColorDrawable(getResources().getColor(R.color.neutral))
+            );
+
+            mEpisodes.setText(libraryEntry.getEpisodesWatched() + "/" + anime.getEpisodeCount());
+
+            mRewatching.setChecked(libraryEntry.isRewatching());
+
+            mRewatchedTimes.setText(libraryEntry.getNumberOfRewatches() + "");
+
+            mPrivate.setChecked(libraryEntry.isPrivate());
+
+            Rating rating = libraryEntry.getRating();
+            if (rating.isAdvanced()) {
+                if (rating.getAdvancedRating() != null)
+                    mRatingBar.setRating(Float.parseFloat(rating.getAdvancedRating()));
+                else
+                    mRatingBar.setRating(0);
+
+                mRatingBar.setVisibility(View.VISIBLE);
+                mRatingSimple.setVisibility(View.GONE);
+            } else {
+                if (rating.getSimpleRating() != null)
+                    mRatingSimple.setText(rating.getSimpleRating());
+                else
+                    mRatingSimple.setText(Rating.RATING_SIMPLE_NEUTRAL);
+
+                mRatingBar.setVisibility(View.GONE);
+                mRatingSimple.setVisibility(View.VISIBLE);
+            }
+
+            newWatchStatus = libraryEntry.getStatus();
+            newEpisodesWatched = libraryEntry.getEpisodesWatched();
+            newIsRewatching = libraryEntry.isRewatching();
+            newRewatchedTimes = libraryEntry.getNumberOfRewatches();
+            newRating = libraryEntry.getRating().getAdvancedRating() != null ?
+                    libraryEntry.getRating().getAdvancedRating() : "0";
+
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                    AnimeDetailsActivity.this,
+                    R.array.library_watch_status_items,
+                    R.layout.item_spinner_library_status);
+            adapter.setDropDownViewResource(R.layout.item_spinner_item_library_status);
+            mStatusSpinner.setAdapter(adapter);
+
+            String watchStatus = libraryEntry.getStatus();
+            if (watchStatus.equals("currently-watching"))
+                mStatusSpinner.setSelection(0);
+            if (watchStatus.equals("plan-to-watch"))
+                mStatusSpinner.setSelection(1);
+            if (watchStatus.equals("completed"))
+                mStatusSpinner.setSelection(2);
+            if (watchStatus.equals("on-hold"))
+                mStatusSpinner.setSelection(3);
+            if (watchStatus.equals("dropped"))
+                mStatusSpinner.setSelection(4);
+
+            mEpisodesHolder.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    CustomDialog.Builder builder = new CustomDialog.Builder(
+                            AnimeDetailsActivity.this,
+                            R.string.content_episodes,
+                            R.string.ok);
+                    builder.negativeText(R.string.cancel);
+                    builder.positiveColor(getResources().getColor(R.color.apptheme_primary));
+
+                    CustomDialog dialog = builder.build();
+
+                    View dialogView = getLayoutInflater().inflate(R.layout.number_picker, null);
+                    final NumberPicker mNumberPicker = (NumberPicker)
+                            dialogView.findViewById(R.id.number_picker);
+
+                    dialog.setCustomView(dialogView);
+
+                    mNumberPicker.setMaxValue(anime.getEpisodeCount());
+                    mNumberPicker.setValue(newEpisodesWatched);
+                    mNumberPicker.setWrapSelectorWheel(false);
+
+                    dialog.setClickListener(new CustomDialog.ClickListener() {
                         @Override
-                        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                            newIsRewatching = isChecked;
+                        public void onConfirmClick() {
+                            newEpisodesWatched = mNumberPicker.getValue();
+                            mEpisodes.setText(newEpisodesWatched + "/" + anime.getEpisodeCount());
+
+                            if (newEpisodesWatched == anime.getEpisodeCount())
+                                mStatusSpinner.setSelection(2); // (completed)
+
                             updateUpdateButtonStatus(libraryEntry);
                         }
-                    });
 
-                    mRewatchedTimesHolder.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View view) {
-                            CustomDialog.Builder builder = new CustomDialog.Builder(
-                                    AnimeDetailsActivity.this,
-                                    R.string.content_rewatched,
-                                    android.R.string.ok);
-                            builder.negativeText(android.R.string.cancel);
-                            builder.positiveColor(getResources().getColor(R.color.apptheme_primary));
-
-                            CustomDialog dialog = builder.build();
-
-                            View dialogView = getLayoutInflater().inflate(R.layout.number_picker, null);
-                            final NumberPicker mNumberPicker = (NumberPicker)
-                                    dialogView.findViewById(R.id.number_picker);
-
-                            dialog.setCustomView(dialogView);
-
-                            mNumberPicker.setMaxValue(200);
-                            mNumberPicker.setValue(newRewatchedTimes);
-                            mNumberPicker.setWrapSelectorWheel(false);
-
-                            dialog.setClickListener(new CustomDialog.ClickListener() {
-                                @Override
-                                public void onConfirmClick() {
-                                    newRewatchedTimes = mNumberPicker.getValue();
-                                    mRewatchedTimes.setText(newRewatchedTimes + "");
-                                    updateUpdateButtonStatus(libraryEntry);
-                                }
-
-                                @Override
-                                public void onCancelClick() {
+                        public void onCancelClick() {
                                     /* empty */
-                                }
-                            });
-
-                            dialog.show();
                         }
                     });
 
-                    mPrivate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    dialog.show();
+                }
+            });
+
+            mRewatching.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                    newIsRewatching = isChecked;
+                    updateUpdateButtonStatus(libraryEntry);
+                }
+            });
+
+            mRewatchedTimesHolder.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    CustomDialog.Builder builder = new CustomDialog.Builder(
+                            AnimeDetailsActivity.this,
+                            R.string.content_rewatched,
+                            R.string.ok);
+                    builder.negativeText(R.string.cancel);
+                    builder.positiveColor(getResources().getColor(R.color.apptheme_primary));
+
+                    CustomDialog dialog = builder.build();
+
+                    View dialogView = getLayoutInflater().inflate(R.layout.number_picker, null);
+                    final NumberPicker mNumberPicker = (NumberPicker)
+                            dialogView.findViewById(R.id.number_picker);
+
+                    dialog.setCustomView(dialogView);
+
+                    mNumberPicker.setMaxValue(200);
+                    mNumberPicker.setValue(newRewatchedTimes);
+                    mNumberPicker.setWrapSelectorWheel(false);
+
+                    dialog.setClickListener(new CustomDialog.ClickListener() {
                         @Override
-                        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                        public void onConfirmClick() {
+                            newRewatchedTimes = mNumberPicker.getValue();
+                            mRewatchedTimes.setText(newRewatchedTimes + "");
+                            updateUpdateButtonStatus(libraryEntry);
+                        }
+
+                        @Override
+                        public void onCancelClick() {
+                                    /* empty */
+                        }
+                    });
+
+                    dialog.show();
+                }
+            });
+
+            mPrivate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                             /* I couldn't find any parameter in the API for setting privacy.
                             *  Well, changing the privacy value doesn't mean a thing to us as we can
                             *  only fetch the user's library anonymously.
                             *
                             *  Keeping the code here in case we happen to figure a way in the future.
                             * */
-                        }
-                    });
+                }
+            });
 
-                    mStatusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                            switch (position) {
-                                case 0:
-                                    newWatchStatus = "currently-watching";
-                                    break;
-                                case 1:
-                                    newWatchStatus = "plan-to-watch";
-                                    break;
-                                case 2:
-                                    newWatchStatus = "completed";
-                                    break;
-                                case 3:
-                                    newWatchStatus = "on-hold";
-                                    break;
-                                case 4:
-                                    newWatchStatus = "dropped";
-                                    break;
-                            }
+            mStatusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                    switch (position) {
+                        case 0:
+                            newWatchStatus = "currently-watching";
+                            break;
+                        case 1:
+                            newWatchStatus = "plan-to-watch";
+                            break;
+                        case 2:
+                            newWatchStatus = "completed";
+                            break;
+                        case 3:
+                            newWatchStatus = "on-hold";
+                            break;
+                        case 4:
+                            newWatchStatus = "dropped";
+                            break;
+                    }
 
-                            updateUpdateButtonStatus(libraryEntry);
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> adapterView) {
-
-                        }
-                    });
-
-                    mRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-                        @Override
-                        public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                            newRating = rating + "";
-                            updateUpdateButtonStatus(libraryEntry);
-                        }
-                    });
-
-                    mAddToList.setText(R.string.content_update);
-                    mAddToList.setEnabled(false);
-                    mAddToList.setOnClickListener(new OnLibraryUpdateClickListener());
+                    updateUpdateButtonStatus(libraryEntry);
                 }
 
-            } else {
-                Toast.makeText(AnimeDetailsActivity.this, R.string.error_cant_load_data, Toast.LENGTH_LONG).show();
-                finish();
-            }
-        }
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
 
-        private class OnAddToListClickListener implements View.OnClickListener {
+                }
+            });
 
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(
-                        AnimeDetailsActivity.this,
-                        "Adding " + anime.getCanonicalTitle() + " to list :P",
-                        Toast.LENGTH_SHORT
-                ).show();
-            }
-        }
+            mRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                @Override
+                public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                    newRating = rating + "";
+                    updateUpdateButtonStatus(libraryEntry);
+                }
+            });
 
-        private class OnLibraryUpdateClickListener implements View.OnClickListener {
-            @Override
-            public void onClick(View view) {
-                updateLibraryEntry(libraryEntry);
-                Toast.makeText(AnimeDetailsActivity.this, "Updating :P", Toast.LENGTH_SHORT).show();
-            }
+            mRatingSimple.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String rating = mRatingSimple.getText().toString();
+                    if (rating.equals(Rating.RATING_SIMPLE_POSITIVE)) {
+                        mRatingSimple.setText(Rating.RATING_SIMPLE_NEGATIVE);
+                        newRating = "1";
+                    }
+                    if (rating.equals(Rating.RATING_SIMPLE_NEGATIVE)) {
+                        mRatingSimple.setText(Rating.RATING_SIMPLE_NEUTRAL);
+                        newRating = "3";
+                    }
+                    if (rating.equals(Rating.RATING_SIMPLE_NEUTRAL)) {
+                        mRatingSimple.setText(Rating.RATING_SIMPLE_POSITIVE);
+                        newRating = "5";
+                    }
+
+                    updateUpdateButtonStatus(libraryEntry);
+                }
+            });
+
+            mAddToLibrary.setText(R.string.content_update);
+            mAddToLibrary.setEnabled(false);
+            mAddToLibrary.setOnClickListener(new OnLibraryUpdateClickListener());
+        } else {
+            mRemove.setVisibility(View.GONE);
+            mLibraryHolder.setVisibility(View.GONE);
+            mLibraryHolderShadow.setVisibility(View.GONE);
         }
     }
 
-    private class UpdateTask extends AsyncTask<Map, Void, String> {
-
-        LibraryEntry resultEntry;
+    private class OnAddToLibraryClickListener implements View.OnClickListener {
 
         @Override
-        protected String doInBackground(Map... maps) {
+        public void onClick(View view) {
+            new AddTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+    }
+
+    private class OnLibraryUpdateClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            updateLibraryEntry(libraryEntry);
+        }
+    }
+
+    private class AddTask extends AsyncTask<Void, Void, LibraryEntry> {
+
+        ProgressDialog dialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = ProgressDialog.show(AnimeDetailsActivity.this,
+                    getString(R.string.adding),
+                    getString(R.string.please_wait___),
+                    true
+            );
+        }
+
+        @Override
+        protected LibraryEntry doInBackground(Void... voids) {
+            Map<String, String> map = new HashMap<String, String>();
+            String authToken = prefMan.getAuthToken();
+            if (authToken == null || authToken.equals("") || authToken.trim().equals(""))
+                return null;
+            else
+                map.put("auth_token", authToken);
+
+            map.put("status", "plan-to-watch");
+
             try {
-                if (maps[0] != null) {
-                    resultEntry = api.addUpdateLibraryEntry(ANIME_ID, maps[0]);
-                    return Results.RESULT_SUCCESS;
-                } else
-                    return Results.RESULT_FAILURE;
-            } /*catch (RetrofitError e) {
+                return api.addUpdateLibraryEntry(ANIME_ID, map);
+            } catch (RetrofitError e) {
                 Log.e(TAG, e.getMessage());
-
-                if (e.getMessage().equals(Results.RESULT_UNAUTHORIZED)) {
-                    Log.e(TAG, "Wrong authentication token; request failed!");
-                    return Results.RESULT_UNAUTHORIZED;
-                }
-
-                return Results.RESULT_EXCEPTION;
-            }*/ catch (Exception e) {
+                return null;
+            } catch (Exception e) {
                 e.printStackTrace();
-                return Results.RESULT_EXCEPTION;
+                return null;
             }
         }
 
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(LibraryEntry result) {
             super.onPostExecute(result);
 
-            if (result.equals(Results.RESULT_SUCCESS)) {
-                // TODO - Do something :P
+            if (result != null) {
+                libraryEntry = result;
+                displayLibraryElements();
+            } else {
+                Toast.makeText(AnimeDetailsActivity.this,
+                        R.string.error_couldnt_add_item,
+                        Toast.LENGTH_LONG)
+                        .show();
             }
+
+            dialog.dismiss();
+        }
+    }
+
+    private class UpdateTask extends AsyncTask<Map, Void, LibraryEntry> {
+
+        ProgressDialog dialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = ProgressDialog.show(AnimeDetailsActivity.this,
+                    getString(R.string.updating),
+                    getString(R.string.please_wait___),
+                    true
+            );
+        }
+
+        @Override
+        protected LibraryEntry doInBackground(Map... maps) {
+            try {
+                if (maps[0] != null) {
+                    return api.addUpdateLibraryEntry(ANIME_ID, maps[0]);
+                } else
+                    return null;
+            } catch (RetrofitError e) {
+                Log.e(TAG, e.getMessage());
+                return null;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(LibraryEntry result) {
+            super.onPostExecute(result);
+
+            if (result != null) {
+                libraryEntry = result;
+                newRating = result.getRating().getAdvancedRating();
+                newRewatchedTimes = result.getNumberOfRewatches();
+                newEpisodesWatched = result.getEpisodesWatched();
+                newIsRewatching = result.isRewatching();
+                newWatchStatus = result.getStatus();
+                updateUpdateButtonStatus(result);
+
+                String toastMessage = getString(R.string.info_successfully_updated);
+                toastMessage = toastMessage.replace("{anime-name}", anime.getCanonicalTitle());
+                Toast.makeText(AnimeDetailsActivity.this,
+                        toastMessage,
+                        Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(AnimeDetailsActivity.this,
+                        R.string.error_couldnt_update_item,
+                        Toast.LENGTH_LONG).show();
+            }
+
+            dialog.dismiss();
+        }
+    }
+
+    private class RemoveTask extends AsyncTask<Void, Void, Boolean> {
+
+        ProgressDialog dialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = ProgressDialog.show(AnimeDetailsActivity.this,
+                    getString(R.string.removing),
+                    getString(R.string.please_wait___),
+                    true
+            );
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            String authToken = prefMan.getAuthToken();
+            if (authToken == null || authToken.equals("") || authToken.trim().equals("")) {
+                Log.e(TAG, "Authentication token not found. Can't remove library item!");
+                return false;
+            }
+            try {
+                return api.removeLibraryEntry(ANIME_ID, prefMan.getAuthToken());
+            } catch (RetrofitError e) {
+                Log.e(TAG, e.getMessage());
+                return false;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean removed) {
+            super.onPostExecute(removed);
+
+            if (removed)
+                new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            else
+                Toast.makeText(AnimeDetailsActivity.this,
+                        R.string.error_cant_remove_item, Toast.LENGTH_LONG).show();
+
+            dialog.dismiss();
         }
     }
 }
