@@ -61,7 +61,7 @@ public class FavoriteAnimeAdapter extends ArrayAdapter<FavoriteAnime> {
                         int darkMutedColor;
                         Bitmap bitmap = ((BitmapDrawable) mCover.getDrawable()).getBitmap();
                         darkMutedColor = Palette.generate(bitmap)
-                                .getDarkMutedColor().getRgb();
+                                .getDarkMutedSwatch().getRgb();
                         mTitle.setBackgroundDrawable(new ColorDrawable(darkMutedColor));
 
                     }

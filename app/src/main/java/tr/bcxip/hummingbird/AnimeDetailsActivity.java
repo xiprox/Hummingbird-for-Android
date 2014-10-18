@@ -15,7 +15,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.graphics.Palette;
-import android.support.v7.graphics.PaletteItem;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -105,7 +104,7 @@ public class AnimeDetailsActivity extends Activity {
     int newRewatchedTimes;
     String newRating;
 
-    PaletteItem vibrantColor;
+    Palette.Swatch vibrantSwatch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,6 +200,9 @@ public class AnimeDetailsActivity extends Activity {
     }
 
     public void updateUpdateButtonStatus(LibraryEntry entry) {
+        if (newRating == null)
+            newRating = "0";
+
         if (!newWatchStatus.equals(entry.getStatus()) ||
                 newEpisodesWatched != entry.getEpisodesWatched() ||
                 newIsRewatching != entry.isRewatching() ||
@@ -258,11 +260,11 @@ public class AnimeDetailsActivity extends Activity {
             super.onPostExecute(success);
 
             if (success) {
-                vibrantColor = mPalette.getVibrantColor();
+                vibrantSwatch = mPalette.getVibrantSwatch();
 
                 mActionBarHelper = new FadingActionBarHelper()
-                        .actionBarBackground(vibrantColor == null ? new ColorDrawable(R.color.neutral)
-                                : new ColorDrawable(vibrantColor.getRgb()))
+                        .actionBarBackground(vibrantSwatch == null ? new ColorDrawable(R.color.neutral)
+                                : new ColorDrawable(vibrantSwatch.getRgb()))
                         .headerLayout(R.layout.header_anime_details)
                         .headerOverlayLayout(R.layout.header_overlay_anime_details)
                         .contentLayout(R.layout.content_anime_details);
@@ -296,9 +298,9 @@ public class AnimeDetailsActivity extends Activity {
                 mRatingBar = (RatingBar) findViewById(R.id.anime_details_library_rating);
                 mRatingSimple = (TextView) findViewById(R.id.anime_deatails_library_rating_simple);
 
-                mViewTrailer.getBackground().setColorFilter(vibrantColor.getRgb(), PorterDuff.Mode.SRC_ATOP);
-                mViewTrailer.setTextColor(vibrantColor.getRgb());
-                mAddToLibrary.getBackground().setColorFilter(vibrantColor.getRgb(), PorterDuff.Mode.SRC_ATOP);
+                mViewTrailer.getBackground().setColorFilter(vibrantSwatch.getRgb(), PorterDuff.Mode.SRC_ATOP);
+                mViewTrailer.setTextColor(vibrantSwatch.getRgb());
+                mAddToLibrary.getBackground().setColorFilter(vibrantSwatch.getRgb(), PorterDuff.Mode.SRC_ATOP);
                 mAddToLibrary.setOnClickListener(new OnAddToLibraryClickListener());
 
                 if (anime.getTrailer() == null || anime.getTrailer().equals(""))
@@ -403,8 +405,8 @@ public class AnimeDetailsActivity extends Activity {
 
             mLibraryHolderShadow.setVisibility(View.VISIBLE);
             mLibraryHolder.setVisibility(View.VISIBLE);
-            mLibraryHolder.setBackgroundDrawable(vibrantColor != null ?
-                            new ColorDrawable(vibrantColor.getRgb()) :
+            mLibraryHolder.setBackgroundDrawable(vibrantSwatch != null ?
+                            new ColorDrawable(vibrantSwatch.getRgb()) :
                             new ColorDrawable(getResources().getColor(R.color.neutral))
             );
 

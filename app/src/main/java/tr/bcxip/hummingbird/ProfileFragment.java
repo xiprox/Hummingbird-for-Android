@@ -150,7 +150,7 @@ public class ProfileFragment extends Fragment {
                 favsList = api.getFavoriteAnime(username);
 
                 try {
-                    vibrantColor = Palette.generate(coverBitmap).getVibrantColor().getRgb();
+                    vibrantColor = Palette.generate(coverBitmap).getVibrantSwatch().getRgb();
                 } catch (Exception e) {
                     vibrantColor = getResources().getColor(R.color.apptheme_primary);
                 }

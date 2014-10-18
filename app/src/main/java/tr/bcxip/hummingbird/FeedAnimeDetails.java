@@ -7,7 +7,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.graphics.Palette;
-import android.support.v7.graphics.PaletteItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -92,11 +91,11 @@ public class FeedAnimeDetails extends Activity {
             super.onPostExecute(success);
 
             if (success) {
-                PaletteItem vibrantColor = mPalette.getVibrantColor();
+                Palette.Swatch vibrantSwatch = mPalette.getVibrantSwatch();
 
                 mActionBarHelper = new FadingActionBarHelper()
-                        .actionBarBackground(vibrantColor == null ? new ColorDrawable(R.color.neutral)
-                                : new ColorDrawable(vibrantColor.getRgb()))
+                        .actionBarBackground(vibrantSwatch == null ? new ColorDrawable(R.color.neutral)
+                                : new ColorDrawable(vibrantSwatch.getRgb()))
                         .headerLayout(R.layout.header_anime_details)
                         .headerOverlayLayout(R.layout.header_overlay_anime_details)
                         .contentLayout(R.layout.content_feed_item_details);

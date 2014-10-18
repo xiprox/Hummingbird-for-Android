@@ -70,7 +70,7 @@ public class LibraryAdapter extends ArrayAdapter<LibraryEntry> {
                         try {
                             Bitmap bitmap = ((BitmapDrawable) holder.cover.getDrawable()).getBitmap();
                             int color = Palette.generate(bitmap)
-                                    .getDarkMutedColor().getRgb();
+                                    .getDarkMutedSwatch().getRgb();
                             ColorDrawable background = new ColorDrawable(color);
                             holder.infoHolder.setBackgroundDrawable(background);
                         } catch (Exception e) {
