@@ -247,8 +247,10 @@ public class AnimeDetailsActivity extends Activity {
         protected Boolean doInBackground(Boolean... bools) {
 
             /* First time, cancelable dialog */
-            boolean isFirstLoad = bools[0];
-            if (isFirstLoad) dialog.setCancelable(true);
+            if (bools.length != 0) {
+                boolean isFirstLoad = bools[0];
+                if (isFirstLoad) dialog.setCancelable(true);
+            }
 
             try {
                 if (ANIME_ID != null && !ANIME_ID.equals("") && !ANIME_ID.trim().equals("")) {
