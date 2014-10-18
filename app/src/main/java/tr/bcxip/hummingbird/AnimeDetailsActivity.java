@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
@@ -115,7 +116,7 @@ public class AnimeDetailsActivity extends Activity {
         prefMan = new PrefManager(this);
 
         ANIME_ID = getIntent().getStringExtra(ARG_ID);
-        new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, true);
     }
 
     @Override
@@ -214,7 +215,12 @@ public class AnimeDetailsActivity extends Activity {
             mAddToLibrary.setEnabled(false);
     }
 
-    protected class LoadTask extends AsyncTask<Void, Void, Boolean> {
+    /**
+     * @param #0 Boolean isFirstLoad - indicates whether it's the first time we are loading the content
+     *           (not a reload after a removal, for instance). Why? Because, the progress dialog
+     *           has to be cancelable on first load.
+     */
+    protected class LoadTask extends AsyncTask<Boolean, Void, Boolean> {
 
         Bitmap coverBitmap = null;
 
@@ -228,10 +234,23 @@ public class AnimeDetailsActivity extends Activity {
                     getString(R.string.please_wait___),
                     true
             );
+
+            dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialogInterface) {
+                    LoadTask.this.cancel(true);
+                    finish();
+                }
+            });
         }
 
         @Override
-        protected Boolean doInBackground(Void... voids) {
+        protected Boolean doInBackground(Boolean... bools) {
+
+            /* First time, cancelable dialog */
+            boolean isFirstLoad = bools[0];
+            if (isFirstLoad) dialog.setCancelable(true);
+
             try {
                 if (ANIME_ID != null && !ANIME_ID.equals("") && !ANIME_ID.trim().equals("")) {
                     Log.i(TAG, "Fetching data for Anime with ID " + ANIME_ID);
