@@ -29,6 +29,13 @@
     <color name="selector_dark">#30000000</color>
     <color name="selector_dark_stroke">#50000000</color>
 
+    <color name="button_ps_background">@android:color/white</color>
+    <color name="button_ps_background_pressed">#90ffffff</color>
+    <color name="button_ps_background_disabled">#80ffffff</color>
+    <color name="button_ps_stroke_only_stroke">#90ffffff</color>
+    <color name="button_ps_stroke_only_stroke_disabled">#80ffffff</color>
+    <color name="button_ps_stroke_only_background_pressed">#40ffffff</color>
+
     <color name="login_border">#dddddd</color>
     <color name="login_btn">#b2dfdb</color>
 

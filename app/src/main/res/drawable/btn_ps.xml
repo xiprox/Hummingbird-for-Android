@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_pressed="true" >
+<selector xmlns:android="http://schemas.android.com/apk/res/android" android:enterFadeDuration="@android:integer/config_shortAnimTime" android:exitFadeDuration="@android:integer/config_mediumAnimTime">
+    <item android:state_pressed="true">
         <shape>
             <corners android:radius="2dp" />
-            <solid android:color="@color/neutral_pressed" />
+            <solid android:color="@color/button_ps_background_pressed" />
         </shape>
     </item>
 
-    <item >
+    <item android:state_enabled="false">
         <shape>
             <corners android:radius="2dp" />
+            <solid android:color="@color/button_ps_background_disabled" />
+        </shape>
+    </item>
+
+    <item>
+        <shape>
+            <corners android:radius="2dp" />
+            <solid android:color="@color/button_ps_background" />
         </shape>
     </item>
 </selector>

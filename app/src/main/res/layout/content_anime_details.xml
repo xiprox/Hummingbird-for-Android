@@ -6,10 +6,12 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/anime_details_buttons_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:orientation="horizontal">
+        android:background="@color/neutral"
+        android:orientation="horizontal"
+        android:padding="16dp">
 
         <Button
             android:id="@+id/anime_details_view_trailer_button"
@@ -17,11 +19,11 @@
             android:layout_height="36dp"
             android:layout_marginRight="16dp"
             android:layout_weight="1"
-            android:background="@drawable/btn_ps_stroke_only_neutral"
+            android:background="@drawable/btn_ps_stroke_only"
             android:fontFamily="sans-serif-light"
             android:text="@string/content_view_trailer"
             android:textAllCaps="true"
-            android:textColor="@color/neutral"
+            android:textColor="@android:color/white"
             android:textSize="14sp" />
 
         <Button
@@ -33,7 +35,7 @@
             android:fontFamily="sans-serif-light"
             android:text="@string/content_add_to_list"
             android:textAllCaps="true"
-            android:textColor="@android:color/white"
+            android:textColor="@color/neutral"
             android:textSize="14sp" />
     </LinearLayout>
 

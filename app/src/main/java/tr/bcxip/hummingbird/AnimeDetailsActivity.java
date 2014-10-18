@@ -9,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -66,6 +65,7 @@ public class AnimeDetailsActivity extends Activity {
 
     Palette mPalette;
 
+    LinearLayout mButtonsHolder;
     Button mViewTrailer;
     Button mAddToLibrary;
     ImageView mHeaderImage;
@@ -82,7 +82,6 @@ public class AnimeDetailsActivity extends Activity {
     LinearLayout mFavoritedHolder;
 
     LinearLayout mLibraryHolder;
-    View mLibraryHolderShadow;
     Spinner mStatusSpinner;
     LinearLayout mEpisodesHolder;
     TextView mEpisodes;
@@ -290,6 +289,7 @@ public class AnimeDetailsActivity extends Activity {
                 setContentView(mActionBarHelper.createView(AnimeDetailsActivity.this));
                 mActionBarHelper.initActionBar(AnimeDetailsActivity.this);
 
+                mButtonsHolder = (LinearLayout) findViewById(R.id.anime_details_buttons_holder);
                 mViewTrailer = (Button) findViewById(R.id.anime_details_view_trailer_button);
                 mAddToLibrary = (Button) findViewById(R.id.anime_details_add_to_list_button);
                 mHeaderImage = (ImageView) findViewById(R.id.anime_details_cover_image);
@@ -306,7 +306,6 @@ public class AnimeDetailsActivity extends Activity {
                 mFavoritedHolder = (LinearLayout) findViewById(R.id.header_anime_details_favorited);
 
                 mLibraryHolder = (LinearLayout) findViewById(R.id.anime_details_library_holder);
-                mLibraryHolderShadow = findViewById(R.id.anime_details_library_holder_shadow);
                 mStatusSpinner = (Spinner) findViewById(R.id.anime_details_status_spinner);
                 mEpisodesHolder = (LinearLayout) findViewById(R.id.anime_details_library_episodes_holder);
                 mEpisodes = (TextView) findViewById(R.id.anime_details_library_episodes);
@@ -317,9 +316,8 @@ public class AnimeDetailsActivity extends Activity {
                 mRatingBar = (RatingBar) findViewById(R.id.anime_details_library_rating);
                 mRatingSimple = (TextView) findViewById(R.id.anime_deatails_library_rating_simple);
 
-                mViewTrailer.getBackground().setColorFilter(vibrantSwatch.getRgb(), PorterDuff.Mode.SRC_ATOP);
-                mViewTrailer.setTextColor(vibrantSwatch.getRgb());
-                mAddToLibrary.getBackground().setColorFilter(vibrantSwatch.getRgb(), PorterDuff.Mode.SRC_ATOP);
+                mButtonsHolder.setBackgroundDrawable(new ColorDrawable(vibrantSwatch.getRgb()));
+                mAddToLibrary.setTextColor(vibrantSwatch.getRgb());
                 mAddToLibrary.setOnClickListener(new OnAddToLibraryClickListener());
 
                 if (anime.getTrailer() == null || anime.getTrailer().equals(""))
@@ -422,7 +420,6 @@ public class AnimeDetailsActivity extends Activity {
                 if (fav.getItemId().equals(ANIME_ID))
                     mFavoritedHolder.setVisibility(View.VISIBLE);
 
-            mLibraryHolderShadow.setVisibility(View.VISIBLE);
             mLibraryHolder.setVisibility(View.VISIBLE);
             mLibraryHolder.setBackgroundDrawable(vibrantSwatch != null ?
                             new ColorDrawable(vibrantSwatch.getRgb()) :
@@ -651,7 +648,6 @@ public class AnimeDetailsActivity extends Activity {
         } else {
             mRemove.setVisibility(View.GONE);
             mLibraryHolder.setVisibility(View.GONE);
-            mLibraryHolderShadow.setVisibility(View.GONE);
         }
     }
 
