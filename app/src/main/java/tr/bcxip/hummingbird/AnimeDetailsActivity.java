@@ -13,6 +13,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.graphics.Palette;
 import android.util.Log;
@@ -281,6 +282,10 @@ public class AnimeDetailsActivity extends Activity {
 
             if (success) {
                 vibrantSwatch = mPalette.getVibrantSwatch();
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    getWindow().setStatusBarColor(vibrantSwatch != null ?
+                        vibrantSwatch.getRgb() : getResources().getColor(R.color.apptheme_primary));
 
                 mActionBarHelper = new FadingActionBarHelper()
                         .actionBarBackground(vibrantSwatch == null ? new ColorDrawable(R.color.neutral)

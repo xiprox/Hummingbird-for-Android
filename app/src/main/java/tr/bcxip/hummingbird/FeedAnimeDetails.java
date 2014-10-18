@@ -1,10 +1,12 @@
 package tr.bcxip.hummingbird;
 
+import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.graphics.Palette;
 import android.view.View;
@@ -86,12 +88,17 @@ public class FeedAnimeDetails extends Activity {
             }
         }
 
+        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
         @Override
         protected void onPostExecute(Boolean success) {
             super.onPostExecute(success);
 
             if (success) {
                 Palette.Swatch vibrantSwatch = mPalette.getVibrantSwatch();
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    getWindow().setStatusBarColor(vibrantSwatch != null ?
+                            vibrantSwatch.getRgb() : getResources().getColor(R.color.apptheme_primary));
 
                 mActionBarHelper = new FadingActionBarHelper()
                         .actionBarBackground(vibrantSwatch == null ? new ColorDrawable(R.color.neutral)

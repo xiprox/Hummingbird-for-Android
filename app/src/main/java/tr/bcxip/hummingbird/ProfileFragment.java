@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.graphics.Palette;
 import android.util.Log;
@@ -69,7 +70,7 @@ public class ProfileFragment extends Fragment {
 
     ViewFlipper mFlipper;
 
-    int vibrantColor;
+    int     vibrantColor;
 
     LoadTask loadTask;
 
@@ -172,6 +173,9 @@ public class ProfileFragment extends Fragment {
             if (result.equals(Results.RESULT_SUCCESS)) {
                 ((Activity) context).getActionBar()
                         .setBackgroundDrawable(new ColorDrawable(vibrantColor));
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    ((Activity) context).getWindow().setStatusBarColor(vibrantColor);
 
                 mCover.setImageBitmap(coverBitmap);
 
