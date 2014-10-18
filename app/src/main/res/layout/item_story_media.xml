@@ -15,7 +15,7 @@
             android:id="@+id/item_story_media_cover_holder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:foreground="@drawable/selector_background_neutral">
+            android:foreground="@drawable/selector_light">
 
             <ImageView
                 android:id="@+id/item_story_media_cover"
@@ -68,7 +68,7 @@
             android:layout_height="36dp"
             android:layout_marginBottom="8dp"
             android:layout_marginRight="8dp"
-            android:background="@drawable/button_borderless_neutral"
+            android:background="@drawable/selector_dark"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:text="view more"

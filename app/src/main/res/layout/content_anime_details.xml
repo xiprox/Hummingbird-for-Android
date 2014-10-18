@@ -56,7 +56,7 @@
             android:id="@+id/anime_details_library_episodes_holder"
             android:layout_width="match_parent"
             android:layout_height="54dp"
-            android:background="@drawable/selector_background_neutral"
+            android:background="@drawable/selector_dark"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingLeft="16dp"
@@ -113,7 +113,7 @@
             android:id="@+id/anime_details_library_rewatched_holder"
             android:layout_width="match_parent"
             android:layout_height="54dp"
-            android:background="@drawable/selector_background_neutral"
+            android:background="@drawable/selector_dark"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingLeft="16dp"
@@ -196,7 +196,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/selector_background_neutral"
+                android:background="@drawable/selector_dark"
                 android:gravity="end|center_vertical"
                 android:text="unknown"
                 android:textAllCaps="true"
@@ -212,7 +212,7 @@
         android:layout_width="match_parent"
         android:layout_height="3dp"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/anime_details_action_bar_gradient_top" />
+        android:background="@drawable/gradient_top" />
 
     <View
         android:layout_width="match_parent"

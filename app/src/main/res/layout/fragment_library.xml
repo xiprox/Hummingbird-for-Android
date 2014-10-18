@@ -14,7 +14,7 @@
         app:pstsDividerColor="@android:color/transparent"
         app:pstsIndicatorColor="@android:color/white"
         app:pstsIndicatorHeight="2dp"
-        app:pstsTabBackground="@drawable/selector_actionbar_tab"
+        app:pstsTabBackground="@drawable/selector_light"
         app:pstsTextAllCaps="true"
         app:pstsUnderlineColor="@android:color/transparent" />
 

@@ -8,13 +8,13 @@
         android:layout_width="match_parent"
         android:layout_height="74dp"
         android:layout_alignParentTop="true"
-        android:background="@drawable/anime_details_action_bar_gradient_top" />
+        android:background="@drawable/gradient_top" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="74dp"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/anime_details_action_bar_gradient_bottom" />
+        android:background="@drawable/gradient_bottom" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:layout_alignParentLeft="true"
-                android:background="@drawable/selector_background_neutral"
+                android:background="@drawable/selector_light_no_mask"
                 android:padding="16dp"
                 android:src="@drawable/ic_heart"
                 android:tint="@android:color/white" />
@@ -51,7 +51,7 @@
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_alignParentRight="true"
-            android:background="@drawable/selector_background_neutral"
+            android:background="@drawable/selector_light_no_mask"
             android:padding="16dp"
             android:src="@drawable/ic_trash"
             android:tint="@android:color/white" />

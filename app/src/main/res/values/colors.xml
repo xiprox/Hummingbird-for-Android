@@ -23,7 +23,11 @@
     <color name="neutral_pressed">#666666</color>
     <color name="neutral_darker">#555555</color>
 
-    <color name="cover_image_overlay">#50ffffff</color>
+    <!-- Selectors -->
+    <color name="selector_light">#50ffffff</color>
+    <color name="selector_light_stroke">#70ffffff</color>
+    <color name="selector_dark">#30000000</color>
+    <color name="selector_dark_stroke">#50000000</color>
 
     <color name="login_border">#dddddd</color>
     <color name="login_btn">#b2dfdb</color>

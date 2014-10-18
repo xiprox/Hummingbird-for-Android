@@ -26,7 +26,7 @@
             android:drawSelectorOnTop="true"
             android:fastScrollEnabled="true"
             android:horizontalSpacing="0dp"
-            android:listSelector="@drawable/selector_background_neutral"
+            android:listSelector="@drawable/selector_light_no_mask"
             android:numColumns="auto_fit"
             android:stretchMode="columnWidth"
             android:verticalSpacing="0dp" />
