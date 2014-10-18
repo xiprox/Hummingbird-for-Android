@@ -37,6 +37,7 @@ import tr.bcxip.hummingbird.api.Results;
 import tr.bcxip.hummingbird.api.objects.User;
 import tr.bcxip.hummingbird.managers.PrefManager;
 import tr.bcxip.hummingbird.utils.CircleTransformation;
+import uk.me.lewisdeane.ldialogs.CustomDialog;
 
 public class NavigationDrawerFragment extends Fragment {
 
@@ -146,9 +147,7 @@ public class NavigationDrawerFragment extends Fragment {
                         Toast.makeText(context, "YOU SHALL NOT PASS!", Toast.LENGTH_LONG).show();
                         break;
                     case 1:
-                        prefMan.logout();
-                        startActivity(new Intent(getActivity(), LoginActivity.class));
-                        getActivity().finish();
+                        showLogoutDialog();
                         break;
                 }
             }
@@ -157,6 +156,33 @@ public class NavigationDrawerFragment extends Fragment {
         selectItem(mCurrentSelectedPosition);
 
         return rootView;
+    }
+
+    public void showLogoutDialog() {
+        CustomDialog.Builder builder = new CustomDialog.Builder(context,
+                R.string.content_log_out,
+                R.string.yes);
+
+        builder.content(getString(R.string.content_are_you_sure_logout));
+        builder.negativeText(R.string.no);
+
+        final CustomDialog dialog = builder.build();
+
+        dialog.setClickListener(new CustomDialog.ClickListener() {
+            @Override
+            public void onConfirmClick() {
+                prefMan.logout();
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+                getActivity().finish();
+            }
+
+            @Override
+            public void onCancelClick() {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
     public boolean isDrawerOpen() {

@@ -40,7 +40,6 @@
     <string name="title_remove">Remove</string>
     <string name="content_remove_are_you_sure">Are you sure you\'d like to remove {anime-name} from your library?</string>
 
-
     <!-- Programatically -->
     <string name="not_rated">Not Rated Yet</string>
     <string name="finish_date">Still Airing</string>
@@ -70,6 +69,7 @@
     <string name="content_username">Username</string>
     <string name="content_password">Password</string>
     <string name="content_login">Log In</string>
+    <string name="content_log_out">Log Out</string>
 
     <!-- Content (Profile) Strings-->
     <string name="content_favorites">favorites</string>
@@ -98,6 +98,9 @@
     <string name="error_couldnt_add_item">Couldn\'t add item!</string>
 
     <string name="info_successfully_updated">Updated {anime-name}!</string>
+
+    <string name="content_are_you_sure_logout">Are you sure you\'d like to log out? This will erase
+        all stored data.</string>
 
     <string name="content_unknown">Unknown</string>
 
