@@ -1,14 +1,14 @@
 package tr.bcxip.hummingbird;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.widget.Toast;
 
 /**
  * Created by mhca on 10/11/2014.
  */
-public class CatchLink extends Activity {
+public class CatchLink extends ActionBarActivity {
     String mLink;
 
     @Override

@@ -1,22 +1,22 @@
 package tr.bcxip.hummingbird;
 
 import android.annotation.TargetApi;
-import android.app.ActionBar;
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import tr.bcxip.hummingbird.managers.PrefManager;
 
 
-public class MainActivity extends Activity
+public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     private static final String STATE_ACTIONBAR_TITLE = "action_bar_title";
@@ -43,7 +43,7 @@ public class MainActivity extends Activity
         setContentView(R.layout.activity_main);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getFragmentManager().findFragmentById(R.id.navigation_drawer);
+                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
         if (savedInstanceState != null) {
             mTitle = savedInstanceState.getString(STATE_ACTIONBAR_TITLE);
@@ -58,7 +58,7 @@ public class MainActivity extends Activity
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = null;
 
         switch (position) {
@@ -81,7 +81,7 @@ public class MainActivity extends Activity
                     .replace(R.id.container, fragment)
                     .commit();
 
-        getActionBar().setBackgroundDrawable(
+        getSupportActionBar().setBackgroundDrawable(
                 new ColorDrawable(
                         getResources().getColor(R.color.apptheme_primary)
                 )
@@ -92,7 +92,7 @@ public class MainActivity extends Activity
     }
 
     public void restoreActionBar() {
-        ActionBar actionBar = getActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);

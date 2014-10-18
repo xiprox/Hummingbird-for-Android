@@ -1,13 +1,13 @@
 package tr.bcxip.hummingbird;
 
 import android.annotation.TargetApi;
-import android.app.ActionBar;
-import android.app.Activity;
+import android.support.v7.app.ActionBar;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.graphics.Palette;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.manuelpeinado.fadingactionbar.FadingActionBarHelper;
+import com.manuelpeinado.fadingactionbar.extras.actionbarcompat.FadingActionBarHelper;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -28,7 +28,7 @@ import tr.bcxip.hummingbird.utils.CircleTransformation;
 /**
  * Created by Hikari on 10/11/14.
  */
-public class FeedAnimeDetails extends Activity {
+public class FeedAnimeDetails extends ActionBarActivity {
 
     public static final String ARG_STORY = "mStory";
     public static final String ARG_USERNAME = "username";
@@ -57,7 +57,7 @@ public class FeedAnimeDetails extends Activity {
         storyId = getIntent().getStringExtra(ARG_STORY);
         username = getIntent().getStringExtra(ARG_USERNAME);
 
-        mActionBar = getActionBar();
+        mActionBar = getSupportActionBar();
 
         new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }

@@ -1,7 +1,6 @@
 package tr.bcxip.hummingbird;
 
-import android.app.ActionBar;
-import android.app.Activity;
+import android.support.v7.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -15,7 +14,9 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.graphics.Palette;
+import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,11 +30,10 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.RatingBar;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.manuelpeinado.fadingactionbar.FadingActionBarHelper;
+import com.manuelpeinado.fadingactionbar.extras.actionbarcompat.FadingActionBarHelper;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -52,7 +52,7 @@ import uk.me.lewisdeane.ldialogs.CustomDialog;
 /**
  * Created by Hikari on 10/8/14.
  */
-public class AnimeDetailsActivity extends Activity {
+public class AnimeDetailsActivity extends ActionBarActivity {
 
     public static final String ARG_ID = "arg_id";
 
@@ -86,10 +86,10 @@ public class AnimeDetailsActivity extends Activity {
     Spinner mStatusSpinner;
     LinearLayout mEpisodesHolder;
     TextView mEpisodes;
-    Switch mRewatching;
+    SwitchCompat mRewatching;
     LinearLayout mRewatchedTimesHolder;
     TextView mRewatchedTimes;
-    Switch mPrivate;
+    SwitchCompat mPrivate;
     RatingBar mRatingBar;
     TextView mRatingSimple;
 
@@ -111,7 +111,7 @@ public class AnimeDetailsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mActionBar = getActionBar();
+        mActionBar = getSupportActionBar();
         api = new HummingbirdApi(this);
         prefMan = new PrefManager(this);
 
@@ -235,6 +235,8 @@ public class AnimeDetailsActivity extends Activity {
                     true
             );
 
+            Log.d("ASDASD", "DONE");
+
             dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialogInterface) {
@@ -316,10 +318,10 @@ public class AnimeDetailsActivity extends Activity {
                 mStatusSpinner = (Spinner) findViewById(R.id.anime_details_status_spinner);
                 mEpisodesHolder = (LinearLayout) findViewById(R.id.anime_details_library_episodes_holder);
                 mEpisodes = (TextView) findViewById(R.id.anime_details_library_episodes);
-                mRewatching = (Switch) findViewById(R.id.anime_details_library_rewatching);
+                mRewatching = (SwitchCompat) findViewById(R.id.anime_details_library_rewatching);
                 mRewatchedTimesHolder = (LinearLayout) findViewById(R.id.anime_details_library_rewatched_holder);
                 mRewatchedTimes = (TextView) findViewById(R.id.anime_details_library_rewatched);
-                mPrivate = (Switch) findViewById(R.id.anime_details_library_private);
+                mPrivate = (SwitchCompat) findViewById(R.id.anime_details_library_private);
                 mRatingBar = (RatingBar) findViewById(R.id.anime_details_library_rating);
                 mRatingSimple = (TextView) findViewById(R.id.anime_deatails_library_rating_simple);
 

@@ -2,6 +2,7 @@
 <resources>
 
     <color name="apptheme_primary">#ff5722</color>
+    <color name="apptheme_primary_disabled">#80ff5722</color>
     <color name="apptheme_primary_dark">#e64a19</color>
     <color name="apptheme_accent">@android:color/white</color>
 
@@ -51,7 +52,7 @@
 
     <color name="flat_button_bg">#EBEBEB</color>
     <color name="button_disabled">#ffab40</color>
-    <color name="error_color">#dd191d</color>
+    <color name="error_color">#ffdd0200</color>
 
     <!-- List -->
     <color name="list_selected">#EBEBEB</color>

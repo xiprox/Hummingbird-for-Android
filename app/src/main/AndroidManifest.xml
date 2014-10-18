@@ -46,7 +46,7 @@
         <activity
             android:name=".AnimeDetailsActivity"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.DetailsActivity">
+            android:theme="@style/AppTheme_DetailsActivity">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

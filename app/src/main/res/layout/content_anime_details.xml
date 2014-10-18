@@ -103,10 +103,10 @@
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
-            <Switch
+            <android.support.v7.widget.SwitchCompat
                 android:id="@+id/anime_details_library_rewatching"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
                 android:textOff=""
                 android:textOn="" />
         </LinearLayout>
@@ -161,7 +161,7 @@
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
-            <Switch
+            <android.support.v7.widget.SwitchCompat
                 android:id="@+id/anime_details_library_private"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

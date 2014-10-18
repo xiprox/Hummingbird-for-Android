@@ -1,7 +1,6 @@
 package tr.bcxip.hummingbird;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,6 +8,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.graphics.Palette;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -175,7 +176,7 @@ public class ProfileFragment extends Fragment {
                         .setBackgroundDrawable(new ColorDrawable(vibrantColor));
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                    ((Activity) context).getWindow().setStatusBarColor(vibrantColor);
+                    ((ActionBarActivity) context).getWindow().setStatusBarColor(vibrantColor);
 
                 mCover.setImageBitmap(coverBitmap);
 

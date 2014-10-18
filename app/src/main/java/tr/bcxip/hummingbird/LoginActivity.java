@@ -1,33 +1,29 @@
 package tr.bcxip.hummingbird;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Point;
-import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import retrofit.RetrofitError;
 import tr.bcxip.hummingbird.api.HummingbirdApi;
-import tr.bcxip.hummingbird.api.Results;
 import tr.bcxip.hummingbird.managers.PrefManager;
 
 /**
  * Created by mhca on 10/10/2014.
  */
-public class LoginActivity extends Activity {
+public class LoginActivity extends ActionBarActivity {
+
+    private static final String TAG = "Login Activity";
 
     HummingbirdApi api;
     PrefManager prefMan;
@@ -38,13 +34,13 @@ public class LoginActivity extends Activity {
     Button mSignIn;
     Button mSignUp;
     Button mHelp;
-    //ProgressBar mProgressBar;
+    ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        getActionBar().hide();
+        getSupportActionBar().hide();
 
         api = new HummingbirdApi(this);
         prefMan = new PrefManager(this);
@@ -55,9 +51,7 @@ public class LoginActivity extends Activity {
         mSignUp = (Button) findViewById(R.id.btn_new);
         mHelp = (Button) findViewById(R.id.btn_help);
         mErrorMessage = (TextView) findViewById(R.id.error_text);
-        //mProgressBar = (ProgressBar) findViewById(R.id.login_progress_bar);
-
-
+        mProgressBar = (ProgressBar) findViewById(R.id.login_progress_bar);
 
         mSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,6 +107,7 @@ public class LoginActivity extends Activity {
             }
         });
     }
+
     //1 help, 2 sign up
     public void sendLink(int i) {
         switch (i) {
@@ -128,10 +123,10 @@ public class LoginActivity extends Activity {
     }
 
     public void updateState() {
-        if (mUsername.getText().toString().length() != 0 ){
-            if(mPassword.getText().toString().length() != 0 ){
+        if (mUsername.getText().toString().length() != 0) {
+            if (mPassword.getText().toString().length() != 0) {
                 mSignIn.setEnabled(true);
-            }else{
+            } else {
                 mSignIn.setEnabled(false);
             }
         }
@@ -147,9 +142,10 @@ public class LoginActivity extends Activity {
 
         @Override
         protected void onPreExecute() {
+
             super.onPreExecute();
-            //mProgressBar.setVisibility(View.VISIBLE);
-            //mMessageHolder.setVisibility(View.GONE);
+            mProgressBar.setVisibility(View.VISIBLE);
+            mErrorMessage.setVisibility(View.GONE);
         }
 
         @Override
@@ -162,8 +158,7 @@ public class LoginActivity extends Activity {
 
                 return RESULT_SUCCESS;
             } catch (RetrofitError e) {
-                Log.e("AUTHENTICATION ERROR", e.getMessage());
-                return e.getMessage();
+                return e.getMessage() + "";
             }
         }
 
@@ -171,9 +166,7 @@ public class LoginActivity extends Activity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
-            //mProgressBar.setVisibility(View.GONE);
-
-            //int red = getResources().getColor(android.R.color.holo_red_dark);
+            mProgressBar.setVisibility(View.INVISIBLE);
 
             if (result.equals(RESULT_SUCCESS)) {
                 /* Store the token for later use */
@@ -188,13 +181,22 @@ public class LoginActivity extends Activity {
             } else if (result.contains(RESULT_UNABLE_TO_RESOLVE_HOST)) {
                 mErrorMessage.setText(R.string.error_connection);
                 mErrorMessage.setVisibility(View.VISIBLE);
+            } else if (result.contains("522")) {
+                mErrorMessage.setText(R.string.error_cant_connect_to_server);
+                mErrorMessage.setVisibility(View.VISIBLE);
+            } else if (result.contains("504")) {
+                mErrorMessage.setText(R.string.error_gateway_timeout);
+                mErrorMessage.setVisibility(View.VISIBLE);
+            } else {
+                mErrorMessage.setText(R.string.error);
+                mErrorMessage.setVisibility(View.VISIBLE);
             }
         }
     }
 
     @Override
-    public  boolean onKeyDown(int keyCode, KeyEvent event){
-        if((keyCode == KeyEvent.KEYCODE_BACK)){
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
             // TODO - Exit Application
         }
         return super.onKeyDown(keyCode, event);

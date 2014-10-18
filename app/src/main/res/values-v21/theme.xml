@@ -1,33 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="android:Theme.Material.Light.DarkActionBar">
-        <item name="android:windowBackground">@color/window_background</item>
-        <item name="android:actionModeBackground">@color/apptheme_primary</item>
-        <item name="android:colorPrimary">@color/apptheme_primary</item>
-        <item name="android:colorPrimaryDark">@color/apptheme_primary_dark</item>
-        <item name="android:colorAccent">@color/apptheme_primary</item>
+    <style name="AppTheme_Login" parent="Theme.AppCompat">
         <item name="android:windowContentOverlay">@null</item>
-    </style>
-
-    <style name="AppTheme.DetailsActivity" parent="AppTheme">
-        <item name="android:windowActionBarOverlay">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-    </style>
-
-    <style name="AppTheme_FeedAnimeDetailsActivity" parent="AppTheme">
-        <item name="android:windowActionBarOverlay">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-    </style>
-
-    <style name="AppTheme_Login" parent="AppTheme">
-        <item name="android:actionBarStyle">@style/AppTheme_Login_ActionBar</item>
-        <item name="android:windowActionBarOverlay">true</item>
-        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:statusBarColor">@color/apptheme_primary_dark</item>
+        <item name="android:navigationBarColor">@color/apptheme_primary_dark</item>
         <item name="android:homeAsUpIndicator">@android:color/transparent</item>
     </style>
 
-    <style name="AppTheme_Login_ActionBar" parent="android:Widget.Material.ActionBar.Solid">
-        <item name="android:background">@android:color/transparent</item>
-    </style>
 </resources>

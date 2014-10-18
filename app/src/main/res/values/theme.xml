@@ -1,30 +1,18 @@
 <resources>
 
-    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowBackground">@color/window_background</item>
-        <item name="android:actionBarStyle">@style/AppTheme_ActionBar</item>
-        <item name="android:actionBarSize">@dimen/action_bar_height</item>
+        <item name="android:actionModeBackground">@color/apptheme_primary</item>
+        <item name="colorPrimary">@color/apptheme_primary</item>
+        <item name="android:colorPrimary">@color/apptheme_primary</item>
+        <item name="colorPrimaryDark">@color/apptheme_primary_dark</item>
+        <item name="android:colorPrimaryDark">@color/apptheme_primary_dark</item>
+        <item name="colorAccent">@color/apptheme_primary</item>
+        <item name="android:colorAccent">@color/apptheme_primary</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="android:homeAsUpIndicator">@drawable/ic_ab_up_compat</item>
-        <item name="android:actionOverflowButtonStyle">@style/AppTheme_ActionBar_Overflow</item>
     </style>
 
-    <style name="AppTheme_ActionBar" parent="android:Widget.Holo.ActionBar.Solid">
-        <item name="android:background">@color/apptheme_primary</item>
-        <item name="android:icon">@drawable/actionbar_icon_placeholder_compat</item>
-        <item name="android:titleTextStyle">@style/AppTheme_ActionBar_Title</item>
-    </style>
-
-    <style name="AppTheme_ActionBar_Title" parent="android:TextAppearance.Holo.Widget.ActionBar.Title">
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">20sp</item>
-    </style>
-
-    <style name="AppTheme_ActionBar_Overflow" parent="android:Widget.ActionButton.Overflow">
-        <item name="android:src">@drawable/ic_ab_overflow_compat</item>
-    </style>
-
-    <style name="AppTheme.DetailsActivity" parent="AppTheme">
+    <style name="AppTheme_DetailsActivity" parent="AppTheme">
         <item name="android:windowActionBarOverlay">true</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
@@ -35,14 +23,10 @@
     </style>
 
     <style name="AppTheme_Login" parent="AppTheme">
-        <item name="android:actionBarStyle">@style/AppTheme_Login_ActionBar</item>
         <item name="android:windowActionBarOverlay">true</item>
         <item name="android:windowContentOverlay">@null</item>
+        <item name="colorAccent">@android:color/white</item>
         <item name="android:homeAsUpIndicator">@android:color/transparent</item>
-    </style>
-
-    <style name="AppTheme_Login_ActionBar" parent="android:Widget.Holo.ActionBar.Solid">
-        <item name="android:background">@android:color/transparent</item>
     </style>
 
 </resources>
