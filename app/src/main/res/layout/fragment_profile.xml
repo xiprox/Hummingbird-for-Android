@@ -14,11 +14,13 @@
             android:layout_height="match_parent"
             android:inAnimation="@android:anim/fade_in"
             android:outAnimation="@android:anim/fade_out">
+            <!--
 
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                        <ProgressBar
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center" />
+            -->
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -106,7 +108,7 @@
                     <LinearLayout
                         android:id="@+id/profile_waifu_holder"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="36dp"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
                         android:gravity="center_vertical"
@@ -121,7 +123,9 @@
                             android:id="@+id/profile_waifu"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="24dp"
+                            android:layout_marginLeft="16dp"
+                            android:background="@drawable/selector_dark"
+                            android:padding="8dp"
                             android:text="waifu or husbando"
                             android:textAllCaps="true"
                             android:textColor="@color/text_gray_light"
@@ -131,10 +135,9 @@
                     <LinearLayout
                         android:id="@+id/profile_location_holder"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="36dp"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
-                        android:layout_marginTop="16dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
@@ -147,8 +150,10 @@
                             android:id="@+id/profile_location"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="24dp"
+                            android:layout_marginLeft="16dp"
                             android:text="location"
+                            android:background="@drawable/selector_dark"
+                            android:padding="8dp"
                             android:textAllCaps="true"
                             android:textColor="@color/text_gray_light"
                             android:textStyle="bold" />
@@ -157,10 +162,9 @@
                     <LinearLayout
                         android:id="@+id/profile_website_holder"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="36dp"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
-                        android:layout_marginTop="16dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
@@ -173,7 +177,9 @@
                             android:id="@+id/profile_website"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="24dp"
+                            android:layout_marginLeft="16dp"
+                            android:background="@drawable/selector_dark"
+                            android:padding="8dp"
                             android:text="website"
                             android:textAllCaps="true"
                             android:textColor="@color/text_gray_light"
@@ -182,10 +188,9 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="36dp"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
-                        android:layout_marginTop="16dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
