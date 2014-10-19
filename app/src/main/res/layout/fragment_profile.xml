@@ -14,13 +14,11 @@
             android:layout_height="match_parent"
             android:inAnimation="@android:anim/fade_in"
             android:outAnimation="@android:anim/fade_out">
-            <!--
 
-                        <ProgressBar
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center" />
-            -->
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -151,9 +149,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
-                            android:text="location"
                             android:background="@drawable/selector_dark"
                             android:padding="8dp"
+                            android:text="location"
                             android:textAllCaps="true"
                             android:textColor="@color/text_gray_light"
                             android:textStyle="bold" />

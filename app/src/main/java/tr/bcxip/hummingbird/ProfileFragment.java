@@ -70,7 +70,7 @@ public class ProfileFragment extends Fragment {
 
     ViewFlipper mFlipper;
 
-    int     vibrantColor;
+    int vibrantColor;
 
     LoadTask loadTask;
 
