@@ -34,14 +34,6 @@ public class MainActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         prefMan = new PrefManager(this);
 
-        /**
-         * Check if the user's authenticated. If not, send them to login...
-         */
-        if (!prefMan.isAuthenticated()) {
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
-        }
-
         setContentView(R.layout.activity_main);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -50,14 +42,22 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
+        /**
+         * Check if the user's authenticated. If not, send them to login...
+         */
+        if (!prefMan.isAuthenticated()) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        } else {
+            mNavigationDrawerFragment.setUp(
+                    R.id.navigation_drawer,
+                    (DrawerLayout) findViewById(R.id.drawer_layout));
+        }
+
         if (savedInstanceState != null) {
             mTitle = savedInstanceState.getString(STATE_ACTIONBAR_TITLE);
             setTitle(mTitle.toString());
         }
-
-        mNavigationDrawerFragment.setUp(
-                R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
