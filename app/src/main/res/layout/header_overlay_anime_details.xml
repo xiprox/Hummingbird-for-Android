@@ -25,9 +25,9 @@
             android:id="@+id/header_anime_details_favorited"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="56dp"
@@ -54,6 +54,7 @@
             android:background="@drawable/selector_light_no_mask"
             android:padding="16dp"
             android:src="@drawable/ic_trash"
-            android:tint="@android:color/white" />
+            android:tint="@android:color/white"
+            android:visibility="gone" />
     </RelativeLayout>
 </RelativeLayout>
