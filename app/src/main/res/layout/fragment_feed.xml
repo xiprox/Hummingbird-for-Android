@@ -28,7 +28,7 @@
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
                 android:divider="@android:color/transparent"
-                android:dividerHeight="4dp"
+                android:dividerHeight="8dp"
                 android:listSelector="@android:color/transparent"
                 android:padding="8dp"
                 android:scrollbarStyle="outsideOverlay" />
