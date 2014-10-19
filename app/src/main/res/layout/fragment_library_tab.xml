@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/neutral_darker"
-            android:columnWidth="190dp"
+            android:columnWidth="160dp"
             android:drawSelectorOnTop="true"
             android:fastScrollEnabled="true"
             android:horizontalSpacing="0dp"

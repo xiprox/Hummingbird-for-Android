@@ -238,7 +238,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:columnWidth="190dp"
+                    android:columnWidth="160dp"
                     android:drawSelectorOnTop="true"
                     android:horizontalSpacing="0dp"
                     android:listSelector="@drawable/selector_light_no_mask"
