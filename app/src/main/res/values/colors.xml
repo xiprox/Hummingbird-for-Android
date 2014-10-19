@@ -13,6 +13,7 @@
     <color name="text_gray">#656565</color>
     <color name="text_gray_light">#858585</color>
     <color name="text_dark">#99000000</color>
+    <color name="text_light">#ccffffff</color>
 
     <color name="divider">#507a7a7a</color>
     <color name="divider_light">#307a7a7a</color>

@@ -9,6 +9,6 @@
     android:singleLine="true"
     android:textAlignment="inherit"
     android:textAllCaps="true"
-    android:textColor="@color/text_dark"
+    android:textColor="@color/text_light"
     android:textSize="14sp"
     android:textStyle="bold" />
