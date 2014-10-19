@@ -1,6 +1,5 @@
 package tr.bcxip.hummingbird;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -172,7 +171,7 @@ public class ProfileFragment extends Fragment {
             super.onPostExecute(result);
 
             if (result.equals(Results.RESULT_SUCCESS)) {
-                ((Activity) context).getActionBar()
+                ((ActionBarActivity) context).getSupportActionBar()
                         .setBackgroundDrawable(new ColorDrawable(vibrantColor));
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)

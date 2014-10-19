@@ -1,6 +1,5 @@
 package tr.bcxip.hummingbird;
 
-import android.support.v7.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -14,6 +13,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.SwitchCompat;
@@ -115,6 +115,8 @@ public class AnimeDetailsActivity extends ActionBarActivity {
         api = new HummingbirdApi(this);
         prefMan = new PrefManager(this);
 
+        mActionBar.setDisplayHomeAsUpEnabled(true);
+
         ANIME_ID = getIntent().getStringExtra(ARG_ID);
         new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, true);
     }
@@ -160,7 +162,7 @@ public class AnimeDetailsActivity extends ActionBarActivity {
     }
 
     @Override
-    public boolean onNavigateUp() {
+    public boolean onSupportNavigateUp() {
         super.onBackPressed();
         return true;
     }
@@ -287,7 +289,7 @@ public class AnimeDetailsActivity extends ActionBarActivity {
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                     getWindow().setStatusBarColor(vibrantSwatch != null ?
-                        vibrantSwatch.getRgb() : getResources().getColor(R.color.apptheme_primary));
+                            vibrantSwatch.getRgb() : getResources().getColor(R.color.apptheme_primary));
 
                 mActionBarHelper = new FadingActionBarHelper()
                         .actionBarBackground(vibrantSwatch == null ? new ColorDrawable(R.color.neutral)

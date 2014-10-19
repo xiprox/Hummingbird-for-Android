@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme_Login" parent="Theme.AppCompat">
-        <item name="android:windowContentOverlay">@null</item>
+    <style name="AppTheme_Login" parent="AppTheme_NoActionBar">
+        <item name="android:windowBackground">@color/apptheme_primary_dark</item>
+        <item name="colorAccent">@android:color/white</item>
         <item name="android:statusBarColor">@color/apptheme_primary_dark</item>
         <item name="android:navigationBarColor">@color/apptheme_primary_dark</item>
-        <item name="android:homeAsUpIndicator">@android:color/transparent</item>
     </style>
 
 </resources>

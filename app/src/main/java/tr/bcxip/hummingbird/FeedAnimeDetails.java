@@ -1,12 +1,12 @@
 package tr.bcxip.hummingbird;
 
 import android.annotation.TargetApi;
-import android.support.v7.app.ActionBar;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.graphics.Palette;
 import android.view.View;
@@ -58,6 +58,7 @@ public class FeedAnimeDetails extends ActionBarActivity {
         username = getIntent().getStringExtra(ARG_USERNAME);
 
         mActionBar = getSupportActionBar();
+        mActionBar.setDisplayHomeAsUpEnabled(true);
 
         new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
@@ -175,7 +176,7 @@ public class FeedAnimeDetails extends ActionBarActivity {
     }
 
     @Override
-    public boolean onNavigateUp() {
+    public boolean onSupportNavigateUp() {
         super.onBackPressed();
         return true;
     }
