@@ -1,5 +1,7 @@
 package tr.bcxip.hummingbird.api.objects;
 
+import tr.bcxip.hummingbird.utils.Utils;
+
 /**
  * Created by Hikari on 10/9/14.
  */
@@ -27,11 +29,11 @@ public class Favorite {
         return item_type;
     }
 
-    public String getCreatedAt() {
-        return created_at;
+    public long getCreatedAt() {
+        return Utils.getTimestampFromISO8601(created_at);
     }
 
-    public String getUpdatedAt() {
-        return updated_at;
+    public long getUpdatedAt() {
+        return Utils.getTimestampFromISO8601(updated_at);
     }
 }

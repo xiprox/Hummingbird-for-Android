@@ -23,6 +23,8 @@ import tr.bcxip.hummingbird.R;
 import tr.bcxip.hummingbird.api.objects.Story;
 import tr.bcxip.hummingbird.api.objects.Substory;
 import tr.bcxip.hummingbird.utils.CircleTransformation;
+import tr.bcxip.hummingbird.utils.Utils;
+import tr.bcxip.hummingbird.widget.RelativeTimeTextView;
 
 /**
  * Created by Hikari on 10/11/14.
@@ -60,7 +62,7 @@ public class FeedAdapter extends ArrayAdapter<Story> {
         if (storyType.equals(Story.STORY_TYPE_COMMENT)) {
             ImageView mAvatar = (ImageView) rootView.findViewById(R.id.item_story_comment_avatar);
             TextView mUsername = (TextView) rootView.findViewById(R.id.item_story_comment_username);
-            TextView mTime = (TextView) rootView.findViewById(R.id.item_story_comment_time);
+            RelativeTimeTextView mTime = (RelativeTimeTextView) rootView.findViewById(R.id.item_story_comment_time);
             TextView mText = (TextView) rootView.findViewById(R.id.item_story_comment_text);
 
             /* The following 2 won't be used until we find out how to obtain the necessary data */
@@ -76,7 +78,7 @@ public class FeedAdapter extends ArrayAdapter<Story> {
 
             for (Substory substory : item.getSubstories()) {
                 if (substory.getSubstoryType().equals(Substory.SUBSTORY_TYPE_COMMENT)) {
-                    mTime.setText(substory.getCreatedAt()); // TODO - parse timestamp
+                    mTime.setReferenceTime(substory.getCreatedAt());
                     mText.setText(substory.getComment());
                 }
             }
@@ -133,9 +135,8 @@ public class FeedAdapter extends ArrayAdapter<Story> {
             ((TextView) view.findViewById(R.id.item_substory_username))
                     .setText(item.getUser().getName());
 
-            // TODO - parse timestamp
-            ((TextView) view.findViewById(R.id.item_substory_time))
-                    .setText(substory.getCreatedAt());
+            ((RelativeTimeTextView) view.findViewById(R.id.item_substory_time))
+                    .setReferenceTime(substory.getCreatedAt());
 
             if (substory.getSubstoryType().equals(Substory.SUBSTORY_TYPE_WATCHED_EPISODE)) {
                 String textToSet = getString(R.string.content_watched_episode)

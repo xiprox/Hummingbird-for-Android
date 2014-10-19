@@ -2,6 +2,8 @@ package tr.bcxip.hummingbird.api.objects;
 
 import com.google.gson.annotations.SerializedName;
 
+import tr.bcxip.hummingbird.utils.Utils;
+
 /**
  * Created by Hikari on 10/8/14.
  */
@@ -25,8 +27,8 @@ public class LibraryEntry {
         return episodes_watched;
     }
 
-    public String getLastWatched() {
-        return last_watched; // TODO - Properly parse into a timestamp
+    public long getLastWatched() {
+        return Utils.getTimestampFromISO8601(last_watched);
     }
 
     public int getNumberOfRewatches() {

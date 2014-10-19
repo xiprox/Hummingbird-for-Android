@@ -36,6 +36,9 @@ import android.widget.Toast;
 import com.manuelpeinado.fadingactionbar.extras.actionbarcompat.FadingActionBarHelper;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -361,22 +364,60 @@ public class AnimeDetailsActivity extends ActionBarActivity {
                 }
                 mGenre.setText(genres);
 
-                mEpisodeCount.setText(anime.getEpisodeCount() + "");
+                int episodeCount = anime.getEpisodeCount();
+                mEpisodeCount.setText(episodeCount != 0 ? episodeCount + "" :
+                        getString(R.string.content_unknown));
 
                 mEpisodeLength.setText(anime.getEpisodeLength() + " " + getString(R.string.content_minutes));
 
                 mAgeRating.setText(anime.getAgeRating());
 
-                String finishDate = String.valueOf(anime.getAiringFinishedDate());
-                if (finishDate.equals("null"))
-                    finishDate = getResources().getString(R.string.finish_date);
-                mAired.setText(anime.getAiringStartDate() + " - " + finishDate);
+                SimpleDateFormat airDateFormat = new SimpleDateFormat("d MMMM yyyy");
+
+                long airStart = anime.getAiringStartDate();
+                long airEnd = anime.getAiringFinishedDate();
+
+                Date airStartDate = new Date(airStart);
+                Date airEndDate = new Date(airEnd);
+
+                Calendar todayCal = Calendar.getInstance();
+
+                Calendar airStartCal = Calendar.getInstance();
+                airStartCal.setTime(airStartDate);
+
+                if (airStart == 0 && airEnd == 0)
+                    mAired.setText(R.string.content_not_yet_aired);
+
+                if (airStart == 0 && airEnd != 0)
+                    mAired.setText(getString(R.string.content_unknown) + " " + getString(R.string.to)
+                            + " " + airDateFormat.format(airEnd));
+
+                if (airStart != 0 && airEnd == 0) {
+                    if (anime.getEpisodeCount() == 1)
+                        mAired.setText(airDateFormat.format(airStart));
+                    else
+                        mAired.setText(getString(R.string.content_airing_since) + " "
+                                + airDateFormat.format(airStart));
+                }
+
+                if (airStart != 0 && airEnd != 0)
+                    mAired.setText(airDateFormat.format(airStart) + " " + getString(R.string.to)
+                            + " " + airDateFormat.format(airEnd));
+
+                if (airStartCal.get(Calendar.YEAR) > todayCal.get(Calendar.YEAR)) {
+                    if (anime.getEpisodeCount() == 1)
+                        mAired.setText(getString(R.string.content_will_air_on) + " "
+                                + airDateFormat.format(airStart));
+                    else
+                        mAired.setText(getString(R.string.content_will_start_airing_on) + " "
+                                + airDateFormat.format(airStart));
+                }
 
                 String comRating = String.valueOf(anime.getCommunityRating());
                 if (comRating.length() > 3)
                     comRating = comRating.substring(0, 4);
                 else if (comRating.equals("0.0"))
-                    comRating = getResources().getString(R.string.not_rated);
+                    comRating = getResources().getString(R.string.content_not_yet_rated);
                 mCommunityRating.setText(comRating);
 
                 mSynopsis.setText(anime.getSynopsis());

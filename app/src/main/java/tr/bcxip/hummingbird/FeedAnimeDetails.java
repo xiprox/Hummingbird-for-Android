@@ -24,6 +24,7 @@ import tr.bcxip.hummingbird.api.HummingbirdApi;
 import tr.bcxip.hummingbird.api.objects.Story;
 import tr.bcxip.hummingbird.api.objects.Substory;
 import tr.bcxip.hummingbird.utils.CircleTransformation;
+import tr.bcxip.hummingbird.widget.RelativeTimeTextView;
 
 /**
  * Created by Hikari on 10/11/14.
@@ -125,7 +126,7 @@ public class FeedAnimeDetails extends ActionBarActivity {
                     ImageView mAvatar = (ImageView) view.findViewById(R.id.item_substory_avatar);
                     TextView mUsername = (TextView) view.findViewById(R.id.item_substory_username);
                     TextView mText = (TextView) view.findViewById(R.id.item_substory_text);
-                    TextView mTime = (TextView) view.findViewById(R.id.item_substory_time);
+                    RelativeTimeTextView mTime = (RelativeTimeTextView) view.findViewById(R.id.item_substory_time);
 
                     Picasso.with(FeedAnimeDetails.this)
                             .load(mStory.getUser().getAvatar())
@@ -163,7 +164,7 @@ public class FeedAnimeDetails extends ActionBarActivity {
                         mText.setText(textToSet);
                     }
 
-                    mTime.setText(substory.getCreatedAt()); // TODO - parsing
+                    mTime.setReferenceTime(substory.getCreatedAt());
 
                     mSubstories.addView(view);
                 }

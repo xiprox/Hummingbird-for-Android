@@ -2,6 +2,8 @@ package tr.bcxip.hummingbird.api.objects;
 
 import java.util.List;
 
+import tr.bcxip.hummingbird.utils.Utils;
+
 /**
  * Created by Hikari on 10/8/14.
  */
@@ -60,12 +62,12 @@ public class AnimeV2 {
         return type;
     }
 
-    public String getAiringStartDate() {
-        return started_airing; // TODO - parse into a timestamp
+    public long getAiringStartDate() {
+        return started_airing != null ? Utils.getTimestampFromAirDate(started_airing) : 0;
     }
 
-    public String getAiringFinishedDate() {
-        return finished_airing; // TODO - parse into a timestamp
+    public long getAiringFinishedDate() {
+        return finished_airing != null ? Utils.getTimestampFromAirDate(finished_airing) : 0;
     }
 
     public List<String> getSreencaps() {

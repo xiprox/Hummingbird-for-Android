@@ -46,7 +46,7 @@
                 android:textSize="16sp" />
         </LinearLayout>
 
-        <TextView
+        <tr.bcxip.hummingbird.widget.RelativeTimeTextView
             android:id="@+id/item_substory_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

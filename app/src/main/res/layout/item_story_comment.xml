@@ -34,7 +34,7 @@
                     android:textColor="@color/text_gray_dark"
                     android:textSize="18sp" />
 
-                <TextView
+                <tr.bcxip.hummingbird.widget.RelativeTimeTextView
                     android:id="@+id/item_story_comment_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

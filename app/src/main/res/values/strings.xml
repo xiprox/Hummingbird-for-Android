@@ -20,6 +20,8 @@
     <string name="updating">Updating</string>
     <string name="removing">Removing</string>
     <string name="please_wait___">Please wait…</string>
+    <string name="just_now">Just now</string>
+    <string name="to">to</string>
 
     <!-- Titles -->
     <string name="title_feed">Feed</string>
@@ -39,9 +41,13 @@
     <string name="content_rating">Rating</string>
     <string name="title_remove">Remove</string>
     <string name="content_remove_are_you_sure">Are you sure you\'d like to remove {anime-name} from your library?</string>
+    <string name="content_not_yet_aired">Not Yet Aired</string>
+    <string name="content_not_yet_rated">Not Yet Rated</string>
+    <string name="content_airing_since">Airing since</string>
+    <string name="content_will_air_on">Will air on</string>
+    <string name="content_will_start_airing_on">Will start airing on</string>
 
     <!-- Programatically -->
-    <string name="not_rated">Not Rated Yet</string>
     <string name="finish_date">Still Airing</string>
 
     <!-- Content -->

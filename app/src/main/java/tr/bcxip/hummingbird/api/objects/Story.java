@@ -3,6 +3,8 @@ package tr.bcxip.hummingbird.api.objects;
 import java.io.Serializable;
 import java.util.List;
 
+import tr.bcxip.hummingbird.utils.Utils;
+
 /**
  * Created by Hikari on 10/10/14.
  */
@@ -32,8 +34,8 @@ public class Story {
         return user;
     }
 
-    public String getUpdatedAt() {
-        return updated_at;
+    public long getUpdatedAt() {
+        return Utils.getTimestampFromISO8601(updated_at);
     }
 
     public boolean getSelfPost() {
