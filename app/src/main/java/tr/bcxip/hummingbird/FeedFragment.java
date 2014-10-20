@@ -21,7 +21,7 @@ import tr.bcxip.hummingbird.api.HummingbirdApi;
 import tr.bcxip.hummingbird.api.Results;
 import tr.bcxip.hummingbird.api.objects.Story;
 import tr.bcxip.hummingbird.managers.PrefManager;
-import tr.bcxip.hummingbird.widget.ErrorView;
+import tr.xip.widget.errorview.ErrorView;
 
 /**
  * Created by Hikari on 10/11/14.
