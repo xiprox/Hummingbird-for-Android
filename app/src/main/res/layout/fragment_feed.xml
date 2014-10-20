@@ -10,44 +10,36 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/feed_swipe_refresh"
+        <ViewFlipper
+            android:id="@+id/feed_view_flipper"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:inAnimation="@android:anim/fade_in"
+            android:outAnimation="@android:anim/fade_out">
 
-            <ViewFlipper
-                android:id="@+id/feed_view_flipper"
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+            <ListView
+                android:id="@+id/feed_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inAnimation="@android:anim/fade_in"
-                android:outAnimation="@android:anim/fade_out">
+                android:clipToPadding="false"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="8dp"
+                android:listSelector="@android:color/transparent"
+                android:padding="8dp"
+                android:scrollbarStyle="outsideOverlay" />
 
-                <ProgressBar
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center" />
-
-                <ListView
-                    android:id="@+id/feed_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clipToPadding="false"
-                    android:divider="@android:color/transparent"
-                    android:dividerHeight="8dp"
-                    android:listSelector="@android:color/transparent"
-                    android:padding="8dp"
-
-                    android:scrollbarStyle="outsideOverlay" />
-
-                <tr.xip.widget.errorview.ErrorView
-                    android:id="@+id/feed_error_view"
-                    app:ew_retryButtonTextColor="@color/apptheme_primary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center" />
-
-            </ViewFlipper>
-        </android.support.v4.widget.SwipeRefreshLayout>
+            <tr.xip.widget.errorview.ErrorView
+                android:id="@+id/feed_error_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:ew_retryButtonTextColor="@color/apptheme_primary" />
+        </ViewFlipper>
 
         <!-- For action bar shadow, don't remove -->
         <View
