@@ -21,11 +21,12 @@ import tr.bcxip.hummingbird.api.HummingbirdApi;
 import tr.bcxip.hummingbird.api.Results;
 import tr.bcxip.hummingbird.api.objects.Story;
 import tr.bcxip.hummingbird.managers.PrefManager;
+import tr.bcxip.hummingbird.widget.ErrorView;
 
 /**
  * Created by Hikari on 10/11/14.
  */
-public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, ErrorView.RetryListener {
 
     public static final String ARG_USERNAME = "username";
 
@@ -37,6 +38,7 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     ListView mList;
     ViewFlipper mFlipper;
+    ErrorView mErrorView;
     SwipeRefreshLayout mSwipeRefresh;
 
     List<Story> mItems;
@@ -59,6 +61,9 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         mList = (ListView) rootView.findViewById(R.id.feed_list);
         mFlipper = (ViewFlipper) rootView.findViewById(R.id.feed_view_flipper);
+
+        mErrorView = (ErrorView) rootView.findViewById(R.id.feed_error_view);
+        mErrorView.setOnRetryListener(this);
 
         mSwipeRefresh = (SwipeRefreshLayout) rootView.findViewById(R.id.feed_swipe_refresh);
         mSwipeRefresh.setOnRefreshListener(this);
@@ -101,34 +106,77 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         loadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    private class LoadTask extends AsyncTask<Void, Void, String> {
+    @Override
+    public void onRetry() {
+        if (loadTask != null && !loadTask.isCancelled())
+            loadTask.cancel(false);
+
+        loadTask = new LoadTask();
+        loadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private class LoadTask extends AsyncTask<Void, Void, Integer> {
+
+        RetrofitError.Kind errorKind;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             if (mSwipeRefresh != null) mSwipeRefresh.setRefreshing(true);
             if (mFlipper.getDisplayedChild() == 1) mFlipper.showPrevious();
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            try {
-                mItems = api.getFeed(username);
-                return Results.RESULT_SUCCESS;
-            } catch (RetrofitError e) {
-                Log.e(TAG, e.getMessage());
-                return e.getMessage();
+            if (mFlipper.getDisplayedChild() == 2) {
+                mFlipper.showPrevious();
+                mFlipper.showPrevious();
             }
         }
 
         @Override
-        protected void onPostExecute(String result) {
+        protected Integer doInBackground(Void... voids) {
+            try {
+                mItems = api.getFeed(username);
+                return Results.CODE_OK;
+            } catch (RetrofitError e) {
+                errorKind = e.getKind();
+
+                if (e.getKind() == RetrofitError.Kind.NETWORK) {
+                    Log.e(TAG, e.getMessage());
+                    return Results.CODE_NETWORK_ERROR;
+                } else if (e.getKind() == RetrofitError.Kind.HTTP) {
+                    Log.e(TAG, e.getMessage());
+                    return e.getResponse().getStatus();
+                } else {
+                    Log.e(TAG, e.getMessage());
+                    return Results.CODE_UNKNOWN;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return Results.CODE_UNKNOWN;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
 
-            if (result.equals(Results.RESULT_SUCCESS))
+            if (result == Results.CODE_OK) {
                 mList.setAdapter(new FeedAdapter(context, R.layout.item_story_comment, mItems, username));
+                if (mFlipper.getDisplayedChild() == 0) mFlipper.showNext();
+            } else {
+                if (errorKind == RetrofitError.Kind.HTTP)
+                    mErrorView.setError(result);
+                else if (errorKind == RetrofitError.Kind.NETWORK)
+                    mErrorView.setErrorDetail(R.string.error_connection);
+                else
+                    mErrorView.setErrorDetail(R.string.error_unknown);
 
-            if (mFlipper.getDisplayedChild() == 0) mFlipper.showNext();
+                if (mFlipper.getDisplayedChild() == 0) {
+                    mFlipper.showNext();
+                    mFlipper.showNext();
+                }
+                if (mFlipper.getDisplayedChild() == 1)
+                    mFlipper.showNext();
+            }
+
             if (mSwipeRefresh != null) mSwipeRefresh.setRefreshing(false);
         }
     }

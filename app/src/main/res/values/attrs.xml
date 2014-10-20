@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="ErrorView">
+        <attr name="ew_errorTitle" format="string" />
+        <attr name="ew_errorDetail" format="string" />
+        <attr name="ew_errorImage" format="reference" />
+        <attr name="ew_errorImageHeight" format="dimension" />
+        <attr name="ew_errorImageWidth" format="dimension" />
+        <attr name="ew_showTitle" format="boolean" />
+        <attr name="ew_showDetail" format="boolean" />
+        <attr name="ew_showRetryButton" format="boolean" />
+        <attr name="ew_retryButtonBackground" format="reference" />
+        <attr name="ew_retryButtonTextColor" format="color" />
+    </declare-styleable>
+
     <declare-styleable name="RelativeTimeTextView">
         <attr name="relative_time_prefix" format="string" />
         <attr name="relative_time_suffix" format="string" />

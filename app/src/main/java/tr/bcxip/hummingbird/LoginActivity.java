@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import retrofit.RetrofitError;
 import tr.bcxip.hummingbird.api.HummingbirdApi;
+import tr.bcxip.hummingbird.api.Results;
 import tr.bcxip.hummingbird.managers.PrefManager;
 
 /**
@@ -133,10 +134,6 @@ public class LoginActivity extends ActionBarActivity {
 
     protected class AuthenticationTask extends AsyncTask<Void, Void, String> {
 
-        String RESULT_SUCCESS = "success";
-        String RESULT_UNAUTHORIZED = "401 Unauthorized";
-        String RESULT_UNABLE_TO_RESOLVE_HOST = "Unable to resolve host";
-
         String authToken;
 
         @Override
@@ -155,7 +152,7 @@ public class LoginActivity extends ActionBarActivity {
                         mPassword.getText().toString()
                 );
 
-                return RESULT_SUCCESS;
+                return Results.RESULT_SUCCESS;
             } catch (RetrofitError e) {
                 return e.getMessage() + "";
             }
@@ -167,23 +164,23 @@ public class LoginActivity extends ActionBarActivity {
 
             mProgressBar.setVisibility(View.INVISIBLE);
 
-            if (result.equals(RESULT_SUCCESS)) {
+            if (result.equals(Results.RESULT_SUCCESS)) {
                 /* Store the token for later use */
                 prefMan.setAuthToken(authToken);
                 prefMan.setUsername(mUsername.getText().toString());
 
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
-            } else if (result.equals(RESULT_UNAUTHORIZED)) {
+            } else if (result.equals(Results.RESULT_UNAUTHORIZED)) {
                 mErrorMessage.setText(R.string.error_invalid_credentials);
                 mErrorMessage.setVisibility(View.VISIBLE);
-            } else if (result.contains(RESULT_UNABLE_TO_RESOLVE_HOST)) {
+            } else if (result.contains(Results.RESULT_UNABLE_TO_RESOLVE_HOST)) {
                 mErrorMessage.setText(R.string.error_connection);
                 mErrorMessage.setVisibility(View.VISIBLE);
-            } else if (result.contains("522")) {
+            } else if (result.contains(Results.RESULT_522)) {
                 mErrorMessage.setText(R.string.error_cant_connect_to_server);
                 mErrorMessage.setVisibility(View.VISIBLE);
-            } else if (result.contains("504")) {
+            } else if (result.contains(Results.RESULT_504)) {
                 mErrorMessage.setText(R.string.error_gateway_timeout);
                 mErrorMessage.setVisibility(View.VISIBLE);
             } else {
