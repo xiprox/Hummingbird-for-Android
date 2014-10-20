@@ -15,6 +15,9 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import tr.bcxip.hummingbird.AnimeDetailsActivity;
@@ -121,7 +124,9 @@ public class FeedAdapter extends ArrayAdapter<Story> {
 
             mTitle.setText(item.getMedia().getTitle());
 
-            Substory substory = item.getSubstories().get(0);
+            List<Substory> sortedSubstories = Utils.sortSubstoriesByDate(item.getSubstories());
+
+            Substory substory = sortedSubstories.get(0);
 
             mSubstories.removeAllViews();
 

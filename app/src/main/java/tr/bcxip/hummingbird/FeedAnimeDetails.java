@@ -24,6 +24,7 @@ import tr.bcxip.hummingbird.api.HummingbirdApi;
 import tr.bcxip.hummingbird.api.objects.Story;
 import tr.bcxip.hummingbird.api.objects.Substory;
 import tr.bcxip.hummingbird.utils.CircleTransformation;
+import tr.bcxip.hummingbird.utils.Utils;
 import tr.bcxip.hummingbird.widget.RelativeTimeTextView;
 
 /**
@@ -120,7 +121,9 @@ public class FeedAnimeDetails extends ActionBarActivity {
 
                 mSubstories.removeAllViews();
 
-                for (Substory substory : mStory.getSubstories()) {
+                List<Substory> substoriesSorted = Utils.sortSubstoriesByDate(mStory.getSubstories());
+
+                for (Substory substory : substoriesSorted) {
                     View view = getLayoutInflater().inflate(R.layout.item_substory, null);
 
                     ImageView mAvatar = (ImageView) view.findViewById(R.id.item_substory_avatar);
