@@ -28,11 +28,6 @@
                     android:background="@color/apptheme_primary"
                     android:scaleType="centerCrop" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/gradient_bottom" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -47,15 +42,14 @@
                         <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:src="@drawable/oval_shape"
-                            android:tint="@android:color/white" />
+                            android:src="@drawable/oval_avatar"
+                            android:tint="@color/apptheme_primary" />
 
                         <ImageView
                             android:id="@+id/navigation_drawer_avatar"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_margin="2dp"
-                            android:background="@drawable/oval_shape"
                             android:scaleType="fitXY"
                             android:src="@drawable/avatar" />
                     </FrameLayout>
