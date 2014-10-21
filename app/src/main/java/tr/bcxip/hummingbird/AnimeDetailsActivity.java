@@ -548,7 +548,8 @@ public class AnimeDetailsActivity extends ActionBarActivity {
 
                     dialog.setCustomView(dialogView);
 
-                    mNumberPicker.setMaxValue(anime.getEpisodeCount());
+                    mNumberPicker.setMaxValue(anime.getEpisodeCount() != 0 ?
+                            anime.getEpisodeCount() : 1000);
                     mNumberPicker.setValue(newEpisodesWatched);
                     mNumberPicker.setWrapSelectorWheel(false);
 
