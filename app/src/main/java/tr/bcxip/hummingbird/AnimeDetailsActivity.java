@@ -477,7 +477,9 @@ public class AnimeDetailsActivity extends ActionBarActivity {
             mLibraryHolder.setVisibility(View.VISIBLE);
             mLibraryHolder.setBackgroundDrawable(new ColorDrawable(vibrantColor));
 
-            mEpisodes.setText(libraryEntry.getEpisodesWatched() + "/" + anime.getEpisodeCount());
+            final String animeEpisodeCount = anime.getEpisodeCount() != 0 ? anime.getEpisodeCount() + "" : "?";
+
+            mEpisodes.setText(libraryEntry.getEpisodesWatched() + "/" + animeEpisodeCount);
 
             mRewatching.setChecked(libraryEntry.isRewatching());
 
@@ -557,9 +559,9 @@ public class AnimeDetailsActivity extends ActionBarActivity {
                         @Override
                         public void onConfirmClick() {
                             newEpisodesWatched = mNumberPicker.getValue();
-                            mEpisodes.setText(newEpisodesWatched + "/" + anime.getEpisodeCount());
+                            mEpisodes.setText(newEpisodesWatched + "/" + animeEpisodeCount);
 
-                            if (newEpisodesWatched == anime.getEpisodeCount())
+                            if ((newEpisodesWatched + "").equals(animeEpisodeCount))
                                 mStatusSpinner.setSelection(2); // (completed)
 
                             updateUpdateButtonStatus(libraryEntry);

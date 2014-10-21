@@ -86,6 +86,9 @@ public class LibraryAdapter extends ArrayAdapter<LibraryEntry> {
 
         holder.title.setText(item.getAnime().getTitle());
 
+        String itemEpisodesCount = item.getAnime().getEpisodeCount() != 0 ?
+                item.getAnime().getEpisodeCount() + "" : "?";
+
         if (item.isRewatching()) {
             holder.desc.setText(getString(R.string.content_library_rewatching_at)
                     + " " + item.getEpisodesWatched()
@@ -95,7 +98,7 @@ public class LibraryAdapter extends ArrayAdapter<LibraryEntry> {
             if (status.equals(LibraryFragment.FILTER_CURRENTLY_WATCHING))
                 holder.desc.setText(getString(R.string.content_library_watching_at)
                         + " " + item.getEpisodesWatched()
-                        + "/" + item.getAnime().getEpisodeCount());
+                        + "/" + itemEpisodesCount);
             if (status.equals(LibraryFragment.FILTER_PLAN_TO_WATCH))
                 holder.desc.setText(getString(R.string.content_library_planning_to_watch));
             if (status.equals(LibraryFragment.FILTER_COMPLETED))
