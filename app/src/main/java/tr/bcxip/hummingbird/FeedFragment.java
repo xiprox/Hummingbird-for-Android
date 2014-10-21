@@ -150,8 +150,7 @@ public class FeedFragment extends Fragment implements ErrorView.RetryListener {
                 if (mFlipper.getDisplayedChild() == 0) {
                     mFlipper.showNext();
                     mFlipper.showNext();
-                }
-                if (mFlipper.getDisplayedChild() == 1)
+                } else if (mFlipper.getDisplayedChild() == 1)
                     mFlipper.showNext();
             }
         }

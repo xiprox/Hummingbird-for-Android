@@ -1,10 +1,10 @@
 package tr.bcxip.hummingbird;
 
-import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,11 +20,12 @@ import tr.bcxip.hummingbird.adapters.LibraryAdapter;
 import tr.bcxip.hummingbird.api.HummingbirdApi;
 import tr.bcxip.hummingbird.api.Results;
 import tr.bcxip.hummingbird.api.objects.LibraryEntry;
+import tr.xip.widget.errorview.ErrorView;
 
 /**
  * Created by Hikari on 10/14/14.
  */
-public class LibraryTabFragment extends Fragment {
+public class LibraryTabFragment extends Fragment implements ErrorView.RetryListener {
 
     private static final String TAG = "LIBRARY TAB FRAGMENT";
 
@@ -40,6 +41,7 @@ public class LibraryTabFragment extends Fragment {
 
     GridView mGrid;
     ViewFlipper mFlipper;
+    ErrorView mErrorView;
 
     String USERNAME;
     String FILTER;
@@ -64,6 +66,8 @@ public class LibraryTabFragment extends Fragment {
 
         mGrid = (GridView) rootView.findViewById(R.id.library_grid);
         mFlipper = (ViewFlipper) rootView.findViewById(R.id.library_flipper);
+        mErrorView = (ErrorView) rootView.findViewById(R.id.library_error_view);
+        mErrorView.setOnRetryListener(this);
 
         loadTask = new LoadTask();
         loadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -77,27 +81,58 @@ public class LibraryTabFragment extends Fragment {
         if (loadTask != null) loadTask.cancel(true);
     }
 
-    private class LoadTask extends AsyncTask<Void, Void, String> {
+    @Override
+    public void onRetry() {
+        if (loadTask != null && !loadTask.isCancelled())
+            loadTask.cancel(true);
+
+        loadTask = new LoadTask();
+        loadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private class LoadTask extends AsyncTask<Void, Void, Integer> {
+
+        RetrofitError.Kind errorKind;
 
         @Override
-        protected String doInBackground(Void... voids) {
-            try {
-                mLibrary = api.getLibrary(USERNAME, FILTER);
-                return Results.RESULT_SUCCESS;
-            } catch (RetrofitError e) {
-                Log.e(TAG, e.getMessage());
-                return e.getMessage();
-            } catch (Exception e) {
-                e.printStackTrace();
-                return Results.RESULT_EXCEPTION;
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (mFlipper.getDisplayedChild() == 1) mFlipper.showPrevious();
+            if (mFlipper.getDisplayedChild() == 2) {
+                mFlipper.showPrevious();
+                mFlipper.showPrevious();
             }
         }
 
         @Override
-        protected void onPostExecute(String result) {
+        protected Integer doInBackground(Void... voids) {
+            try {
+                mLibrary = api.getLibrary(USERNAME, FILTER);
+                return Results.CODE_OK;
+            } catch (RetrofitError e) {
+                errorKind = e.getKind();
+
+                if (e.getKind() == RetrofitError.Kind.NETWORK) {
+                    Log.e(TAG, e.getMessage());
+                    return Results.CODE_NETWORK_ERROR;
+                } else if (e.getKind() == RetrofitError.Kind.HTTP) {
+                    Log.e(TAG, e.getMessage());
+                    return e.getResponse().getStatus();
+                } else {
+                    Log.e(TAG, e.getMessage());
+                    return Results.CODE_UNKNOWN;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return Results.CODE_UNKNOWN;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
 
-            if (result.equals(Results.RESULT_SUCCESS)) {
+            if (result == Results.CODE_OK) {
                 mGrid.setAdapter(new LibraryAdapter(context, R.layout.item_library, mLibrary));
 
                 mGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -112,7 +147,18 @@ public class LibraryTabFragment extends Fragment {
 
                 if (mFlipper.getDisplayedChild() == 0) mFlipper.showNext();
             } else {
-                // TODO - Handle failure
+                if (errorKind == RetrofitError.Kind.HTTP)
+                    mErrorView.setError(result);
+                else if (errorKind == RetrofitError.Kind.NETWORK)
+                    mErrorView.setErrorDetail(R.string.error_connection);
+                else
+                    mErrorView.setErrorDetail(R.string.error_unknown);
+
+                if (mFlipper.getDisplayedChild() == 0) {
+                    mFlipper.showNext();
+                    mFlipper.showNext();
+                } else if (mFlipper.getDisplayedChild() == 1)
+                    mFlipper.showNext();
             }
         }
     }

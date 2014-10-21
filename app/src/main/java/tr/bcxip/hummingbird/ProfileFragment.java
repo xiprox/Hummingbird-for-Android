@@ -1,5 +1,6 @@
 package tr.bcxip.hummingbird;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -36,11 +37,12 @@ import tr.bcxip.hummingbird.api.objects.User;
 import tr.bcxip.hummingbird.managers.PrefManager;
 import tr.bcxip.hummingbird.utils.CircleTransformation;
 import tr.bcxip.hummingbird.widget.ExpandableHeightGridView;
+import tr.xip.widget.errorview.ErrorView;
 
 /**
  * Created by Hikari on 10/12/14.
  */
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements ErrorView.RetryListener {
 
     public static final String ARG_USERNAME = "username";
 
@@ -69,6 +71,7 @@ public class ProfileFragment extends Fragment {
     ExpandableHeightGridView mFavorites;
 
     ViewFlipper mFlipper;
+    ErrorView mErrorView;
 
     int vibrantColor;
 
@@ -116,6 +119,8 @@ public class ProfileFragment extends Fragment {
         mFavorites = (ExpandableHeightGridView) rootView.findViewById(R.id.profile_favorites);
 
         mFlipper = (ViewFlipper) rootView.findViewById(R.id.profile_view_flipper);
+        mErrorView = (ErrorView) rootView.findViewById(R.id.profile_error_view);
+        mErrorView.setOnRetryListener(this);
 
         loadTask = new LoadTask();
         loadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -135,14 +140,35 @@ public class ProfileFragment extends Fragment {
         if (loadTask != null) loadTask.cancel(false);
     }
 
-    protected class LoadTask extends AsyncTask<Void, Void, String> {
+    @Override
+    public void onRetry() {
+        if (loadTask != null && !loadTask.isCancelled())
+            loadTask.cancel(false);
+
+        loadTask = new LoadTask();
+        loadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    protected class LoadTask extends AsyncTask<Void, Void, Integer> {
 
         Bitmap coverBitmap;
 
         List<FavoriteAnime> favsList;
 
+        RetrofitError.Kind errorKind;
+
         @Override
-        protected String doInBackground(Void... voids) {
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (mFlipper.getDisplayedChild() == 1) mFlipper.showPrevious();
+            if (mFlipper.getDisplayedChild() == 2) {
+                mFlipper.showPrevious();
+                mFlipper.showPrevious();
+            }
+        }
+
+        @Override
+        protected Integer doInBackground(Void... voids) {
             try {
                 user = api.getUser(username);
                 coverBitmap = Picasso.with(context)
@@ -156,21 +182,32 @@ public class ProfileFragment extends Fragment {
                     vibrantColor = getResources().getColor(R.color.apptheme_primary);
                 }
 
-                return Results.RESULT_SUCCESS;
+                return Results.CODE_OK;
             } catch (RetrofitError e) {
-                Log.e(TAG, e.getMessage());
-                return e.getMessage();
+                errorKind = e.getKind();
+
+                if (e.getKind() == RetrofitError.Kind.NETWORK) {
+                    Log.e(TAG, e.getMessage());
+                    return Results.CODE_NETWORK_ERROR;
+                } else if (e.getKind() == RetrofitError.Kind.HTTP) {
+                    Log.e(TAG, e.getMessage());
+                    return e.getResponse().getStatus();
+                } else {
+                    Log.e(TAG, e.getMessage());
+                    return Results.CODE_UNKNOWN;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
-                return Results.RESULT_EXCEPTION;
+                return Results.CODE_UNKNOWN;
             }
         }
 
+        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
 
-            if (result.equals(Results.RESULT_SUCCESS)) {
+            if (result == Results.CODE_OK) {
                 ((ActionBarActivity) context).getSupportActionBar()
                         .setBackgroundDrawable(new ColorDrawable(vibrantColor));
 
@@ -243,8 +280,18 @@ public class ProfileFragment extends Fragment {
 
                 if (mFlipper.getDisplayedChild() == 0) mFlipper.showNext();
             } else {
-                // TODO - Better handling...
-                Toast.makeText(context, R.string.error_cant_load_data, Toast.LENGTH_LONG).show();
+                if (errorKind == RetrofitError.Kind.HTTP)
+                    mErrorView.setError(result);
+                else if (errorKind == RetrofitError.Kind.NETWORK)
+                    mErrorView.setErrorDetail(R.string.error_connection);
+                else
+                    mErrorView.setErrorDetail(R.string.error_unknown);
+
+                if (mFlipper.getDisplayedChild() == 0) {
+                    mFlipper.showNext();
+                    mFlipper.showNext();
+                } else if (mFlipper.getDisplayedChild() == 1)
+                    mFlipper.showNext();
             }
         }
     }
