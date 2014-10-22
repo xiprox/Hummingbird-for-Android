@@ -1,6 +1,7 @@
 package tr.bcxip.hummingbird;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,39 +9,43 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ViewFlipper;
 
 import java.util.List;
 
 import retrofit.RetrofitError;
-import tr.bcxip.hummingbird.adapters.FeedAdapter;
+import tr.bcxip.hummingbird.adapters.FavoriteAnimeAdapter;
 import tr.bcxip.hummingbird.api.HummingbirdApi;
 import tr.bcxip.hummingbird.api.Results;
-import tr.bcxip.hummingbird.api.objects.Story;
+import tr.bcxip.hummingbird.api.objects.FavoriteAnime;
 import tr.bcxip.hummingbird.managers.PrefManager;
+import tr.bcxip.hummingbird.widget.ExpandableHeightGridView;
 import tr.xip.widget.errorview.ErrorView;
 
 /**
- * Created by Hikari on 10/11/14.
+ * Created by Hikari on 10/22/14.
  */
-public class FeedFragment extends Fragment implements ErrorView.RetryListener {
+public class FavoriteAnimeFragment extends Fragment implements ErrorView.RetryListener {
 
     public static final String ARG_USERNAME = "username";
 
-    final String TAG = "FEED";
+    private static final String TAG = "FAVORITE ANIME FRAGMENT";
 
     Context context;
     HummingbirdApi api;
     PrefManager prefMan;
 
-    ListView mList;
-    ViewFlipper mFlipper;
-    ErrorView mErrorView;
-
-    List<Story> mItems;
+    View rootView;
 
     String username;
+
+    List<FavoriteAnime> favsList;
+
+    GridView mFavorites;
+    ViewFlipper mFlipper;
+    ErrorView mErrorView;
 
     LoadTask loadTask;
 
@@ -63,46 +68,46 @@ public class FeedFragment extends Fragment implements ErrorView.RetryListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_feed, null);
+        rootView = inflater.inflate(R.layout.fragment_favorite_anime, null);
 
-        mList = (ListView) rootView.findViewById(R.id.feed_list);
-        mFlipper = (ViewFlipper) rootView.findViewById(R.id.feed_view_flipper);
+        /*
+        * Check if any username argument is passed. If one is passed, load the data for it;
+        * if not, load for the currently logged in user.
+        */
+        if (getArguments() != null) {
+            String receivedUsername = getArguments().getString(ARG_USERNAME);
+            if (receivedUsername != null && !receivedUsername.equals("") && !receivedUsername.trim().equals(""))
+                username = receivedUsername;
+            else
+                username = prefMan.getUsername();
+        } else
+            username = prefMan.getUsername();
 
-        mErrorView = (ErrorView) rootView.findViewById(R.id.feed_error_view);
+        mFavorites = (GridView) rootView.findViewById(R.id.favorite_anime_grid);
+        mFlipper = (ViewFlipper) rootView.findViewById(R.id.favorite_anime_flipper);
+        mErrorView = (ErrorView) rootView.findViewById(R.id.favorite_anime_error_view);
         mErrorView.setOnRetryListener(this);
 
-        /**
-         * Check for any username arguments being passed to the fragment. If one is passed, we will
-         * load the feed for that username. If no argument is passed, we load the feed for the
-         * currently logged in user.
-         */
-        if (getArguments() != null && getArguments().getString(ARG_USERNAME) != null) {
-            username = getArguments().getString(ARG_USERNAME);
-            exceuteLoadTask();
-        } else if (prefMan.getUsername() != null) {
-            username = prefMan.getUsername();
-            exceuteLoadTask();
-        } else
-            Log.e(TAG, "Username not found! Is there a problem with the logged user?");
+        executeLoadTask();
 
         return rootView;
-    }
-
-    private void exceuteLoadTask() {
-        loadTask = new LoadTask();
-        loadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        if (loadTask != null) loadTask.cancel(true);
+        if (loadTask != null)
+            loadTask.cancel(true);
     }
 
     @Override
     public void onRetry() {
+        executeLoadTask();
+    }
+
+    private void executeLoadTask() {
         if (loadTask != null && !loadTask.isCancelled())
-            loadTask.cancel(false);
+            loadTask.cancel(true);
 
         loadTask = new LoadTask();
         loadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -125,7 +130,7 @@ public class FeedFragment extends Fragment implements ErrorView.RetryListener {
         @Override
         protected Integer doInBackground(Void... voids) {
             try {
-                mItems = api.getFeed(username);
+                favsList = api.getFavoriteAnime(username);
                 return Results.CODE_OK;
             } catch (RetrofitError e) {
                 errorKind = e.getKind();
@@ -151,8 +156,18 @@ public class FeedFragment extends Fragment implements ErrorView.RetryListener {
             super.onPostExecute(result);
 
             if (result == Results.CODE_OK) {
-                FeedAdapter adapter = new FeedAdapter(context, R.layout.item_story_comment, mItems, username);
-                mList.setAdapter(adapter);
+                if (favsList != null && favsList.size() != 0)
+                    mFavorites.setAdapter(new FavoriteAnimeAdapter(context, R.layout.item_favorite_grid, favsList));
+
+                mFavorites.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                        Intent intent = new Intent(context, AnimeDetailsActivity.class);
+                        intent.putExtra(AnimeDetailsActivity.ARG_ID, favsList.get(position).getId());
+                        context.startActivity(intent);
+                    }
+                });
+
                 if (mFlipper.getDisplayedChild() == 0) mFlipper.showNext();
             } else {
                 if (errorKind == RetrofitError.Kind.HTTP)

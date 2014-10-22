@@ -26,8 +26,10 @@
 
     <!-- Titles -->
     <string name="title_feed">Feed</string>
+    <string name="title_info">Info</string>
     <string name="title_profile">Profile</string>
     <string name="title_library">Library</string>
+    <string name="title_timeline">Timeline</string>
 
     <!--  Anime Details Strings -->
     <string name="action_copy_title">Copy Title</string>
@@ -118,7 +120,7 @@
 
     <!-- Navigation Drawer -->
     <string-array name="list_main_strings">
-        <item>Feed</item>
+        <item>Timeline</item>
         <item>Library</item>
         <item>Not Decided</item>
     </string-array>

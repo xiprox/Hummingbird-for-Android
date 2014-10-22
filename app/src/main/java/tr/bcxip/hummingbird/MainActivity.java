@@ -72,8 +72,8 @@ public class MainActivity extends ActionBarActivity
                 mTitle = getString(R.string.title_profile);
                 break;
             case 0:
-                fragment = new FeedFragment();
-                mTitle = getString(R.string.title_feed);
+                fragment = new TimelineFragment();
+                mTitle = getString(R.string.title_timeline);
                 break;
             case 1:
                 fragment = new LibraryFragment();
@@ -83,7 +83,7 @@ public class MainActivity extends ActionBarActivity
 
         if (fragment != null)
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, fragment)
+                    .replace(R.id.container, fragment, ProfileFragment.FRAGMENT_TAG_PROFILE)
                     .commit();
 
         if (toolbar != null)

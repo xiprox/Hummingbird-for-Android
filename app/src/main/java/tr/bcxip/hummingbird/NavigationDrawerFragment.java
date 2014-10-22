@@ -116,7 +116,7 @@ public class NavigationDrawerFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.container, new ProfileFragment()).commit();
+                        .replace(R.id.container, new UserInfoFragment()).commit();
                 mDrawerLayout.closeDrawer(mFragmentContainerView);
                 selectItem(ITEM_POSITION_PROFILE);
             }

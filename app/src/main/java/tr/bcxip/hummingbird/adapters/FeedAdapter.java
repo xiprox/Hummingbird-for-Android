@@ -15,9 +15,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 import tr.bcxip.hummingbird.AnimeDetailsActivity;
@@ -98,7 +95,6 @@ public class FeedAdapter extends ArrayAdapter<Story> {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context, AnimeDetailsActivity.class);
-                    Log.d("TAG", item.getMedia().getId());
                     intent.putExtra(AnimeDetailsActivity.ARG_ID, item.getMedia().getId());
                     context.startActivity(intent);
                 }
@@ -178,7 +174,7 @@ public class FeedAdapter extends ArrayAdapter<Story> {
         return rootView;
     }
 
-    public String getString(int resource) {
+    private String getString(int resource) {
         return context.getString(resource);
     }
 }
