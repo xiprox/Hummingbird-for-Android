@@ -21,7 +21,6 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.squareup.picasso.Picasso;
@@ -73,7 +72,7 @@ public class ProfileFragment extends Fragment implements ErrorView.RetryListener
     ViewFlipper mFlipper;
     ErrorView mErrorView;
 
-    int vibrantColor;
+    int darkMutedColor;
 
     LoadTask loadTask;
 
@@ -176,11 +175,8 @@ public class ProfileFragment extends Fragment implements ErrorView.RetryListener
                         .get();
                 favsList = api.getFavoriteAnime(username);
 
-                try {
-                    vibrantColor = Palette.generate(coverBitmap).getVibrantSwatch().getRgb();
-                } catch (Exception e) {
-                    vibrantColor = getResources().getColor(R.color.apptheme_primary);
-                }
+                darkMutedColor = Palette.generate(coverBitmap)
+                        .getDarkMutedColor(R.color.apptheme_primary);
 
                 return Results.CODE_OK;
             } catch (RetrofitError e) {
@@ -209,10 +205,10 @@ public class ProfileFragment extends Fragment implements ErrorView.RetryListener
 
             if (result == Results.CODE_OK) {
                 ((ActionBarActivity) context).getSupportActionBar()
-                        .setBackgroundDrawable(new ColorDrawable(vibrantColor));
+                        .setBackgroundDrawable(new ColorDrawable(darkMutedColor));
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                    ((ActionBarActivity) context).getWindow().setStatusBarColor(vibrantColor);
+                    ((ActionBarActivity) context).getWindow().setStatusBarColor(darkMutedColor);
 
                 mCover.setImageBitmap(coverBitmap);
 
@@ -222,7 +218,7 @@ public class ProfileFragment extends Fragment implements ErrorView.RetryListener
                         .into(mAvatar);
 
                 mUsername.setText(user.getName());
-                mUsername.setTextColor(vibrantColor);
+                mUsername.setTextColor(darkMutedColor);
 
                 String bio = user.getBio();
                 if (bio != null && !bio.equals("") && !bio.trim().equals(""))
