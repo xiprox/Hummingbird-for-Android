@@ -1,9 +1,13 @@
 package tr.bcxip.hummingbird;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +37,9 @@ public class ProfileFragment extends Fragment implements UserInfoFragment.CoverC
 
     FeedFragment mFeedFragment;
     UserInfoFragment mUserInfoFragment;
+    FavoriteAnimeFragment mFavoriteAnimeFragment;
+
+    boolean shouldColorBars = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +72,7 @@ public class ProfileFragment extends Fragment implements UserInfoFragment.CoverC
         ProfileTabsPagerAdapter pagerAdapter = (ProfileTabsPagerAdapter) mViewPager.getAdapter();
         mUserInfoFragment = (UserInfoFragment) pagerAdapter.getItem(0);
         mFeedFragment = (FeedFragment) pagerAdapter.getItem(1);
+        mFavoriteAnimeFragment = (FavoriteAnimeFragment) pagerAdapter.getItem(2);
 
         mTabs = (PagerSlidingTabStrip) rootView.findViewById(R.id.profile_tabs);
         mTabs.setViewPager(mViewPager);
@@ -73,8 +81,23 @@ public class ProfileFragment extends Fragment implements UserInfoFragment.CoverC
     }
 
     @Override
+    public void onDetach() {
+        super.onDetach();
+        shouldColorBars = false;
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @Override
     public void onColorObtained(int color) {
         this.color = color;
         mTabs.setBackgroundColor(color);
+
+        if (shouldColorBars) {
+            ((ActionBarActivity) context).getSupportActionBar()
+                    .setBackgroundDrawable(new ColorDrawable(color));
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                ((ActionBarActivity) context).getWindow().setStatusBarColor(color);
+        }
     }
 }

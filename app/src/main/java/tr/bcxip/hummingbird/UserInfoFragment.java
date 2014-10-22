@@ -147,7 +147,7 @@ public class UserInfoFragment extends Fragment implements ErrorView.RetryListene
     @Override
     public void onDetach() {
         super.onDetach();
-        if (loadTask != null) loadTask.cancel(false);
+        if (loadTask != null) loadTask.cancel(true);
     }
 
     @Override
@@ -206,7 +206,6 @@ public class UserInfoFragment extends Fragment implements ErrorView.RetryListene
             }
         }
 
-        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
         @Override
         protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
@@ -214,12 +213,6 @@ public class UserInfoFragment extends Fragment implements ErrorView.RetryListene
             if (result == Results.CODE_OK) {
                 if (mColorListener != null)
                     mColorListener.onColorObtained(darkMutedColor);
-
-                ((ActionBarActivity) context).getSupportActionBar()
-                        .setBackgroundDrawable(new ColorDrawable(darkMutedColor));
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                    ((ActionBarActivity) context).getWindow().setStatusBarColor(darkMutedColor);
 
                 mCover.setImageBitmap(coverBitmap);
 
