@@ -90,7 +90,7 @@ public class MainActivity extends ActionBarActivity
             toolbar.setBackgroundColor(getResources().getColor(R.color.apptheme_primary));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            getWindow().setStatusBarColor(getResources().getColor(R.color.apptheme_primary));
+            getWindow().setStatusBarColor(getResources().getColor(R.color.apptheme_primary_dark));
     }
 
     public void restoreActionBar() {

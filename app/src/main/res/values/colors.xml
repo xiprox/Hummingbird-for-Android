@@ -41,7 +41,8 @@
     <color name="login_border">#dddddd</color>
     <color name="login_btn">#b2dfdb</color>
 
-    <color name="window_background">#dddddd</color>
+    <color name="window_background">@android:color/white</color>
+    <color name="window_background_darker">#dddddd</color>
 
     <!-- Card colors -->
     <color name="card_content">#fafafa</color>

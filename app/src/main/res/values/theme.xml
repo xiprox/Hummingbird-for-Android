@@ -11,7 +11,7 @@
     <style name="AppTheme_NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@color/window_background</item>
         <item name="android:actionModeBackground">@color/apptheme_primary</item>
-        <item name="colorPrimary">@color/apptheme_primary</item>
+        <item name="colorPrimary">@color/apptheme_primary</item>®
         <item name="colorPrimaryDark">@color/apptheme_primary_dark</item>
         <item name="colorAccent">@color/apptheme_primary</item>
         <item name="android:windowContentOverlay">@null</item>
