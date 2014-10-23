@@ -73,6 +73,10 @@ public class HummingbirdApi {
         return service.getFeed(username);
     }
 
+    public List<Story> getTimeline(String token) {
+        return service.getTimeline(token);
+    }
+
     public List<LibraryEntry> getLibrary(String username, String status) {
         return service.getLibrary(username, status != null ? status : "");
     }

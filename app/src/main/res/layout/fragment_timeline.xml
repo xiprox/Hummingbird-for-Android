@@ -1,17 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="timeline coming soon!"
-        android:textAllCaps="true"
-        android:textColor="@color/apptheme_primary"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:layout_height="match_parent">
+
+        <ViewFlipper
+            android:id="@+id/timeline_view_flipper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inAnimation="@android:anim/fade_in"
+            android:outAnimation="@android:anim/fade_out">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+            <ListView
+                android:id="@+id/timeline_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="8dp"
+                android:listSelector="@android:color/transparent"
+                android:padding="8dp"
+                android:scrollbarStyle="outsideOverlay" />
+
+            <tr.xip.widget.errorview.ErrorView
+                android:id="@+id/timeline_error_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:ew_retryButtonTextColor="@color/apptheme_primary" />
+        </ViewFlipper>
+
+        <!-- For action bar shadow, don't remove -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/action_bar_shadow_height"
+            android:background="@drawable/actionbar_shadow" />
+    </FrameLayout>
 </LinearLayout>

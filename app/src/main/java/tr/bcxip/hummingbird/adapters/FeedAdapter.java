@@ -36,13 +36,10 @@ public class FeedAdapter extends ArrayAdapter<Story> {
 
     String storyType;
 
-    String username;
-
-    public FeedAdapter(Context context, int resource, List<Story> items, String username) {
+    public FeedAdapter(Context context, int resource, List<Story> items) {
         super(context, resource, items);
         this.context = context;
         mItems = items;
-        this.username = username;
     }
 
     @Override
@@ -109,7 +106,7 @@ public class FeedAdapter extends ArrayAdapter<Story> {
                 public void onClick(View view) {
                     Intent intent = new Intent(context, FeedAnimeDetails.class);
                     intent.putExtra(FeedAnimeDetails.ARG_STORY, item.getId());
-                    intent.putExtra(FeedAnimeDetails.ARG_USERNAME, username);
+                    intent.putExtra(FeedAnimeDetails.ARG_USERNAME, item.getUser().getName());
                     context.startActivity(intent);
                 }
             });

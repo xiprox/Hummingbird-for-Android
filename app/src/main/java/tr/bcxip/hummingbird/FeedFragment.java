@@ -151,7 +151,7 @@ public class FeedFragment extends Fragment implements ErrorView.RetryListener {
             super.onPostExecute(result);
 
             if (result == Results.CODE_OK) {
-                FeedAdapter adapter = new FeedAdapter(context, R.layout.item_story_comment, mItems, username);
+                FeedAdapter adapter = new FeedAdapter(context, R.layout.item_story_comment, mItems);
                 mList.setAdapter(adapter);
                 if (mFlipper.getDisplayedChild() == 0) mFlipper.showNext();
             } else {

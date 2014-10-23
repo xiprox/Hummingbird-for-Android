@@ -29,6 +29,9 @@ public interface HummingbirdService {
     @GET("/search/anime")
     public List<Anime> searchAnime(@Query("query") String title);
 
+    @GET("/timeline")
+    public List<Story> getTimeline(@Query("auth_token") String token);
+
     @GET("/users/{username}/library")
     public List<LibraryEntry> getLibrary(
             @Path("username") String username,
