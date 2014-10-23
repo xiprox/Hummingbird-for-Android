@@ -35,7 +35,7 @@ public interface HummingbirdService {
     @GET("/users/{username}/library")
     public List<LibraryEntry> getLibrary(
             @Path("username") String username,
-            @Query("status") String status
+            @QueryMap Map<String, String> params
     );
 
     @POST("/libraries/{id}")

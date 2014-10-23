@@ -13,13 +13,16 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ViewFlipper;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit.RetrofitError;
 import tr.bcxip.hummingbird.adapters.LibraryAdapter;
 import tr.bcxip.hummingbird.api.HummingbirdApi;
 import tr.bcxip.hummingbird.api.Results;
 import tr.bcxip.hummingbird.api.objects.LibraryEntry;
+import tr.bcxip.hummingbird.managers.PrefManager;
 import tr.xip.widget.errorview.ErrorView;
 
 /**
@@ -34,6 +37,7 @@ public class LibraryTabFragment extends Fragment implements ErrorView.RetryListe
 
     Context context;
     HummingbirdApi api;
+    PrefManager prefMan;
 
     List<LibraryEntry> mLibrary;
 
@@ -45,14 +49,17 @@ public class LibraryTabFragment extends Fragment implements ErrorView.RetryListe
 
     String USERNAME;
     String FILTER;
+    String AUTH_TOKEN;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getActivity();
         api = new HummingbirdApi(context);
+        prefMan = new PrefManager(context);
 
         USERNAME = getArguments().getString(ARG_USERNAME);
+        AUTH_TOKEN = prefMan.getAuthToken();
     }
 
     @Override
@@ -107,7 +114,16 @@ public class LibraryTabFragment extends Fragment implements ErrorView.RetryListe
         @Override
         protected Integer doInBackground(Void... voids) {
             try {
-                mLibrary = api.getLibrary(USERNAME, FILTER);
+                Map<String, String> params = new HashMap<String, String>();
+
+                if (FILTER != null)
+                    params.put("status", FILTER);
+
+                if (AUTH_TOKEN != null)
+                    params.put("auth_token", AUTH_TOKEN);
+
+                mLibrary = api.getLibrary(USERNAME, params);
+
                 return Results.CODE_OK;
             } catch (RetrofitError e) {
                 errorKind = e.getKind();

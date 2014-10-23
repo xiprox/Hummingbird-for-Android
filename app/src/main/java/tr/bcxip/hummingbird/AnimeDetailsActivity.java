@@ -107,6 +107,7 @@ public class AnimeDetailsActivity extends ActionBarActivity {
     int newEpisodesWatched;
     boolean newIsRewatching;
     int newRewatchedTimes;
+    boolean newPrivate;
     String newRating;
 
     int vibrantColor;
@@ -175,8 +176,9 @@ public class AnimeDetailsActivity extends ActionBarActivity {
     public void updateLibraryEntry(LibraryEntry entry) {
         String oldWatchStatus = entry.getStatus();
         int oldEpisodesWatched = entry.getEpisodesWatched();
-        int oldRewatchedTimes = entry.getNumberOfRewatches();
         boolean oldIsRewatching = entry.isRewatching();
+        int oldRewatchedTimes = entry.getNumberOfRewatches();
+        boolean oldPrivate = entry.isPrivate();
 
         Map map = new HashMap<String, String>();
 
@@ -200,6 +202,9 @@ public class AnimeDetailsActivity extends ActionBarActivity {
         if (newRewatchedTimes != oldRewatchedTimes)
             map.put("rewatched_times", newRewatchedTimes + "");
 
+        if (newPrivate != oldPrivate)
+            map.put("privacy", newPrivate ? "private" : "public");
+
         if (!newRating.equals(entry.getRating().getAdvancedRating()))
             map.put("sane_rating_update", newRating);
 
@@ -215,6 +220,7 @@ public class AnimeDetailsActivity extends ActionBarActivity {
                 newEpisodesWatched != entry.getEpisodesWatched() ||
                 newIsRewatching != entry.isRewatching() ||
                 newRewatchedTimes != entry.getNumberOfRewatches() ||
+                newPrivate != entry.isPrivate() ||
                 !newRating.equals(entry.getRating().getAdvancedRating() != null ?
                         entry.getRating().getAdvancedRating() : "0")) {
             mAddToLibrary.setEnabled(true);
@@ -241,8 +247,6 @@ public class AnimeDetailsActivity extends ActionBarActivity {
                     getString(R.string.please_wait___),
                     true
             );
-
-            Log.d("ASDASD", "DONE");
 
             dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
@@ -510,6 +514,7 @@ public class AnimeDetailsActivity extends ActionBarActivity {
             newEpisodesWatched = libraryEntry.getEpisodesWatched();
             newIsRewatching = libraryEntry.isRewatching();
             newRewatchedTimes = libraryEntry.getNumberOfRewatches();
+            newPrivate = libraryEntry.isPrivate();
             newRating = libraryEntry.getRating().getAdvancedRating() != null ?
                     libraryEntry.getRating().getAdvancedRating() : "0";
 
@@ -627,13 +632,9 @@ public class AnimeDetailsActivity extends ActionBarActivity {
 
             mPrivate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                            /* I couldn't find any parameter in the API for setting privacy.
-                            *  Well, changing the privacy value doesn't mean a thing to us as we can
-                            *  only fetch the user's library anonymously.
-                            *
-                            *  Keeping the code here in case we happen to figure a way in the future.
-                            * */
+                public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                    newPrivate = isChecked;
+                    updateUpdateButtonStatus(libraryEntry);
                 }
             });
 

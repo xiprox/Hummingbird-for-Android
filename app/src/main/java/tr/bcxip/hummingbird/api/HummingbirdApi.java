@@ -77,12 +77,17 @@ public class HummingbirdApi {
         return service.getTimeline(token);
     }
 
-    public List<LibraryEntry> getLibrary(String username, String status) {
-        return service.getLibrary(username, status != null ? status : "");
+    public List<LibraryEntry> getLibrary(String username, Map<String, String> params) {
+        return service.getLibrary(username, params != null ? params : new HashMap<String, String>());
     }
 
     public LibraryEntry getLibraryEntryIfAnimeExists(String animeId) {
-        for (LibraryEntry entry : getLibrary(prefMan.getUsername(), null)) {
+        Map<String, String> params = new HashMap<String, String>();
+
+        if (prefMan.getAuthToken() != null)
+            params.put("auth_token", prefMan.getAuthToken());
+
+        for (LibraryEntry entry : getLibrary(prefMan.getUsername(), params)) {
             if (entry.getAnime().getId().equals(animeId))
                 return entry;
         }
