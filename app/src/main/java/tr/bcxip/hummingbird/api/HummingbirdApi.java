@@ -73,8 +73,8 @@ public class HummingbirdApi {
         return service.getFeed(username);
     }
 
-    public List<Story> getTimeline(String token) {
-        return service.getTimeline(token);
+    public List<Story> getTimeline(String token, int page) {
+        return service.getTimeline(token, page);
     }
 
     public List<LibraryEntry> getLibrary(String username, Map<String, String> params) {

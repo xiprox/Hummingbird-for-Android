@@ -30,7 +30,7 @@ public interface HummingbirdService {
     public List<Anime> searchAnime(@Query("query") String title);
 
     @GET("/timeline")
-    public List<Story> getTimeline(@Query("auth_token") String token);
+    public List<Story> getTimeline(@Query("auth_token") String token, @Query("page") int page);
 
     @GET("/users/{username}/library")
     public List<LibraryEntry> getLibrary(

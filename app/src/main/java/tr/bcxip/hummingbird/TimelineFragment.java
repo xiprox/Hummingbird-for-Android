@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ViewFlipper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.RetrofitError;
@@ -38,7 +39,7 @@ public class TimelineFragment extends Fragment implements ErrorView.RetryListene
     ViewFlipper mFlipper;
     ErrorView mErrorView;
 
-    List<Story> mItems;
+    List<Story> mItems = new ArrayList<Story>();
 
     LoadTask loadTask;
 
@@ -94,7 +95,17 @@ public class TimelineFragment extends Fragment implements ErrorView.RetryListene
         @Override
         protected Integer doInBackground(Void... voids) {
             try {
-                mItems = api.getTimeline(prefMan.getAuthToken());
+                List<Story> mTempList;
+
+                int page = 1;
+                mTempList = api.getTimeline(prefMan.getAuthToken(), page);
+                while (mTempList.size() != 0) {
+                    mItems.addAll(mTempList);
+                    page++;
+                    mTempList = api.getTimeline(prefMan.getAuthToken(), page);
+                    Log.d("", "ADDED MORE");
+                }
+
                 return Results.CODE_OK;
             } catch (RetrofitError e) {
                 errorKind = e.getKind();
