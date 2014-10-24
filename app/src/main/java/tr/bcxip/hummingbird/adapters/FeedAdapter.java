@@ -19,6 +19,7 @@ import java.util.List;
 
 import tr.bcxip.hummingbird.AnimeDetailsActivity;
 import tr.bcxip.hummingbird.FeedAnimeDetails;
+import tr.bcxip.hummingbird.ProfileActivity;
 import tr.bcxip.hummingbird.R;
 import tr.bcxip.hummingbird.api.objects.Story;
 import tr.bcxip.hummingbird.api.objects.Substory;
@@ -57,10 +58,20 @@ public class FeedAdapter extends ArrayAdapter<Story> {
             rootView = inflater.inflate(R.layout.item_story_media, null);
 
         if (storyType.equals(Story.STORY_TYPE_COMMENT)) {
+            FrameLayout mAvatarHolder = (FrameLayout) rootView.findViewById(R.id.item_story_comment_avatar_holder);
             ImageView mAvatar = (ImageView) rootView.findViewById(R.id.item_story_comment_avatar);
             TextView mUsername = (TextView) rootView.findViewById(R.id.item_story_comment_username);
             RelativeTimeTextView mTime = (RelativeTimeTextView) rootView.findViewById(R.id.item_story_comment_time);
             TextView mText = (TextView) rootView.findViewById(R.id.item_story_comment_text);
+
+            mAvatarHolder.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, ProfileActivity.class);
+                    intent.putExtra(ProfileActivity.ARG_USERNAME, item.getPoster().getName());
+                    context.startActivity(intent);
+                }
+            });
 
             /* The following 2 won't be used until we find out how to obtain the necessary data */
             View mDivider = rootView.findViewById(R.id.item_story_comment_divider);
@@ -125,10 +136,22 @@ public class FeedAdapter extends ArrayAdapter<Story> {
 
             View view = inflater.inflate(R.layout.item_substory, null);
 
+            FrameLayout avatarHolder = (FrameLayout) view.findViewById(R.id.item_substory_avatar_holder);
+            ImageView avatar = (ImageView) view.findViewById(R.id.item_substory_avatar);
+
             Picasso.with(context)
                     .load(item.getUser().getAvatar())
                     .transform(new CircleTransformation())
-                    .into((ImageView) view.findViewById(R.id.item_substory_avatar));
+                    .into(avatar);
+
+            avatarHolder.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, ProfileActivity.class);
+                    intent.putExtra(ProfileActivity.ARG_USERNAME, item.getUser().getName());
+                    context.startActivity(intent);
+                }
+            });
 
             ((TextView) view.findViewById(R.id.item_substory_username))
                     .setText(item.getUser().getName());

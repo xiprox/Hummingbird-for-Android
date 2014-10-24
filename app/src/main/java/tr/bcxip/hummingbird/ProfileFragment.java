@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,8 +94,12 @@ public class ProfileFragment extends Fragment implements UserInfoFragment.CoverC
         mTabs.setBackgroundColor(color);
 
         if (shouldColorBars) {
-            ((ActionBarActivity) context).getSupportActionBar()
-                    .setBackgroundDrawable(new ColorDrawable(color));
+            try {
+                ((ActionBarActivity) context).getSupportActionBar()
+                        .setBackgroundDrawable(new ColorDrawable(color));
+            } catch (Exception e) {
+                /* empty */
+            }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 ((ActionBarActivity) context).getWindow().setStatusBarColor(color);

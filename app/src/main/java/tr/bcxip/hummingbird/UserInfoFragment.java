@@ -1,15 +1,11 @@
 package tr.bcxip.hummingbird;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.graphics.Palette;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,17 +20,12 @@ import android.widget.ViewFlipper;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
-
 import retrofit.RetrofitError;
-import tr.bcxip.hummingbird.adapters.FavoriteAnimeAdapter;
 import tr.bcxip.hummingbird.api.HummingbirdApi;
 import tr.bcxip.hummingbird.api.Results;
-import tr.bcxip.hummingbird.api.objects.FavoriteAnime;
 import tr.bcxip.hummingbird.api.objects.User;
 import tr.bcxip.hummingbird.managers.PrefManager;
 import tr.bcxip.hummingbird.utils.CircleTransformation;
-import tr.bcxip.hummingbird.widget.ExpandableHeightGridView;
 import tr.xip.widget.errorview.ErrorView;
 
 /**
@@ -77,23 +67,12 @@ public class UserInfoFragment extends Fragment implements ErrorView.RetryListene
 
     ProfileFragment parent;
 
-    CoverColorListener mColorListener;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getActivity();
         api = new HummingbirdApi(context);
         prefMan = new PrefManager(context);
-
-        try {
-            parent = (ProfileFragment) getFragmentManager()
-                    .findFragmentByTag(ProfileFragment.FRAGMENT_TAG_PROFILE);
-
-            mColorListener = parent;
-        } catch (Exception e) {
-            /* empty */
-        }
 
         setHasOptionsMenu(true);
     }
@@ -114,6 +93,13 @@ public class UserInfoFragment extends Fragment implements ErrorView.RetryListene
                 username = prefMan.getUsername();
         } else
             username = prefMan.getUsername();
+
+        try {
+            parent = (ProfileFragment) getFragmentManager()
+                    .findFragmentByTag(ProfileFragment.FRAGMENT_TAG_PROFILE);
+        } catch (Exception e) {
+            /* empty */
+        }
 
         mCover = (ImageView) rootView.findViewById(R.id.user_info_cover);
         mAvatar = (ImageView) rootView.findViewById(R.id.user_info_avatar);
@@ -211,8 +197,8 @@ public class UserInfoFragment extends Fragment implements ErrorView.RetryListene
             super.onPostExecute(result);
 
             if (result == Results.CODE_OK) {
-                if (mColorListener != null)
-                    mColorListener.onColorObtained(darkMutedColor);
+                if (parent != null)
+                    parent.onColorObtained(darkMutedColor);
 
                 mCover.setImageBitmap(coverBitmap);
 

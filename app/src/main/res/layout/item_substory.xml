@@ -6,10 +6,17 @@
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
+    <FrameLayout
+        android:id="@+id/item_substory_avatar_holder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:foreground="@drawable/selector_light_oval">
+
     <ImageView
         android:id="@+id/item_substory_avatar"
         android:layout_width="48dp"
         android:layout_height="48dp" />
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
