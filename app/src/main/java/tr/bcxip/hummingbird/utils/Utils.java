@@ -1,5 +1,7 @@
 package tr.bcxip.hummingbird.utils;
 
+import android.content.Context;
+
 import org.joda.time.format.ISODateTimeFormat;
 
 import java.text.ParseException;
@@ -38,5 +40,13 @@ public class Utils {
             }
         });
         return list;
+    }
+
+    public static int pxToDp(Context context, float px) {
+        return (int) (px / context.getResources().getDisplayMetrics().density);
+    }
+
+    public static int dpToPx(Context context, float dp) {
+        return (int) (dp * context.getResources().getDisplayMetrics().density);
     }
 }

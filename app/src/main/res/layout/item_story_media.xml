@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_story_media_card"
     android:layout_width="match_parent"
-    android:layout_height="160dp">
+    android:layout_height="160dp"
+    android:background="@drawable/selector_dark">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:id="@+id/item_story_media_cover_holder"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:foreground="@drawable/selector_light">
+
+            <ImageView
+                android:id="@+id/item_story_media_cover"
+                android:layout_width="106dp"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:orientation="horizontal">
-
-            <FrameLayout
-                android:id="@+id/item_story_media_cover_holder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:foreground="@drawable/selector_light">
-
-                <ImageView
-                    android:id="@+id/item_story_media_cover"
-                    android:layout_width="106dp"
-                    android:layout_height="160dp"
-                    android:maxHeight="160dp"
-                    android:maxWidth="106dp"
-                    android:minHeight="160dp"
-                    android:minWidth="106dp"
-                    android:scaleType="centerCrop" />
-            </FrameLayout>
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
+            android:animateLayoutChanges="true"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
@@ -55,30 +55,21 @@
                     android:layout_marginLeft="12dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="16dp"
-                    android:orientation="vertical" />
+                    android:animateLayoutChanges="true"
+                    android:divider="@drawable/divider_transparent_12dp"
+                    android:orientation="vertical"
+                    android:showDividers="middle" />
             </LinearLayout>
-        </LinearLayout>
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true">
-
-            <Button
-                android:id="@+id/item_story_media_view_more"
+            <TextView
+                android:id="@+id/item_story_media_more"
                 android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/selector_dark"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:text="view more"
-                android:textAllCaps="true"
-                android:textColor="@color/apptheme_primary"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-        </FrameLayout>
-    </RelativeLayout>
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginBottom="12dp"
+                android:layout_marginRight="16dp"
+                android:text="•••"
+                android:textColor="@color/text_gray_light" />
+        </LinearLayout>
+    </LinearLayout>
 </android.support.v7.widget.CardView>

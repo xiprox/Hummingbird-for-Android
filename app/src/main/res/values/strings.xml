@@ -23,6 +23,8 @@
     <string name="just_now">Just now</string>
     <string name="to">to</string>
     <string name="retry">Retry</string>
+    <string name="more">more</string>
+    <string name="less">less</string>
 
     <!-- Titles -->
     <string name="title_feed">Feed</string>
