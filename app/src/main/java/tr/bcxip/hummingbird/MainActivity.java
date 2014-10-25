@@ -1,6 +1,8 @@
 package tr.bcxip.hummingbird;
 
 import android.annotation.TargetApi;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,6 +31,8 @@ public class MainActivity extends ActionBarActivity
     public static CharSequence mTitle;
 
     Toolbar toolbar;
+
+    SearchFragment searchFragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,12 +107,57 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!mNavigationDrawerFragment.isDrawerOpen()) {
-            getMenuInflater().inflate(R.menu.main, menu);
-            restoreActionBar();
-            return true;
-        }
-        return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.main, menu);
+        restoreActionBar();
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setQueryHint(getString(R.string.search_hint));
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                createSearchFragment(searchFragment, query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                if (searchFragment == null)
+                    searchFragment = createSearchFragment(searchFragment, query);
+                else
+                    updateSearchFragment(searchFragment, query);
+
+                return false;
+            }
+        });
+
+        return true;
+    }
+
+    private SearchFragment createSearchFragment(SearchFragment fragment, String query) {
+        Bundle args = new Bundle();
+        args.putString(SearchFragment.ARG_SEARCH_TYPE, SearchFragment.SEARCH_TYPE_GENERAL);
+        args.putString(SearchFragment.ARG_QUERY, query);
+
+        fragment = new SearchFragment();
+        fragment.setArguments(args);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, fragment, SearchFragment.TAG_SEARCH_FRAGMENT)
+                .addToBackStack(SearchFragment.TAG_SEARCH_FRAGMENT)
+                .commit();
+
+        return fragment;
+    }
+
+    private void updateSearchFragment(SearchFragment fragment, String query) {
+//        fragment.updateResults(query);
+    }
+
+    public Toolbar getToolbar() {
+        return toolbar;
     }
 
     @Override
