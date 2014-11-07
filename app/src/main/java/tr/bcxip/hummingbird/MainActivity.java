@@ -15,6 +15,7 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import tr.bcxip.hummingbird.managers.PrefManager;
 
@@ -34,6 +35,8 @@ public class MainActivity extends ActionBarActivity
 
     SearchFragment searchFragment = null;
 
+    View mStatusBarBackground;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +46,8 @@ public class MainActivity extends ActionBarActivity
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mStatusBarBackground = findViewById(R.id.status_bar_placeholder);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -94,8 +99,8 @@ public class MainActivity extends ActionBarActivity
         if (toolbar != null)
             toolbar.setBackgroundColor(getResources().getColor(R.color.apptheme_primary));
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            getWindow().setStatusBarColor(getResources().getColor(R.color.apptheme_primary_dark));
+        if (mStatusBarBackground != null)
+            setStatusBarBackgroundColor(getResources().getColor(R.color.apptheme_primary));
     }
 
     public void restoreActionBar() {
@@ -158,6 +163,11 @@ public class MainActivity extends ActionBarActivity
 
     public Toolbar getToolbar() {
         return toolbar;
+    }
+
+    public void setStatusBarBackgroundColor(int color) {
+        if (mStatusBarBackground != null)
+            mStatusBarBackground.setBackgroundColor(color);
     }
 
     @Override

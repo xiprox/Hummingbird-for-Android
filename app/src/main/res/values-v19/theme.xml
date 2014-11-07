@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -6,6 +7,7 @@
         <item name="colorPrimary">@color/apptheme_primary</item>
         <item name="colorPrimaryDark">@color/apptheme_primary_dark</item>
         <item name="colorAccent">@color/apptheme_accent</item>
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
     <style name="AppTheme_NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
@@ -15,17 +17,13 @@
         <item name="colorPrimaryDark">@color/apptheme_primary_dark</item>
         <item name="colorAccent">@color/apptheme_accent</item>
         <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
     <style name="AppTheme_DetailsActivity" parent="AppTheme">
         <item name="windowActionBarOverlay">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="colorAccent">@android:color/white</item>
+        <item name="android:windowTranslucentStatus">false</item>
     </style>
-
-    <style name="AppTheme_Login" parent="AppTheme_NoActionBar">
-        <item name="android:windowBackground">@color/apptheme_primary_dark</item>
-        <item name="colorAccent">@android:color/white</item>
-    </style>
-
 </resources>

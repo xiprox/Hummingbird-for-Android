@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.View;
 
 /**
  * Created by Hikari on 10/24/14.
@@ -16,10 +17,14 @@ public class ProfileActivity extends ActionBarActivity {
 
     String USERNAME;
 
+    View mStatusBarBackground;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        mStatusBarBackground = findViewById(R.id.profile_status_bar_placeholder);
 
         ProfileFragment fragment = new ProfileFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -38,5 +43,10 @@ public class ProfileActivity extends ActionBarActivity {
                     ProfileFragment.FRAGMENT_TAG_PROFILE
             ).commit();
         }
+    }
+
+    public void setStatusBarBackgroundColor(int color) {
+        if (mStatusBarBackground != null)
+            mStatusBarBackground.setBackgroundColor(color);
     }
 }

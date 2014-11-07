@@ -101,8 +101,10 @@ public class ProfileFragment extends Fragment implements UserInfoFragment.CoverC
                 /* empty */
             }
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                ((ActionBarActivity) context).getWindow().setStatusBarColor(color);
+            if (context instanceof ProfileActivity)
+                ((ProfileActivity) context).setStatusBarBackgroundColor(color);
+            else if (context instanceof MainActivity)
+                ((MainActivity) context).setStatusBarBackgroundColor(color);
         }
     }
 }

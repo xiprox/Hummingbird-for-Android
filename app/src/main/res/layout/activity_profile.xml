@@ -5,6 +5,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <View
+        android:id="@+id/profile_status_bar_placeholder"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/status_bar_placeholder_height"
+        android:background="@color/apptheme_primary" />
+
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
