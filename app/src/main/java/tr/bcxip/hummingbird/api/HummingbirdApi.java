@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import retrofit.RestAdapter;
+import tr.bcxip.hummingbird.api.objects.Anime;
 import tr.bcxip.hummingbird.api.objects.AnimeV2;
 import tr.bcxip.hummingbird.api.objects.FavoriteAnime;
 import tr.bcxip.hummingbird.api.objects.LibraryEntry;
@@ -59,6 +60,10 @@ public class HummingbirdApi {
 
         service = restAdapter.create(HummingbirdService.class);
         serviceV2 = restAdapterV2.create(HummingbirdServiceV2.class);
+    }
+
+    public List<Anime> searchAnime(String query) {
+        return service.searchAnime(query);
     }
 
     public User getUser(String username) {

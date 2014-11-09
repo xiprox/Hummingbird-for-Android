@@ -35,7 +35,6 @@
             </intent-filter>
         </activity>
 
-
         <activity
             android:name=".AnimeDetailsActivity"
             android:parentActivityName=".MainActivity"
@@ -55,6 +54,15 @@
             android:name=".ProfileActivity"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme_NoActionBar">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+
+        <activity
+            android:name=".AnimeSearchActivity"
+            android:label="">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
