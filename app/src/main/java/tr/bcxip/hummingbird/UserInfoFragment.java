@@ -133,7 +133,7 @@ public class UserInfoFragment extends Fragment implements ErrorView.RetryListene
     @Override
     public void onDetach() {
         super.onDetach();
-        if (loadTask != null) loadTask.cancel(true);
+        if (loadTask != null) loadTask.cancel(false);
     }
 
     @Override

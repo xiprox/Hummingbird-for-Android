@@ -251,7 +251,7 @@ public class AnimeDetailsActivity extends ActionBarActivity {
             dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialogInterface) {
-                    LoadTask.this.cancel(true);
+                    LoadTask.this.cancel(false);
                     finish();
                 }
             });
