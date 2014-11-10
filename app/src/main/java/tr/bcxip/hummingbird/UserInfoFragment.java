@@ -26,6 +26,7 @@ import tr.bcxip.hummingbird.api.Results;
 import tr.bcxip.hummingbird.api.objects.User;
 import tr.bcxip.hummingbird.managers.PrefManager;
 import tr.bcxip.hummingbird.utils.CircleTransformation;
+import tr.bcxip.hummingbird.utils.UserCoverTransformation;
 import tr.xip.widget.errorview.ErrorView;
 
 /**
@@ -167,6 +168,7 @@ public class UserInfoFragment extends Fragment implements ErrorView.RetryListene
                 user = api.getUser(username);
                 coverBitmap = Picasso.with(context)
                         .load(user.getCoverImage())
+                        .transform(new UserCoverTransformation())
                         .get();
 
                 darkMutedColor = Palette.generate(coverBitmap)

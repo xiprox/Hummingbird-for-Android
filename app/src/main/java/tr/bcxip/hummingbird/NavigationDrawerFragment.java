@@ -38,6 +38,7 @@ import tr.bcxip.hummingbird.api.Results;
 import tr.bcxip.hummingbird.api.objects.User;
 import tr.bcxip.hummingbird.managers.PrefManager;
 import tr.bcxip.hummingbird.utils.CircleTransformation;
+import tr.bcxip.hummingbird.utils.UserCoverTransformation;
 import uk.me.lewisdeane.ldialogs.CustomDialog;
 
 public class NavigationDrawerFragment extends Fragment {
@@ -343,6 +344,7 @@ public class NavigationDrawerFragment extends Fragment {
                         .into(mAvatar);
                 Picasso.with(context)
                         .load(user.getCoverImage())
+                        .transform(new UserCoverTransformation())
                         .into(mCoverImage);
             } else {
                 // TODO - failure
