@@ -17,6 +17,7 @@
     <string name="cancel">Cancel</string>
     <string name="adding">Adding</string>
     <string name="loading">Loading</string>
+    <string name="loading_more">Loading more</string>
     <string name="updating">Updating</string>
     <string name="removing">Removing</string>
     <string name="please_wait___">Please wait…</string>

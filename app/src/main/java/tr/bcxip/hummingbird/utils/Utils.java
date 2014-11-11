@@ -11,6 +11,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import tr.bcxip.hummingbird.api.objects.Story;
 import tr.bcxip.hummingbird.api.objects.Substory;
 
 /**
@@ -31,6 +32,15 @@ public class Utils {
             e.printStackTrace();
             return 0;
         }
+    }
+
+    public static List<Story> sortStoriesByDate(List<Story> list) {
+        Collections.sort(list, new Comparator<Story>() {
+            public int compare(Story item1, Story item2) {
+                return new Date(item2.getUpdatedAt()).compareTo(new Date(item1.getUpdatedAt()));
+            }
+        });
+        return list;
     }
 
     public static List<Substory> sortSubstoriesByDate(List<Substory> list) {
