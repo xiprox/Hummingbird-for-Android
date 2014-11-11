@@ -19,8 +19,8 @@ import tr.bcxip.hummingbird.managers.PrefManager;
  * Created by Hikari on 10/8/14.
  */
 public class HummingbirdApi {
-    private static final String API_HOST_v1 = "http://hummingbird.me/api/v1";
-    private static final String API_HOST_v2 = "http://hummingbird.me/api/v2";
+    private static final String API_HOST_v1 = "https://hummingbird.me/api/v1";
+    private static final String API_HOST_v2 = "https://hummingbird.me/api/v2";
 
     Context context;
     HummingbirdService service;
