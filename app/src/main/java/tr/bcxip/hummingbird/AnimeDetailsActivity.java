@@ -278,7 +278,6 @@ public class AnimeDetailsActivity extends ActionBarActivity {
                     if (username != null)
                         user = api.getUser(username);
 
-                    Log.d(TAG + " COVER IMAGE", anime.getCoverImageLink());
                     coverBitmap = Picasso.with(AnimeDetailsActivity.this)
                             .load(anime.getCoverImageLink()).get();
                     mPalette = Palette.generate(coverBitmap);
