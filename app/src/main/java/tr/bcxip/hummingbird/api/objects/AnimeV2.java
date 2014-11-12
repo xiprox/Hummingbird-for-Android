@@ -12,8 +12,8 @@ public class AnimeV2 {
 
     private class Data {
         String id;
+        Titles titles;
         String slug;
-        String canonical_title;
         String synopsis;
         String started_airing_date;
         String finished_airing_date;
@@ -21,13 +21,17 @@ public class AnimeV2 {
         String age_rating;
         int episode_count;
         int episode_length;
-        String english_title;
-        String romaji_title;
         String poster_image;
-        String type;
+        String show_type;
         double community_rating;
         List<String> genres;
         List<String> screencaps;
+
+        private class Titles {
+            String canonical;
+            String english;
+            String romaji;
+        }
     }
 
     public String getId() {
@@ -39,15 +43,15 @@ public class AnimeV2 {
     }
 
     public String getCanonicalTitle() {
-        return anime.canonical_title;
+        return anime.titles.canonical;
     }
 
     public String getEnglishTitle() {
-        return anime.english_title;
+        return anime.titles.english;
     }
 
     public String getRomajiTitle() {
-        return anime.romaji_title;
+        return anime.titles.romaji;
     }
 
     public String getSynopsis() {
@@ -63,7 +67,7 @@ public class AnimeV2 {
     }
 
     public String getType() {
-        return anime.type;
+        return anime.show_type;
     }
 
     public long getAiringStartDate() {
