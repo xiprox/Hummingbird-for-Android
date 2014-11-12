@@ -377,7 +377,7 @@ public class AnimeDetailsActivity extends ActionBarActivity {
 
                 int episodeLength = anime.getEpisodeLength();
                 mEpisodeLength.setText(episodeLength != 0 ?
-                        episodeLength + " " + getString(R.string.content_minutes) :
+                        episodeLength + " " + getString(R.string.content_minutes).toLowerCase() :
                         getString(R.string.content_unknown));
 
                 mAgeRating.setText(anime.getAgeRating());
