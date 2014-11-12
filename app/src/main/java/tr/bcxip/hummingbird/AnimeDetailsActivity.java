@@ -110,8 +110,7 @@ public class AnimeDetailsActivity extends ActionBarActivity {
     boolean newPrivate;
     String newRating;
 
-    int vibrantColor;
-    int darkVibrantColor;
+    int darkMutedColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -297,14 +296,13 @@ public class AnimeDetailsActivity extends ActionBarActivity {
 
             if (success) {
                 Resources res = getResources();
-                vibrantColor = mPalette.getVibrantColor(res.getColor(R.color.apptheme_primary));
-                darkVibrantColor = mPalette.getDarkVibrantColor(res.getColor(R.color.apptheme_primary_dark));
+                darkMutedColor = mPalette.getDarkMutedColor(res.getColor(R.color.neutral_darker));
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                    getWindow().setStatusBarColor(vibrantColor);
+                    getWindow().setStatusBarColor(darkMutedColor);
 
                 mActionBarHelper = new FadingActionBarHelper()
-                        .actionBarBackground(new ColorDrawable(vibrantColor))
+                        .actionBarBackground(new ColorDrawable(darkMutedColor))
                         .headerLayout(R.layout.header_anime_details)
                         .headerOverlayLayout(R.layout.header_overlay_anime_details)
                         .contentLayout(R.layout.content_anime_details);
@@ -338,8 +336,8 @@ public class AnimeDetailsActivity extends ActionBarActivity {
                 mRatingBar = (RatingBar) findViewById(R.id.anime_details_library_rating);
                 mRatingSimple = (TextView) findViewById(R.id.anime_deatails_library_rating_simple);
 
-                mButtonsHolder.setBackgroundDrawable(new ColorDrawable(vibrantColor));
-                mAddToLibrary.setTextColor(vibrantColor);
+                mButtonsHolder.setBackgroundDrawable(new ColorDrawable(darkMutedColor));
+                mAddToLibrary.setTextColor(darkMutedColor);
                 mAddToLibrary.setOnClickListener(new OnAddToLibraryClickListener());
 
                 if (anime.getTrailer() == null || anime.getTrailer().equals(""))
@@ -485,7 +483,7 @@ public class AnimeDetailsActivity extends ActionBarActivity {
                     mFavoritedHolder.setVisibility(View.VISIBLE);
 
             mLibraryHolder.setVisibility(View.VISIBLE);
-            mLibraryHolder.setBackgroundDrawable(new ColorDrawable(vibrantColor));
+            mLibraryHolder.setBackgroundDrawable(new ColorDrawable(darkMutedColor));
 
             final String animeEpisodeCount = anime.getEpisodeCount() != 0 ? anime.getEpisodeCount() + "" : "?";
 
