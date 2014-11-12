@@ -24,12 +24,12 @@
                 android:background="@color/apptheme_primary"
                 android:scaleType="centerCrop" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
                 <Space
+                    android:id="@+id/space"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/status_bar_placeholder_height" />
 
@@ -37,6 +37,7 @@
                     android:id="@+id/navigation_drawer_avatar"
                     android:layout_width="56dp"
                     android:layout_height="56dp"
+                    android:layout_below="@+id/space"
                     android:layout_margin="16dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/avatar" />
@@ -51,13 +52,14 @@
                         android:id="@+id/navigation_drawer_username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
+                        android:layout_gravity="center_vertical"
                         android:ellipsize="marquee"
+                        android:padding="16dp"
                         android:text="Username"
                         android:textAppearance="@android:style/TextAppearance.Large"
                         android:textColor="@android:color/white" />
                 </LinearLayout>
-            </LinearLayout>
+            </RelativeLayout>
         </FrameLayout>
 
         <LinearLayout
