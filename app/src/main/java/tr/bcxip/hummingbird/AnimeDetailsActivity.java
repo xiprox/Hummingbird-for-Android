@@ -274,7 +274,7 @@ public class AnimeDetailsActivity extends ActionBarActivity {
 
                     anime = api.getAnime(ANIME_ID);
 
-                    libraryEntry = api.getLibraryEntryIfAnimeExists(ANIME_ID);
+                    libraryEntry = api.getLibraryEntryIfAnimeExists(anime.getId());
 
                     String username = prefMan.getUsername();
                     if (username != null)
