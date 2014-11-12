@@ -74,8 +74,8 @@ public class HummingbirdApi {
         return serviceV2.getAnime(idOrSlug);
     }
 
-    public List<Story> getFeed(String username) {
-        return service.getFeed(username);
+    public List<Story> getFeed(String username, int page) {
+        return service.getFeed(username, page);
     }
 
     public List<Story> getTimeline(String token, int page) {

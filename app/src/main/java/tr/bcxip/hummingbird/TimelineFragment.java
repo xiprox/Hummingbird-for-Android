@@ -15,7 +15,7 @@ import java.util.List;
 
 import ca.weixiao.widget.InfiniteScrollListView;
 import retrofit.RetrofitError;
-import tr.bcxip.hummingbird.adapters.TimelineAdapter;
+import tr.bcxip.hummingbird.adapters.FeedTimelineAdapter;
 import tr.bcxip.hummingbird.api.HummingbirdApi;
 import tr.bcxip.hummingbird.api.Results;
 import tr.bcxip.hummingbird.api.objects.Story;
@@ -26,7 +26,7 @@ import tr.xip.widget.errorview.ErrorView;
  * Created by Hikari on 10/22/14.
  */
 public class TimelineFragment extends Fragment implements ErrorView.RetryListener,
-        TimelineAdapter.NewPageListener {
+        FeedTimelineAdapter.NewPageListener {
 
     private static final String TAG = "TIMELINE";
 
@@ -46,7 +46,7 @@ public class TimelineFragment extends Fragment implements ErrorView.RetryListene
 
     List<Story> mItems = new ArrayList<Story>();
 
-    TimelineAdapter adapter;
+    FeedTimelineAdapter adapter;
 
     LoadTask loadTask;
 
@@ -72,7 +72,7 @@ public class TimelineFragment extends Fragment implements ErrorView.RetryListene
         mList.setLoadingMode(InfiniteScrollListView.LoadingMode.SCROLL_TO_BOTTOM);
         mList.setStopPosition(InfiniteScrollListView.StopPosition.REMAIN_UNCHANGED);
 
-        adapter = new TimelineAdapter(context, mItems, this);
+        adapter = new FeedTimelineAdapter(context, mItems, this);
         adapter.setLoadingMode(InfiniteScrollListView.LoadingMode.SCROLL_TO_BOTTOM);
         adapter.setStopPosition(InfiniteScrollListView.StopPosition.REMAIN_UNCHANGED);
 

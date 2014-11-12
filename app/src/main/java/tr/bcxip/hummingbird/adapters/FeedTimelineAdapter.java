@@ -31,7 +31,7 @@ import tr.bcxip.hummingbird.widget.RelativeTimeTextView;
 /**
  * Created by ix on 11/11/14.
  */
-public class TimelineAdapter extends InfiniteScrollListAdapter {
+public class FeedTimelineAdapter extends InfiniteScrollListAdapter {
 
     Context context;
     List<Story> mItems;
@@ -42,7 +42,7 @@ public class TimelineAdapter extends InfiniteScrollListAdapter {
 
     NewPageListener newPageListener;
 
-    public TimelineAdapter(Context context, List<Story> items, NewPageListener listener) {
+    public FeedTimelineAdapter(Context context, List<Story> items, NewPageListener listener) {
         this.context = context;
         mItems = items;
         newPageListener = listener;

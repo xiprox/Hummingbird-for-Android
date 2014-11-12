@@ -8,13 +8,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.ViewFlipper;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import ca.weixiao.widget.InfiniteScrollListView;
 import retrofit.RetrofitError;
-import tr.bcxip.hummingbird.adapters.FeedAdapter;
+import tr.bcxip.hummingbird.adapters.FeedTimelineAdapter;
 import tr.bcxip.hummingbird.api.HummingbirdApi;
 import tr.bcxip.hummingbird.api.Results;
 import tr.bcxip.hummingbird.api.objects.Story;
@@ -24,25 +25,34 @@ import tr.xip.widget.errorview.ErrorView;
 /**
  * Created by Hikari on 10/11/14.
  */
-public class FeedFragment extends Fragment implements ErrorView.RetryListener {
+public class FeedFragment extends Fragment implements ErrorView.RetryListener,
+        FeedTimelineAdapter.NewPageListener {
 
     public static final String ARG_USERNAME = "username";
 
-    final String TAG = "FEED";
+    private static final int FLIPPER_ITEM_PROGRESS = 0;
+    private static final int FLIPPER_ITEM_LIST = 1;
+    private static final int FLIPPER_ITEM_ERROR = 2;
+
+    private static final String TAG = "FEED";
 
     Context context;
     HummingbirdApi api;
     PrefManager prefMan;
 
-    ListView mList;
+    InfiniteScrollListView mList;
     ViewFlipper mFlipper;
     ErrorView mErrorView;
 
-    List<Story> mItems;
+    List<Story> mItems = new ArrayList<Story>();
+
+    FeedTimelineAdapter adapter;
 
     String username;
 
     LoadTask loadTask;
+
+    int page = 1;
 
     ProfileFragment parent;
 
@@ -65,7 +75,20 @@ public class FeedFragment extends Fragment implements ErrorView.RetryListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_feed, null);
 
-        mList = (ListView) rootView.findViewById(R.id.feed_list);
+        LayoutInflater layoutInflater = (LayoutInflater)
+                context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        mList = (InfiniteScrollListView) rootView.findViewById(R.id.feed_list);
+        mList.setLoadingView(layoutInflater.inflate(R.layout.loading_view, null));
+        mList.setLoadingMode(InfiniteScrollListView.LoadingMode.SCROLL_TO_BOTTOM);
+        mList.setStopPosition(InfiniteScrollListView.StopPosition.REMAIN_UNCHANGED);
+
+        adapter = new FeedTimelineAdapter(context, mItems, this);
+        adapter.setLoadingMode(InfiniteScrollListView.LoadingMode.SCROLL_TO_BOTTOM);
+        adapter.setStopPosition(InfiniteScrollListView.StopPosition.REMAIN_UNCHANGED);
+
+        mList.setAdapter(adapter);
+
         mFlipper = (ViewFlipper) rootView.findViewById(R.id.feed_view_flipper);
 
         mErrorView = (ErrorView) rootView.findViewById(R.id.feed_error_view);
@@ -108,24 +131,36 @@ public class FeedFragment extends Fragment implements ErrorView.RetryListener {
         loadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
+    @Override
+    public void onScrollNext() {
+        new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
     private class LoadTask extends AsyncTask<Void, Void, Integer> {
 
         RetrofitError.Kind errorKind;
 
+        boolean reachedEnd;
+
+        List<Story> mTempList = new ArrayList<Story>();
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (mFlipper.getDisplayedChild() == 1) mFlipper.showPrevious();
-            if (mFlipper.getDisplayedChild() == 2) {
-                mFlipper.showPrevious();
-                mFlipper.showPrevious();
-            }
+            if (page == 1 || mFlipper.getDisplayedChild() == FLIPPER_ITEM_ERROR)
+                mFlipper.setDisplayedChild(FLIPPER_ITEM_PROGRESS);
+
+            if (adapter != null) adapter.lock();
+            mList.addLoadingView(mList, mList.getLoadingView());
         }
 
         @Override
         protected Integer doInBackground(Void... voids) {
             try {
-                mItems = api.getFeed(username);
+                mTempList = api.getFeed(username, page);
+                if (mTempList.size() != 0) page++;
+                else reachedEnd = true;
+
                 return Results.CODE_OK;
             } catch (RetrofitError e) {
                 errorKind = e.getKind();
@@ -151,9 +186,10 @@ public class FeedFragment extends Fragment implements ErrorView.RetryListener {
             super.onPostExecute(result);
 
             if (result == Results.CODE_OK) {
-                FeedAdapter adapter = new FeedAdapter(context, R.layout.item_story_comment, mItems);
-                mList.setAdapter(adapter);
-                if (mFlipper.getDisplayedChild() == 0) mFlipper.showNext();
+                if (adapter != null)
+                    adapter.addEntries(mTempList);
+
+                mFlipper.setDisplayedChild(FLIPPER_ITEM_LIST);
             } else {
                 if (errorKind == RetrofitError.Kind.HTTP)
                     mErrorView.setError(result);
@@ -162,12 +198,11 @@ public class FeedFragment extends Fragment implements ErrorView.RetryListener {
                 else
                     mErrorView.setErrorDetail(R.string.error_unknown);
 
-                if (mFlipper.getDisplayedChild() == 0) {
-                    mFlipper.showNext();
-                    mFlipper.showNext();
-                } else if (mFlipper.getDisplayedChild() == 1)
-                    mFlipper.showNext();
+                mFlipper.setDisplayedChild(FLIPPER_ITEM_ERROR);
             }
+
+            if (adapter != null && !reachedEnd) adapter.unlock();
+            mList.removeLoadingView(mList, mList.getLoadingView());
         }
     }
 }

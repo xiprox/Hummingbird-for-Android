@@ -49,7 +49,7 @@ public interface HummingbirdService {
     );
 
     @GET("/users/{username}/feed")
-    public List<Story> getFeed(@Path("username") String username);
+    public List<Story> getFeed(@Path("username") String username, @Query("page") int page);
 
     @GET("/users/{username}/favorite_anime")
     public List<FavoriteAnime> getFavoriteAnime(@Path("username") String username);
