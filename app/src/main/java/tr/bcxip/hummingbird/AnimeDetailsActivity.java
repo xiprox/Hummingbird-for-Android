@@ -371,10 +371,14 @@ public class AnimeDetailsActivity extends ActionBarActivity {
                 mGenre.setText(genres);
 
                 int episodeCount = anime.getEpisodeCount();
-                mEpisodeCount.setText(episodeCount != 0 ? episodeCount + "" :
+                mEpisodeCount.setText(episodeCount != 0 ?
+                        episodeCount + "" :
                         getString(R.string.content_unknown));
 
-                mEpisodeLength.setText(anime.getEpisodeLength() + " " + getString(R.string.content_minutes));
+                int episodeLength = anime.getEpisodeLength();
+                mEpisodeLength.setText(episodeLength != 0 ?
+                        episodeLength + " " + getString(R.string.content_minutes) :
+                        getString(R.string.content_unknown));
 
                 mAgeRating.setText(anime.getAgeRating());
 
