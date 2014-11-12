@@ -29,6 +29,7 @@
                 android:clipToPadding="false"
                 android:divider="@android:color/transparent"
                 android:dividerHeight="8dp"
+                android:fastScrollEnabled="true"
                 android:listSelector="@android:color/transparent"
                 android:padding="8dp"
                 android:scrollbarStyle="outsideOverlay" />
