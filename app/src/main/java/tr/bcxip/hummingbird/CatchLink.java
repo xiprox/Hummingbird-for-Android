@@ -9,33 +9,23 @@ import android.widget.Toast;
  * Created by mhca on 10/11/2014.
  */
 public class CatchLink extends ActionBarActivity {
-    String mLink;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mLink = getIntent().getDataString();
+        String url = getIntent().getDataString();
 
-        if (mLink.contains("/anime/")) {
-            mLink = mLink.replace("http://hummingbird.me/anime/", "");
+        if (url.contains("/anime/")) {
+            String slug = url
+                    .replace("http://hummingbird.me/anime/", "")
+                    .replace("https://hummingbird.me/anime/", "")
+                    .replace("/", "");
 
-            String sCheck = mLink.substring(mLink.length() - 1, mLink.length());
-
-            if (sCheck.contains("/")) {
-                mLink = mLink.substring(0, mLink.length() - 1);
-            }
-
-            Intent intent = new Intent(CatchLink.this, AnimeDetailsActivity.class);
-            intent.putExtra(AnimeDetailsActivity.ARG_ID, mLink);
+            Intent intent = new Intent(this, AnimeDetailsActivity.class);
+            intent.putExtra(AnimeDetailsActivity.ARG_ID, slug);
             startActivity(intent);
             finish();
-
-            Toast.makeText(getApplicationContext(), mLink, Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getApplicationContext(), mLink, Toast.LENGTH_SHORT).show();
         }
-
-
     }
 }

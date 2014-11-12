@@ -32,6 +32,9 @@
                 <data
                     android:host="hummingbird.me"
                     android:scheme="http" />
+                <data
+                    android:host="hummingbird.me"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
 
