@@ -101,17 +101,17 @@ public class FeedFragment extends Fragment implements ErrorView.RetryListener,
          */
         if (getArguments() != null && getArguments().getString(ARG_USERNAME) != null) {
             username = getArguments().getString(ARG_USERNAME);
-            exceuteLoadTask();
+            executeLoadTask();
         } else if (prefMan.getUsername() != null) {
             username = prefMan.getUsername();
-            exceuteLoadTask();
+            executeLoadTask();
         } else
             Log.e(TAG, "Username not found! Is there a problem with the logged user?");
 
         return rootView;
     }
 
-    private void exceuteLoadTask() {
+    private void executeLoadTask() {
         loadTask = new LoadTask();
         loadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
