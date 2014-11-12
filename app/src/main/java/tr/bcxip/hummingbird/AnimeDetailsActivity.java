@@ -137,33 +137,35 @@ public class AnimeDetailsActivity extends ActionBarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_copy_title) {
-            ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-            ClipData clip = ClipData.newPlainText(getResources().getString
-                    (R.string.toast_copy_title), anime.getCanonicalTitle());
-            clipboard.setPrimaryClip(clip);
-            Toast.makeText(
-                    AnimeDetailsActivity.this,
-                    getResources().getString(R.string.toast_copy_title)
-                            + " \"" + anime.getCanonicalTitle() + "\"",
-                    Toast.LENGTH_SHORT).show();
-            return true;
+
+        switch (id) {
+            case R.id.action_copy_title:
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText(getResources().getString
+                        (R.string.toast_copy_title), anime.getCanonicalTitle());
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(
+                        AnimeDetailsActivity.this,
+                        getResources().getString(R.string.toast_copy_title)
+                                + " \"" + anime.getCanonicalTitle() + "\"",
+                        Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.action_share:
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+
+                String messageBody = getString(R.string.content_sharing_text);
+                messageBody = messageBody
+                        .replace("{anime-name}", anime.getCanonicalTitle())
+                        .replace("{anime-url}", "https://hummingbird.me/anime/" + anime.getSlug());
+
+                intent.putExtra(Intent.EXTRA_TEXT, messageBody);
+
+                startActivity(Intent.createChooser(intent,
+                        getResources().getString(R.string.action_share)));
+                break;
         }
-        if (id == R.id.action_share) {
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("text/plain");
-            String sSlug = anime.getCanonicalTitle().toLowerCase().replaceAll
-                    ("[^0-9a-z]", "-").replaceAll("-+", "-");
-            String slugCheck = sSlug.substring(sSlug.length() - 1, sSlug.length());
-            //check if there is "-" at the end of slug
-            if (slugCheck.equals("-")) {
-                sSlug = sSlug.substring(0, sSlug.length() - 1);
-            }
-            intent.putExtra(Intent.EXTRA_TEXT, anime.getCanonicalTitle() + " at hummingbird.me/anime/" + sSlug);
-            startActivity(Intent.createChooser(intent,
-                    getResources().getString(R.string.share_title)));
-            return true;
-        }
+
         return super.onOptionsItemSelected(item);
     }
 
