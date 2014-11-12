@@ -92,11 +92,13 @@ public class HummingbirdApi {
         if (prefMan.getAuthToken() != null)
             params.put("auth_token", prefMan.getAuthToken());
 
+        LibraryEntry libEntry = null;
         for (LibraryEntry entry : getLibrary(prefMan.getUsername(), params)) {
             if (entry.getAnime().getId().equals(animeId))
-                return entry;
+                libEntry = entry;
         }
-        return null;
+
+        return libEntry;
     }
 
     public LibraryEntry addUpdateLibraryEntry(String id, Map params) {
