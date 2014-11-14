@@ -197,6 +197,9 @@ public class NavigationDrawerFragment extends Fragment {
 
         mDrawerLayout.setDrawerShadow(R.drawable.navigation_drawer_shadow, GravityCompat.START);
 
+        mDrawerLayout.setStatusBarBackgroundColor(
+                getResources().getColor(R.color.apptheme_primary_dark));
+
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);

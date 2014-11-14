@@ -55,7 +55,7 @@ public class MainActivity extends ActionBarActivity
             finish();
         } else {
             mNavigationDrawerFragment.setUp(
-                    R.id.navigation_drawer,
+                    R.id.navigation_drawer_holder,
                     (DrawerLayout) findViewById(R.id.drawer_layout));
         }
 

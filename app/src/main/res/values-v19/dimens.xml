@@ -3,4 +3,5 @@
     <dimen name="status_bar_placeholder_height">24dp</dimen>
 
     <dimen name="navigation_drawer_profile_height">170dp</dimen>
+    <dimen name="navigation_drawer_status_bar_height">24dp</dimen>
 </resources>
