@@ -1,6 +1,8 @@
 package tr.bcxip.hummingbird;
 
+import android.annotation.TargetApi;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -50,6 +52,7 @@ public class AnimeSearchActivity extends ActionBarActivity {
 
     private List<Anime> mResults = new ArrayList<Anime>();
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +63,9 @@ public class AnimeSearchActivity extends ActionBarActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            getWindow().setStatusBarColor(getResources().getColor(R.color.apptheme_white_status_bar));
 
         api = new HummingbirdApi(this);
 

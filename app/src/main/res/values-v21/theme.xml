@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:windowBackground">@color/window_background</item>
+        <item name="android:actionModeBackground">@color/apptheme_primary</item>
+        <item name="colorPrimary">@color/apptheme_primary</item>
+        <item name="colorPrimaryDark">@color/apptheme_primary_dark</item>
+        <item name="colorAccent">@color/apptheme_primary</item>
+    </style>
+
     <style name="AppTheme_NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@color/window_background</item>
+        <item name="android:actionModeBackground">@color/apptheme_primary</item>
+        <item name="colorPrimary">@color/apptheme_primary</item>®
+        <item name="colorPrimaryDark">@color/apptheme_primary_dark</item>
+        <item name="colorAccent">@color/apptheme_primary</item>
+    </style>
+
+    <style name="AppTheme_TransparentStatusBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@color/window_background</item>
         <item name="android:actionModeBackground">@color/apptheme_primary</item>
         <item name="colorPrimary">@color/apptheme_primary</item>®

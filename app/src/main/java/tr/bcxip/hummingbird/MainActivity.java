@@ -1,8 +1,7 @@
 package tr.bcxip.hummingbird;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.os.Build;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -65,7 +64,6 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -91,11 +89,12 @@ public class MainActivity extends ActionBarActivity
                     .replace(R.id.container, fragment, ProfileFragment.FRAGMENT_TAG_PROFILE)
                     .commit();
 
-        if (toolbar != null)
-            toolbar.setBackgroundColor(getResources().getColor(R.color.apptheme_primary));
+        Resources res = getResources();
 
-        if (mStatusBarBackground != null)
-            setStatusBarBackgroundColor(getResources().getColor(R.color.apptheme_primary));
+        if (toolbar != null)
+            toolbar.setBackgroundColor(res.getColor(R.color.apptheme_primary));
+
+        setStatusBarBackgroundColor(res.getColor(R.color.apptheme_primary_dark));
     }
 
     public void restoreActionBar() {
@@ -117,6 +116,8 @@ public class MainActivity extends ActionBarActivity
     }
 
     public void setStatusBarBackgroundColor(int color) {
+        if (mNavigationDrawerFragment != null)
+            mNavigationDrawerFragment.setStatusBarColor(color);
         if (mStatusBarBackground != null)
             mStatusBarBackground.setBackgroundColor(color);
     }

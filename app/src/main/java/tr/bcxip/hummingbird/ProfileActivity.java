@@ -1,5 +1,7 @@
 package tr.bcxip.hummingbird;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
@@ -45,8 +47,11 @@ public class ProfileActivity extends ActionBarActivity {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void setStatusBarBackgroundColor(int color) {
-        if (mStatusBarBackground != null)
-            mStatusBarBackground.setBackgroundColor(color);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(color);
+        } else if (mStatusBarBackground != null)
+                mStatusBarBackground.setBackgroundColor(color);
     }
 }

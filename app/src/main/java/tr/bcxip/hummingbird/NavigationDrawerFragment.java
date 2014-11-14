@@ -315,6 +315,10 @@ public class NavigationDrawerFragment extends Fragment {
         actionBar.setTitle(R.string.app_name);
     }
 
+    public void setStatusBarColor(int color) {
+        mDrawerLayout.setStatusBarBackgroundColor(color);
+    }
+
     private ActionBar getActionBar() {
         return ((ActionBarActivity) getActivity()).getSupportActionBar();
     }
