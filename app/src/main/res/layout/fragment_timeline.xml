@@ -31,8 +31,7 @@
                 android:dividerHeight="8dp"
                 android:listSelector="@android:color/transparent"
                 android:padding="8dp"
-                android:fastScrollEnabled="true"
-                android:scrollbarStyle="outsideOverlay"/>
+                android:scrollbarStyle="outsideOverlay" />
 
             <tr.xip.widget.errorview.ErrorView
                 android:id="@+id/timeline_error_view"
