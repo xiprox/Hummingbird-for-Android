@@ -8,7 +8,6 @@ import java.util.Map;
 
 import retrofit.RestAdapter;
 import tr.bcxip.hummingbird.api.objects.Anime;
-import tr.bcxip.hummingbird.api.objects.AnimeV2;
 import tr.bcxip.hummingbird.api.objects.FavoriteAnime;
 import tr.bcxip.hummingbird.api.objects.LibraryEntry;
 import tr.bcxip.hummingbird.api.objects.Story;
@@ -24,7 +23,6 @@ public class HummingbirdApi {
 
     Context context;
     HummingbirdService service;
-    HummingbirdServiceV2 serviceV2;
     PrefManager prefMan;
 
     public HummingbirdApi(Context context) {
@@ -53,13 +51,7 @@ public class HummingbirdApi {
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
 
-        RestAdapter restAdapterV2 = new RestAdapter.Builder()
-                .setEndpoint(API_HOST_v2)
-                .setLogLevel(RestAdapter.LogLevel.FULL)
-                .build();
-
         service = restAdapter.create(HummingbirdService.class);
-        serviceV2 = restAdapterV2.create(HummingbirdServiceV2.class);
     }
 
     public List<Anime> searchAnime(String query) {
@@ -70,8 +62,8 @@ public class HummingbirdApi {
         return service.getUser(username);
     }
 
-    public AnimeV2 getAnime(String idOrSlug) {
-        return serviceV2.getAnime(idOrSlug);
+    public Anime getAnime(String idOrSlug) {
+        return service.getAnime(idOrSlug);
     }
 
     public List<Story> getFeed(String username, int page) {

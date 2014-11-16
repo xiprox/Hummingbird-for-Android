@@ -26,6 +26,9 @@ public interface HummingbirdService {
     @GET("/users/{username}")
     public User getUser(@Path("username") String username);
 
+    @GET("/anime/{id}")
+    public Anime getAnime(@Path("id") String id);
+
     @GET("/search/anime")
     public List<Anime> searchAnime(@Query("query") String title);
 

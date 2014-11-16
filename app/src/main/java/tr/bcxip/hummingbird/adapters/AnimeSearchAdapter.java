@@ -83,6 +83,7 @@ public class AnimeSearchAdapter extends RecyclerView.Adapter<AnimeSearchAdapter.
             int position = mRecyclerView.getChildPosition(view);
             Intent intent = new Intent(context, AnimeDetailsActivity.class);
             intent.putExtra(AnimeDetailsActivity.ARG_ID, mDataset.get(position).getId());
+            intent.putExtra(AnimeDetailsActivity.ARG_ANIME_OBJ, mDataset.get(position));
             context.startActivity(intent);
         }
     }

@@ -128,6 +128,7 @@ public class FeedTimelineAdapter extends InfiniteScrollListAdapter {
                     public void onClick(View view) {
                         Intent intent = new Intent(context, AnimeDetailsActivity.class);
                         intent.putExtra(AnimeDetailsActivity.ARG_ID, item.getMedia().getId());
+                        intent.putExtra(AnimeDetailsActivity.ARG_ANIME_OBJ, item.getMedia());
                         context.startActivity(intent);
                     }
                 });

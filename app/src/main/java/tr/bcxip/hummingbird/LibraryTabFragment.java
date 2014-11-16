@@ -157,6 +157,8 @@ public class LibraryTabFragment extends Fragment implements ErrorView.RetryListe
                         Intent intent = new Intent(context, AnimeDetailsActivity.class);
                         intent.putExtra(AnimeDetailsActivity.ARG_ID,
                                 mLibrary.get(position).getAnime().getId());
+                        intent.putExtra(AnimeDetailsActivity.ARG_ANIME_OBJ,
+                                mLibrary.get(position).getAnime());
                         context.startActivity(intent);
                     }
                 });

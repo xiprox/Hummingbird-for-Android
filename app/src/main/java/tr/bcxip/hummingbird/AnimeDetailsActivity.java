@@ -1,5 +1,6 @@
 package tr.bcxip.hummingbird;
 
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -10,7 +11,6 @@ import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,12 +29,14 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.manuelpeinado.fadingactionbar.extras.actionbarcompat.FadingActionBarHelper;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -45,11 +47,9 @@ import java.util.Map;
 
 import retrofit.RetrofitError;
 import tr.bcxip.hummingbird.api.HummingbirdApi;
-import tr.bcxip.hummingbird.api.objects.AnimeV2;
-import tr.bcxip.hummingbird.api.objects.Favorite;
+import tr.bcxip.hummingbird.api.objects.Anime;
 import tr.bcxip.hummingbird.api.objects.LibraryEntry;
 import tr.bcxip.hummingbird.api.objects.Rating;
-import tr.bcxip.hummingbird.api.objects.User;
 import tr.bcxip.hummingbird.managers.PrefManager;
 import uk.me.lewisdeane.ldialogs.CustomDialog;
 
@@ -58,9 +58,10 @@ import uk.me.lewisdeane.ldialogs.CustomDialog;
  */
 public class AnimeDetailsActivity extends ActionBarActivity {
 
-    public static final String ARG_ID = "arg_id";
+    private static final String TAG = "ANIME DETAILS ACTIVITY";
 
-    final String TAG = "ANIME DETAILS ACTIVITY";
+    public static final String ARG_ID = "arg_id";
+    public static final String ARG_ANIME_OBJ = "arg_anime_obj";
 
     ActionBar mActionBar;
     FadingActionBarHelper mActionBarHelper;
@@ -84,8 +85,8 @@ public class AnimeDetailsActivity extends ActionBarActivity {
     TextView mSynopsis;
 
     ImageView mRemove;
-    LinearLayout mFavoritedHolder;
 
+    ProgressBar mLibraryProgressBar;
     LinearLayout mLibraryHolder;
     Spinner mStatusSpinner;
     LinearLayout mEpisodesHolder;
@@ -99,9 +100,8 @@ public class AnimeDetailsActivity extends ActionBarActivity {
 
     String ANIME_ID;
 
-    AnimeV2 anime;
+    Anime anime;
     LibraryEntry libraryEntry;
-    User user;
 
     String newWatchStatus;
     int newEpisodesWatched;
@@ -109,6 +109,8 @@ public class AnimeDetailsActivity extends ActionBarActivity {
     int newRewatchedTimes;
     boolean newPrivate;
     String newRating;
+
+    Bitmap coverBitmap;
 
     int darkMutedColor;
 
@@ -122,8 +124,14 @@ public class AnimeDetailsActivity extends ActionBarActivity {
 
         mActionBar.setDisplayHomeAsUpEnabled(true);
 
+        anime = (Anime) getIntent().getSerializableExtra(ARG_ANIME_OBJ);
         ANIME_ID = getIntent().getStringExtra(ARG_ID);
-        new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, true);
+
+        if (anime != null) {
+            displayAnimeInfo();
+            new LibraryEntryTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } else
+            new AnimeInfoTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, true);
     }
 
     @Override
@@ -141,12 +149,12 @@ public class AnimeDetailsActivity extends ActionBarActivity {
             case R.id.action_copy_title:
                 ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText(getResources().getString
-                        (R.string.toast_copy_title), anime.getCanonicalTitle());
+                        (R.string.toast_copy_title), anime.getTitle());
                 clipboard.setPrimaryClip(clip);
                 Toast.makeText(
                         AnimeDetailsActivity.this,
                         getResources().getString(R.string.toast_copy_title)
-                                + " \"" + anime.getCanonicalTitle() + "\"",
+                                + " \"" + anime.getTitle() + "\"",
                         Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_share:
@@ -155,7 +163,7 @@ public class AnimeDetailsActivity extends ActionBarActivity {
 
                 String messageBody = getString(R.string.content_sharing_text);
                 messageBody = messageBody
-                        .replace("{anime-name}", anime.getCanonicalTitle())
+                        .replace("{anime-name}", anime.getTitle())
                         .replace("{anime-url}", "https://hummingbird.me/anime/" + anime.getSlug());
 
                 intent.putExtra(Intent.EXTRA_TEXT, messageBody);
@@ -230,13 +238,11 @@ public class AnimeDetailsActivity extends ActionBarActivity {
     }
 
     /**
-     * @param #0 Boolean isFirstLoad - indicates whether it's the first time we are loading the content
-     *           (not a reload after a removal, for instance). Why? Because, the progress dialog
-     *           has to be cancelable on first load.
+     * isFirstLoad - indicates whether it's the first time we are loading the content (not a reload
+     * after a removal, for instance). Why? Because, the progress dialog
+     * has to be cancelable on first load.
      */
-    protected class LoadTask extends AsyncTask<Boolean, Void, Boolean> {
-
-        Bitmap coverBitmap = null;
+    protected class AnimeInfoTask extends AsyncTask<Boolean, Void, Boolean> {
 
         ProgressDialog dialog;
 
@@ -252,7 +258,7 @@ public class AnimeDetailsActivity extends ActionBarActivity {
             dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialogInterface) {
-                    LoadTask.this.cancel(false);
+                    cancel(false);
                     finish();
                 }
             });
@@ -270,18 +276,7 @@ public class AnimeDetailsActivity extends ActionBarActivity {
             try {
                 if (ANIME_ID != null && !ANIME_ID.equals("") && !ANIME_ID.trim().equals("")) {
                     Log.i(TAG, "Fetching data for Anime with ID " + ANIME_ID);
-
                     anime = api.getAnime(ANIME_ID);
-
-                    libraryEntry = api.getLibraryEntryIfAnimeExists(anime.getId());
-
-                    String username = prefMan.getUsername();
-                    if (username != null)
-                        user = api.getUser(username);
-
-                    coverBitmap = Picasso.with(AnimeDetailsActivity.this)
-                            .load(anime.getCoverImageLink()).get();
-                    mPalette = Palette.generate(coverBitmap);
                     return true;
                 } else return false;
             } catch (Exception e) {
@@ -295,145 +290,8 @@ public class AnimeDetailsActivity extends ActionBarActivity {
             super.onPostExecute(success);
 
             if (success) {
-                Resources res = getResources();
-                darkMutedColor = mPalette.getDarkMutedColor(res.getColor(R.color.neutral_darker));
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                    getWindow().setStatusBarColor(darkMutedColor);
-
-                mActionBarHelper = new FadingActionBarHelper()
-                        .actionBarBackground(new ColorDrawable(darkMutedColor))
-                        .headerLayout(R.layout.header_anime_details)
-                        .headerOverlayLayout(R.layout.header_overlay_anime_details)
-                        .contentLayout(R.layout.content_anime_details);
-                setContentView(mActionBarHelper.createView(AnimeDetailsActivity.this));
-                mActionBarHelper.initActionBar(AnimeDetailsActivity.this);
-
-                mButtonsHolder = (LinearLayout) findViewById(R.id.anime_details_buttons_holder);
-                mViewTrailer = (Button) findViewById(R.id.anime_details_view_trailer_button);
-                mAddToLibrary = (Button) findViewById(R.id.anime_details_add_to_list_button);
-                mHeaderImage = (ImageView) findViewById(R.id.anime_details_cover_image);
-                mType = (TextView) findViewById(R.id.anime_details_type);
-                mGenre = (TextView) findViewById(R.id.anime_details_genres);
-                mEpisodeCount = (TextView) findViewById(R.id.anime_details_episode_count);
-                mEpisodeLength = (TextView) findViewById(R.id.anime_details_episode_duration);
-                mAgeRating = (TextView) findViewById(R.id.anime_details_age_rating);
-                mAired = (TextView) findViewById(R.id.anime_details_aired);
-                mCommunityRating = (TextView) findViewById(R.id.anime_details_community_rating);
-                mSynopsis = (TextView) findViewById(R.id.anime_details_synopsis);
-
-                mRemove = (ImageView) findViewById(R.id.header_anime_details_remove);
-                mFavoritedHolder = (LinearLayout) findViewById(R.id.header_anime_details_favorited);
-
-                mLibraryHolder = (LinearLayout) findViewById(R.id.anime_details_library_holder);
-                mStatusSpinner = (Spinner) findViewById(R.id.anime_details_status_spinner);
-                mEpisodesHolder = (LinearLayout) findViewById(R.id.anime_details_library_episodes_holder);
-                mEpisodes = (TextView) findViewById(R.id.anime_details_library_episodes);
-                mRewatching = (SwitchCompat) findViewById(R.id.anime_details_library_rewatching);
-                mRewatchedTimesHolder = (LinearLayout) findViewById(R.id.anime_details_library_rewatched_holder);
-                mRewatchedTimes = (TextView) findViewById(R.id.anime_details_library_rewatched);
-                mPrivate = (SwitchCompat) findViewById(R.id.anime_details_library_private);
-                mRatingBar = (RatingBar) findViewById(R.id.anime_details_library_rating);
-                mRatingSimple = (TextView) findViewById(R.id.anime_deatails_library_rating_simple);
-
-                mButtonsHolder.setBackgroundDrawable(new ColorDrawable(darkMutedColor));
-                mAddToLibrary.setTextColor(darkMutedColor);
-                mAddToLibrary.setOnClickListener(new OnAddToLibraryClickListener());
-
-                if (anime.getTrailer() == null || anime.getTrailer().equals(""))
-                    mViewTrailer.setVisibility(View.GONE);
-
-                mViewTrailer.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        startActivity(new Intent(Intent.ACTION_VIEW,
-                                Uri.parse("http://www.youtube.com/watch?v=" + anime.getTrailer())));
-                    }
-                });
-
-                Point size = new Point();
-                getWindowManager().getDefaultDisplay().getSize(size);
-                mHeaderImage.getLayoutParams().height = (size.y / 3) * 2;
-
-                mHeaderImage.setImageDrawable(new BitmapDrawable(coverBitmap));
-
-                mActionBar.setTitle(anime.getCanonicalTitle());
-
-                mType.setText(anime.getType());
-
-                String genres = "";
-                for (int i = 0; i < anime.getGenres().size(); i++) {
-                    if (i == 0)
-                        genres = anime.getGenres().get(i);
-                    else
-                        genres += ", " + anime.getGenres().get(i);
-                }
-                mGenre.setText(genres);
-
-                int episodeCount = anime.getEpisodeCount();
-                mEpisodeCount.setText(episodeCount != 0 ?
-                        episodeCount + "" :
-                        getString(R.string.content_unknown));
-
-                int episodeLength = anime.getEpisodeLength();
-                mEpisodeLength.setText(episodeLength != 0 ?
-                        episodeLength + " " + getString(R.string.content_minutes).toLowerCase() :
-                        getString(R.string.content_unknown));
-
-                mAgeRating.setText(anime.getAgeRating());
-
-                SimpleDateFormat airDateFormat = new SimpleDateFormat("d MMMM yyyy");
-
-                long airStart = anime.getAiringStartDate();
-                long airEnd = anime.getAiringFinishedDate();
-
-                Date airStartDate = new Date(airStart);
-                Date airEndDate = new Date(airEnd);
-
-                Calendar todayCal = Calendar.getInstance();
-
-                Calendar airStartCal = Calendar.getInstance();
-                airStartCal.setTime(airStartDate);
-
-                if (airStart == 0 && airEnd == 0)
-                    mAired.setText(R.string.content_not_yet_aired);
-
-                if (airStart == 0 && airEnd != 0)
-                    mAired.setText(getString(R.string.content_unknown) + " " + getString(R.string.to)
-                            + " " + airDateFormat.format(airEnd));
-
-                if (airStart != 0 && airEnd == 0) {
-                    if (anime.getEpisodeCount() == 1)
-                        mAired.setText(airDateFormat.format(airStart));
-                    else
-                        mAired.setText(getString(R.string.content_airing_since) + " "
-                                + airDateFormat.format(airStart));
-                }
-
-                if (airStart != 0 && airEnd != 0)
-                    mAired.setText(airDateFormat.format(airStart) + " " + getString(R.string.to)
-                            + " " + airDateFormat.format(airEnd));
-
-                if (airStartCal.get(Calendar.YEAR) > todayCal.get(Calendar.YEAR)) {
-                    if (anime.getEpisodeCount() == 1)
-                        mAired.setText(getString(R.string.content_will_air_on) + " "
-                                + airDateFormat.format(airStart));
-                    else
-                        mAired.setText(getString(R.string.content_will_start_airing_on) + " "
-                                + airDateFormat.format(airStart));
-                }
-
-                String comRating = String.valueOf(anime.getCommunityRating());
-                if (comRating.length() > 3)
-                    comRating = comRating.substring(0, 4);
-                else if (comRating.equals("0.0"))
-                    comRating = getResources().getString(R.string.content_not_yet_rated);
-                mCommunityRating.setText(comRating);
-
-                mSynopsis.setText(anime.getSynopsis());
-
-                displayLibraryElements();
-
+                displayAnimeInfo();
+                new LibraryEntryTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             } else {
                 Toast.makeText(AnimeDetailsActivity.this, R.string.error_cant_load_data, Toast.LENGTH_LONG).show();
                 finish();
@@ -441,6 +299,215 @@ public class AnimeDetailsActivity extends ActionBarActivity {
 
             dialog.dismiss();
         }
+    }
+
+    private class LibraryEntryTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            if (mLibraryProgressBar != null)
+                mLibraryProgressBar.setVisibility(View.VISIBLE);
+
+            if (mLibraryHolder != null)
+                mLibraryHolder.setVisibility(View.GONE);
+
+            if (mButtonsHolder != null)
+                mButtonsHolder.setVisibility(View.GONE);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                if (anime != null)
+                    libraryEntry = api.getLibraryEntryIfAnimeExists(anime.getId());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void voidd) {
+            super.onPostExecute(voidd);
+            displayLibraryElements();
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public void displayAnimeInfo() {
+        Resources res = getResources();
+
+        final ImageView imageView = new ImageView(AnimeDetailsActivity.this);
+        Picasso.with(AnimeDetailsActivity.this)
+                .load(anime.getCoverImage()).into(imageView, new Callback() {
+            @Override
+            public void onSuccess() {
+                coverBitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+
+        if (coverBitmap != null) {
+            mPalette = Palette.generate(coverBitmap);
+            if (mPalette != null)
+                darkMutedColor = mPalette.getDarkMutedColor(res.getColor(R.color.neutral_darker));
+        } else
+            darkMutedColor = res.getColor(R.color.neutral_darker);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            getWindow().setStatusBarColor(darkMutedColor);
+
+        mActionBarHelper = new FadingActionBarHelper()
+                .actionBarBackground(new ColorDrawable(darkMutedColor))
+                .headerLayout(R.layout.header_anime_details)
+                .headerOverlayLayout(R.layout.header_overlay_anime_details)
+                .contentLayout(R.layout.content_anime_details);
+        setContentView(mActionBarHelper.createView(AnimeDetailsActivity.this));
+        mActionBarHelper.initActionBar(AnimeDetailsActivity.this);
+
+        mButtonsHolder = (LinearLayout) findViewById(R.id.anime_details_buttons_holder);
+        mViewTrailer = (Button) findViewById(R.id.anime_details_view_trailer_button);
+        mAddToLibrary = (Button) findViewById(R.id.anime_details_add_to_list_button);
+        mHeaderImage = (ImageView) findViewById(R.id.anime_details_cover_image);
+        mType = (TextView) findViewById(R.id.anime_details_type);
+        mGenre = (TextView) findViewById(R.id.anime_details_genres);
+        mEpisodeCount = (TextView) findViewById(R.id.anime_details_episode_count);
+        mEpisodeLength = (TextView) findViewById(R.id.anime_details_episode_duration);
+        mAgeRating = (TextView) findViewById(R.id.anime_details_age_rating);
+        mAired = (TextView) findViewById(R.id.anime_details_aired);
+        mCommunityRating = (TextView) findViewById(R.id.anime_details_community_rating);
+        mSynopsis = (TextView) findViewById(R.id.anime_details_synopsis);
+
+        mRemove = (ImageView) findViewById(R.id.header_anime_details_remove);
+
+        mLibraryProgressBar = (ProgressBar) findViewById(R.id.anime_details_library_progress_bar);
+        mLibraryHolder = (LinearLayout) findViewById(R.id.anime_details_library_holder);
+        mStatusSpinner = (Spinner) findViewById(R.id.anime_details_status_spinner);
+        mEpisodesHolder = (LinearLayout) findViewById(R.id.anime_details_library_episodes_holder);
+        mEpisodes = (TextView) findViewById(R.id.anime_details_library_episodes);
+        mRewatching = (SwitchCompat) findViewById(R.id.anime_details_library_rewatching);
+        mRewatchedTimesHolder = (LinearLayout) findViewById(R.id.anime_details_library_rewatched_holder);
+        mRewatchedTimes = (TextView) findViewById(R.id.anime_details_library_rewatched);
+        mPrivate = (SwitchCompat) findViewById(R.id.anime_details_library_private);
+        mRatingBar = (RatingBar) findViewById(R.id.anime_details_library_rating);
+        mRatingSimple = (TextView) findViewById(R.id.anime_deatails_library_rating_simple);
+
+        mButtonsHolder.setBackgroundDrawable(new ColorDrawable(darkMutedColor));
+        mAddToLibrary.setTextColor(darkMutedColor);
+        mAddToLibrary.setOnClickListener(new OnAddToLibraryClickListener());
+
+                /*
+                    Trailer isn't supported in API v1. Thus, we are dropping it for now.
+                    (Who watches trailers anyways? :P)
+
+                    if (anime.getTrailer() == null || anime.getTrailer().equals(""))
+                */
+        mViewTrailer.setVisibility(View.GONE);
+
+                /*
+                mViewTrailer.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(new Intent(Intent.ACTION_VIEW,
+                                Uri.parse("http://www.youtube.com/watch?v=" + anime.getTrailer())));
+                    }
+                });
+                */
+
+        Point size = new Point();
+        getWindowManager().getDefaultDisplay().getSize(size);
+        mHeaderImage.getLayoutParams().height = (size.y / 3) * 2;
+
+        mHeaderImage.setImageDrawable(new BitmapDrawable(coverBitmap));
+
+        mActionBar.setTitle(anime.getTitle());
+
+        mType.setText(anime.getShowType());
+
+        /*
+            TODO
+            For some reason the API omits genres in the Anime object bundled with the Library Entry
+            object. Gotta find a solution for this. God! I really don't wanna have to load all data
+            just because of a few damn genres!
+         */
+        if (anime.getGenres() != null) {
+            String genres = "";
+            for (int i = 0; i < anime.getGenres().size(); i++) {
+                if (i == 0)
+                    genres = anime.getGenres().get(i).getName();
+                else
+                    genres += ", " + anime.getGenres().get(i).getName();
+            }
+            mGenre.setText(genres);
+        }
+
+        int episodeCount = anime.getEpisodeCount();
+        mEpisodeCount.setText(episodeCount != 0 ?
+                episodeCount + "" :
+                getString(R.string.content_unknown));
+
+        int episodeLength = anime.getEpisodeLength();
+        mEpisodeLength.setText(episodeLength != 0 ?
+                episodeLength + " " + getString(R.string.content_minutes).toLowerCase() :
+                getString(R.string.content_unknown));
+
+        mAgeRating.setText(anime.getAgeRating());
+
+        SimpleDateFormat airDateFormat = new SimpleDateFormat("d MMMM yyyy");
+
+        long airStart = anime.getAiringStartDate();
+        long airEnd = anime.getAiringFinishedDate();
+
+        Date airStartDate = new Date(airStart);
+        Date airEndDate = new Date(airEnd);
+
+        Calendar todayCal = Calendar.getInstance();
+
+        Calendar airStartCal = Calendar.getInstance();
+        airStartCal.setTime(airStartDate);
+
+        if (airStart == 0 && airEnd == 0)
+            mAired.setText(R.string.content_not_yet_aired);
+
+        if (airStart == 0 && airEnd != 0)
+            mAired.setText(getString(R.string.content_unknown) + " " + getString(R.string.to)
+                    + " " + airDateFormat.format(airEnd));
+
+        if (airStart != 0 && airEnd == 0) {
+            if (anime.getEpisodeCount() == 1)
+                mAired.setText(airDateFormat.format(airStart));
+            else
+                mAired.setText(getString(R.string.content_airing_since) + " "
+                        + airDateFormat.format(airStart));
+        }
+
+        if (airStart != 0 && airEnd != 0)
+            mAired.setText(airDateFormat.format(airStart) + " " + getString(R.string.to)
+                    + " " + airDateFormat.format(airEnd));
+
+        if (airStartCal.get(Calendar.YEAR) > todayCal.get(Calendar.YEAR)) {
+            if (anime.getEpisodeCount() == 1)
+                mAired.setText(getString(R.string.content_will_air_on) + " "
+                        + airDateFormat.format(airStart));
+            else
+                mAired.setText(getString(R.string.content_will_start_airing_on) + " "
+                        + airDateFormat.format(airStart));
+        }
+
+        String comRating = String.valueOf(anime.getCommunityRating());
+        if (comRating.length() > 3)
+            comRating = comRating.substring(0, 4);
+        else if (comRating.equals("0.0"))
+            comRating = getResources().getString(R.string.content_not_yet_rated);
+        mCommunityRating.setText(comRating);
+
+        mSynopsis.setText(anime.getSynopsis());
     }
 
     /* If Anime exist in user library, show library related elements... */
@@ -457,7 +524,7 @@ public class AnimeDetailsActivity extends ActionBarActivity {
                     builder.negativeText(R.string.no);
                     builder.positiveColor(getResources().getColor(R.color.apptheme_primary));
                     String contentText = getString(R.string.content_remove_are_you_sure);
-                    contentText = contentText.replace("{anime-name}", anime.getCanonicalTitle());
+                    contentText = contentText.replace("{anime-name}", anime.getTitle());
                     builder.content(contentText);
 
                     CustomDialog dialog = builder.build();
@@ -478,12 +545,7 @@ public class AnimeDetailsActivity extends ActionBarActivity {
                 }
             });
 
-            for (Favorite fav : user.getFavorites())
-                if (fav.getItemId().equals(ANIME_ID))
-                    mFavoritedHolder.setVisibility(View.VISIBLE);
-
-            mLibraryHolder.setVisibility(View.VISIBLE);
-            mLibraryHolder.setBackgroundDrawable(new ColorDrawable(darkMutedColor));
+            mLibraryHolder.setBackgroundColor(darkMutedColor);
 
             final String animeEpisodeCount = anime.getEpisodeCount() != 0 ? anime.getEpisodeCount() + "" : "?";
 
@@ -704,10 +766,16 @@ public class AnimeDetailsActivity extends ActionBarActivity {
             mAddToLibrary.setText(R.string.content_update);
             mAddToLibrary.setEnabled(false);
             mAddToLibrary.setOnClickListener(new OnLibraryUpdateClickListener());
+
+            mLibraryProgressBar.setVisibility(View.GONE);
+            mLibraryHolder.setVisibility(View.VISIBLE);
         } else {
             mRemove.setVisibility(View.GONE);
+            mLibraryProgressBar.setVisibility(View.GONE);
             mLibraryHolder.setVisibility(View.GONE);
         }
+
+        mButtonsHolder.setVisibility(View.VISIBLE);
     }
 
     private class OnAddToLibraryClickListener implements View.OnClickListener {
@@ -823,7 +891,7 @@ public class AnimeDetailsActivity extends ActionBarActivity {
                 updateUpdateButtonStatus(result);
 
                 String toastMessage = getString(R.string.info_successfully_updated);
-                toastMessage = toastMessage.replace("{anime-name}", anime.getCanonicalTitle());
+                toastMessage = toastMessage.replace("{anime-name}", anime.getTitle());
                 Toast.makeText(AnimeDetailsActivity.this,
                         toastMessage,
                         Toast.LENGTH_LONG).show();
@@ -874,7 +942,7 @@ public class AnimeDetailsActivity extends ActionBarActivity {
             super.onPostExecute(removed);
 
             if (removed)
-                new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                new AnimeInfoTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             else
                 Toast.makeText(AnimeDetailsActivity.this,
                         R.string.error_cant_remove_item, Toast.LENGTH_LONG).show();

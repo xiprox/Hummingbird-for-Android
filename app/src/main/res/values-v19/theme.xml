@@ -23,7 +23,6 @@
     <style name="AppTheme_DetailsActivity" parent="AppTheme">
         <item name="windowActionBarOverlay">true</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="colorAccent">@android:color/white</item>
         <item name="android:windowTranslucentStatus">false</item>
     </style>
 </resources>

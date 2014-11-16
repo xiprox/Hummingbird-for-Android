@@ -164,6 +164,8 @@ public class FavoriteAnimeFragment extends Fragment implements ErrorView.RetryLi
                     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                         Intent intent = new Intent(context, AnimeDetailsActivity.class);
                         intent.putExtra(AnimeDetailsActivity.ARG_ID, favsList.get(position).getId());
+
+                        intent.putExtra(AnimeDetailsActivity.ARG_ANIME_OBJ, favsList.get(position));
                         context.startActivity(intent);
                     }
                 });
