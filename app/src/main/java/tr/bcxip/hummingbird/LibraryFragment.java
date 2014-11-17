@@ -4,11 +4,15 @@ import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.GridView;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.melnykov.fab.FloatingActionButton;
 
 import tr.bcxip.hummingbird.adapters.LibraryTabsPagerAdapter;
 import tr.bcxip.hummingbird.managers.PrefManager;
@@ -27,12 +31,15 @@ public class LibraryFragment extends Fragment {
     public static final String FILTER_ON_HOLD = "on-hold";
     public static final String FILTER_DROPPED = "dropped";
 
+    public static final String FRAGMENT_TAG_LIBRARY = "library_fragment";
+
     public static final String ARG_USERNAME = "username";
 
     Context context;
     PrefManager prefMan;
 
     ViewPager mViewPager;
+    FloatingActionButton mFab;
     PagerSlidingTabStrip mTabs;
 
     String username;
@@ -55,16 +62,43 @@ public class LibraryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_library, null);
 
+        final LibraryTabsPagerAdapter adapter = new LibraryTabsPagerAdapter(context,
+                getFragmentManager(), username);
         mViewPager = (ViewPager) rootView.findViewById(R.id.library_view_pager);
         mViewPager.setOffscreenPageLimit(5);
-        mViewPager.setAdapter(new LibraryTabsPagerAdapter(context, getFragmentManager(), username));
+        mViewPager.setAdapter(adapter);
+
+        mFab = (FloatingActionButton) rootView.findViewById(R.id.fab);
 
         mTabs = (PagerSlidingTabStrip) rootView.findViewById(R.id.library_tabs);
         mTabs.setViewPager(mViewPager);
+
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float v, int i2) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                GridView mGrid = ((LibraryTabFragment) adapter.getItem(position)).getGrid();
+                Log.d("TAG", position + " -- " + mGrid + " -- ");
+                if (mGrid != null) mFab.attachToListView(mGrid);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int position) {
+
+            }
+        });
 
         /* Select default item (Currently Watching) */
         mViewPager.setCurrentItem(1);
 
         return rootView;
+    }
+
+    public FloatingActionButton getFab() {
+        return mFab;
     }
 }

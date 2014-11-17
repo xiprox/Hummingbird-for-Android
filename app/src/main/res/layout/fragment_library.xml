@@ -1,35 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
-    <com.astuetz.PagerSlidingTabStrip
-        android:id="@+id/library_tabs"
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="48dip"
-        android:background="@color/apptheme_primary"
-        android:textColor="@android:color/white"
-        app:pstsDividerColor="@android:color/transparent"
-        app:pstsIndicatorColor="@android:color/white"
-        app:pstsIndicatorHeight="2dp"
-        app:pstsTabBackground="@drawable/selector_light"
-        app:pstsTextAllCaps="true"
-        app:pstsUnderlineColor="@android:color/transparent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/library_view_pager"
+        <com.astuetz.PagerSlidingTabStrip
+            android:id="@+id/library_tabs"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="48dip"
+            android:background="@color/apptheme_primary"
+            android:textColor="@android:color/white"
+            app:pstsDividerColor="@android:color/transparent"
+            app:pstsIndicatorColor="@android:color/white"
+            app:pstsIndicatorHeight="2dp"
+            app:pstsTabBackground="@drawable/selector_light"
+            app:pstsTextAllCaps="true"
+            app:pstsUnderlineColor="@android:color/transparent" />
 
-        <View
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/action_bar_shadow_height"
-            android:background="@drawable/actionbar_shadow" />
-    </FrameLayout>
-</LinearLayout>
+            android:layout_height="match_parent">
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/library_view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/action_bar_shadow_height"
+                android:background="@drawable/actionbar_shadow" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <com.melnykov.fab.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_plus_white_24dp"
+        app:fab_colorNormal="@color/apptheme_primary"
+        app:fab_colorPressed="@color/apptheme_primary"
+        app:fab_colorRipple="@color/selector_light" />
+</FrameLayout>

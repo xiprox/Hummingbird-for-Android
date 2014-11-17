@@ -46,6 +46,7 @@
         android:layout_alignParentRight="true"
         android:layout_margin="16dp"
         android:src="@drawable/ic_plus_white_24dp"
+        android:transitionName="fab"
         android:visibility="gone"
         fab:fab_colorNormal="@color/apptheme_primary"
         fab:fab_colorPressed="@color/apptheme_primary"

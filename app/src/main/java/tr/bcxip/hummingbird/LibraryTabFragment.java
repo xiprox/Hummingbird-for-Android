@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.Pair;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +51,8 @@ public class LibraryTabFragment extends Fragment implements ErrorView.RetryListe
     ViewFlipper mFlipper;
     ErrorView mErrorView;
 
+    LibraryFragment parent;
+
     String USERNAME;
     String FILTER;
     String AUTH_TOKEN;
@@ -82,6 +85,13 @@ public class LibraryTabFragment extends Fragment implements ErrorView.RetryListe
         loadTask = new LoadTask();
         loadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
+        try {
+            parent = (LibraryFragment) getFragmentManager()
+                    .findFragmentByTag(LibraryFragment.FRAGMENT_TAG_LIBRARY);
+        } catch (Exception e) {
+            /* empty */
+        }
+
         return rootView;
     }
 
@@ -98,6 +108,10 @@ public class LibraryTabFragment extends Fragment implements ErrorView.RetryListe
 
         loadTask = new LoadTask();
         loadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    public GridView getGrid() {
+        return mGrid;
     }
 
     private class LoadTask extends AsyncTask<Void, Void, Integer> {
@@ -163,9 +177,17 @@ public class LibraryTabFragment extends Fragment implements ErrorView.RetryListe
                         intent.putExtra(AnimeDetailsActivity.ARG_ANIME_OBJ,
                                 mLibrary.get(position).getAnime());
 
-                        ActivityOptionsCompat transition =
-                                ActivityOptionsCompat.makeSceneTransitionAnimation(
-                                        (Activity) context, view, "anime_cover");
+                        ActivityOptionsCompat transition;
+                        if (parent != null) {
+                            transition = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                    (Activity) context,
+                                    Pair.create(view, "anime_cover"),
+                                    Pair.create((View) parent.getFab(), "fab")
+                            );
+                        } else {
+                            transition = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                    (Activity) context, view, "anime_cover");
+                        }
 
                         Utils.startActivityWithTransition(context, intent, transition);
                     }

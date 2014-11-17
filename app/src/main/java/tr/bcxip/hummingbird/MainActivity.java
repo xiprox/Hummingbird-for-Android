@@ -13,6 +13,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import tr.bcxip.hummingbird.managers.PrefManager;
 
 
@@ -31,15 +34,19 @@ public class MainActivity extends ActionBarActivity
 
     View mStatusBarBackground;
 
+    Map<Integer, String> tags = new HashMap<Integer, String>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         prefMan = new PrefManager(this);
-
         setContentView(R.layout.activity_main);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        tags.put(1000, ProfileFragment.FRAGMENT_TAG_PROFILE);
+        tags.put(1, LibraryFragment.FRAGMENT_TAG_LIBRARY);
 
         mStatusBarBackground = findViewById(R.id.status_bar_placeholder);
 
@@ -86,7 +93,8 @@ public class MainActivity extends ActionBarActivity
 
         if (fragment != null)
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, fragment, ProfileFragment.FRAGMENT_TAG_PROFILE)
+                    .replace(R.id.container, fragment,
+                            tags.get(position) != null ? tags.get(position) : "")
                     .commit();
 
         Resources res = getResources();
