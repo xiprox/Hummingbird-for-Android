@@ -24,7 +24,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,6 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.manuelpeinado.fadingactionbar.extras.actionbarcompat.FadingActionBarHelper;
+import com.melnykov.fab.FloatingActionButton;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -71,9 +71,9 @@ public class AnimeDetailsActivity extends ActionBarActivity {
 
     Palette mPalette;
 
-    LinearLayout mButtonsHolder;
-    Button mViewTrailer;
-    Button mAddToLibrary;
+    FloatingActionButton mAddToLibrary;
+    View mAddToLibraryBackground;
+
     ImageView mHeaderImage;
     TextView mType;
     TextView mGenre;
@@ -84,7 +84,7 @@ public class AnimeDetailsActivity extends ActionBarActivity {
     TextView mCommunityRating;
     TextView mSynopsis;
 
-    ImageView mRemove;
+    MenuItem mRemove;
 
     ProgressBar mLibraryProgressBar;
     LinearLayout mLibraryHolder;
@@ -113,6 +113,7 @@ public class AnimeDetailsActivity extends ActionBarActivity {
     Bitmap coverBitmap;
 
     int darkMutedColor;
+    int vibrantColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,7 +138,7 @@ public class AnimeDetailsActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.anime_details, menu);
-
+        mRemove = menu.findItem(R.id.action_remove);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -170,6 +171,33 @@ public class AnimeDetailsActivity extends ActionBarActivity {
 
                 startActivity(Intent.createChooser(intent,
                         getResources().getString(R.string.action_share)));
+                break;
+            case R.id.action_remove:
+                CustomDialog.Builder builder = new CustomDialog.Builder(
+                        AnimeDetailsActivity.this,
+                        R.string.title_remove,
+                        R.string.yes);
+                builder.negativeText(R.string.no);
+                builder.positiveColor(vibrantColor);
+                String contentText = getString(R.string.content_remove_are_you_sure);
+                contentText = contentText.replace("{anime-name}", anime.getTitle());
+                builder.content(contentText);
+
+                CustomDialog dialog = builder.build();
+
+                dialog.setClickListener(new CustomDialog.ClickListener() {
+                    @Override
+                    public void onConfirmClick() {
+                        new RemoveTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                    }
+
+                    @Override
+                    public void onCancelClick() {
+                                    /* empty */
+                    }
+                });
+
+                dialog.show();
                 break;
         }
 
@@ -232,9 +260,27 @@ public class AnimeDetailsActivity extends ActionBarActivity {
                 newPrivate != entry.isPrivate() ||
                 !newRating.equals(entry.getRating().getAdvancedRating() != null ?
                         entry.getRating().getAdvancedRating() : "0")) {
-            mAddToLibrary.setEnabled(true);
-        } else
-            mAddToLibrary.setEnabled(false);
+            showFAB();
+        } else {
+            hideFAB();
+        }
+    }
+
+    private void showFAB() {
+        if (mAddToLibrary != null && mAddToLibraryBackground != null) {
+            mAddToLibrary.animate().scaleX(1).scaleY(1).setDuration(200).setStartDelay(500);
+            mAddToLibraryBackground.setVisibility(View.VISIBLE);
+g
+            if (mAddToLibrary.getVisibility() == View.GONE)
+                mAddToLibrary.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void hideFAB() {
+        if (mAddToLibrary != null && mAddToLibraryBackground != null) {
+            mAddToLibrary.animate().scaleX(0).scaleY(0).setDuration(200);
+            mAddToLibraryBackground.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -242,7 +288,7 @@ public class AnimeDetailsActivity extends ActionBarActivity {
      * after a removal, for instance). Why? Because, the progress dialog
      * has to be cancelable on first load.
      */
-    protected class AnimeInfoTask extends AsyncTask<Boolean, Void, Boolean> {
+    private class AnimeInfoTask extends AsyncTask<Boolean, Void, Boolean> {
 
         ProgressDialog dialog;
 
@@ -313,8 +359,8 @@ public class AnimeDetailsActivity extends ActionBarActivity {
             if (mLibraryHolder != null)
                 mLibraryHolder.setVisibility(View.GONE);
 
-            if (mButtonsHolder != null)
-                mButtonsHolder.setVisibility(View.GONE);
+            if (mAddToLibrary != null)
+                hideFAB();
         }
 
         @Override
@@ -355,8 +401,10 @@ public class AnimeDetailsActivity extends ActionBarActivity {
 
         if (coverBitmap != null) {
             mPalette = Palette.generate(coverBitmap);
-            if (mPalette != null)
+            if (mPalette != null) {
                 darkMutedColor = mPalette.getDarkMutedColor(res.getColor(R.color.neutral_darker));
+                vibrantColor = mPalette.getVibrantColor(res.getColor(R.color.apptheme_primary));
+            }
         } else
             darkMutedColor = res.getColor(R.color.neutral_darker);
 
@@ -371,9 +419,9 @@ public class AnimeDetailsActivity extends ActionBarActivity {
         setContentView(mActionBarHelper.createView(AnimeDetailsActivity.this));
         mActionBarHelper.initActionBar(AnimeDetailsActivity.this);
 
-        mButtonsHolder = (LinearLayout) findViewById(R.id.anime_details_buttons_holder);
-        mViewTrailer = (Button) findViewById(R.id.anime_details_view_trailer_button);
-        mAddToLibrary = (Button) findViewById(R.id.anime_details_add_to_list_button);
+        mAddToLibrary = (FloatingActionButton) findViewById(R.id.fab);
+        mAddToLibraryBackground = findViewById(R.id.header_fab_background);
+
         mHeaderImage = (ImageView) findViewById(R.id.anime_details_cover_image);
         mType = (TextView) findViewById(R.id.anime_details_type);
         mGenre = (TextView) findViewById(R.id.anime_details_genres);
@@ -383,8 +431,6 @@ public class AnimeDetailsActivity extends ActionBarActivity {
         mAired = (TextView) findViewById(R.id.anime_details_aired);
         mCommunityRating = (TextView) findViewById(R.id.anime_details_community_rating);
         mSynopsis = (TextView) findViewById(R.id.anime_details_synopsis);
-
-        mRemove = (ImageView) findViewById(R.id.header_anime_details_remove);
 
         mLibraryProgressBar = (ProgressBar) findViewById(R.id.anime_details_library_progress_bar);
         mLibraryHolder = (LinearLayout) findViewById(R.id.anime_details_library_holder);
@@ -398,33 +444,18 @@ public class AnimeDetailsActivity extends ActionBarActivity {
         mRatingBar = (RatingBar) findViewById(R.id.anime_details_library_rating);
         mRatingSimple = (TextView) findViewById(R.id.anime_deatails_library_rating_simple);
 
-        mButtonsHolder.setBackgroundDrawable(new ColorDrawable(darkMutedColor));
-        mAddToLibrary.setTextColor(darkMutedColor);
         mAddToLibrary.setOnClickListener(new OnAddToLibraryClickListener());
+        mAddToLibrary.setColorNormal(vibrantColor);
+        mAddToLibrary.setColorPressed(vibrantColor);
 
-                /*
-                    Trailer isn't supported in API v1. Thus, we are dropping it for now.
-                    (Who watches trailers anyways? :P)
-
-                    if (anime.getTrailer() == null || anime.getTrailer().equals(""))
-                */
-        mViewTrailer.setVisibility(View.GONE);
-
-                /*
-                mViewTrailer.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        startActivity(new Intent(Intent.ACTION_VIEW,
-                                Uri.parse("http://www.youtube.com/watch?v=" + anime.getTrailer())));
-                    }
-                });
-                */
+        mAddToLibraryBackground.setBackgroundColor(darkMutedColor);
+        mLibraryHolder.setBackgroundColor(darkMutedColor);
 
         Point size = new Point();
         getWindowManager().getDefaultDisplay().getSize(size);
         mHeaderImage.getLayoutParams().height = (size.y / 3) * 2;
 
-        mHeaderImage.setImageDrawable(new BitmapDrawable(coverBitmap));
+        mHeaderImage.setImageBitmap(coverBitmap);
 
         mActionBar.setTitle(anime.getTitle());
 
@@ -513,39 +544,7 @@ public class AnimeDetailsActivity extends ActionBarActivity {
     /* If Anime exist in user library, show library related elements... */
     public void displayLibraryElements() {
         if (libraryEntry != null) {
-            mRemove.setVisibility(View.VISIBLE);
-            mRemove.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    CustomDialog.Builder builder = new CustomDialog.Builder(
-                            AnimeDetailsActivity.this,
-                            R.string.title_remove,
-                            R.string.yes);
-                    builder.negativeText(R.string.no);
-                    builder.positiveColor(getResources().getColor(R.color.apptheme_primary));
-                    String contentText = getString(R.string.content_remove_are_you_sure);
-                    contentText = contentText.replace("{anime-name}", anime.getTitle());
-                    builder.content(contentText);
-
-                    CustomDialog dialog = builder.build();
-
-                    dialog.setClickListener(new CustomDialog.ClickListener() {
-                        @Override
-                        public void onConfirmClick() {
-                            new RemoveTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                        }
-
-                        @Override
-                        public void onCancelClick() {
-                                    /* empty */
-                        }
-                    });
-
-                    dialog.show();
-                }
-            });
-
-            mLibraryHolder.setBackgroundColor(darkMutedColor);
+            mRemove.setVisible(true);
 
             final String animeEpisodeCount = anime.getEpisodeCount() != 0 ? anime.getEpisodeCount() + "" : "?";
 
@@ -763,19 +762,17 @@ public class AnimeDetailsActivity extends ActionBarActivity {
                 }
             });
 
-            mAddToLibrary.setText(R.string.content_update);
-            mAddToLibrary.setEnabled(false);
+            mAddToLibrary.setImageResource(R.drawable.ic_upload_white_24dp);
             mAddToLibrary.setOnClickListener(new OnLibraryUpdateClickListener());
 
             mLibraryProgressBar.setVisibility(View.GONE);
             mLibraryHolder.setVisibility(View.VISIBLE);
         } else {
-            mRemove.setVisibility(View.GONE);
+            showFAB();
+            mRemove.setVisible(false);
             mLibraryProgressBar.setVisibility(View.GONE);
             mLibraryHolder.setVisibility(View.GONE);
         }
-
-        mButtonsHolder.setVisibility(View.VISIBLE);
     }
 
     private class OnAddToLibraryClickListener implements View.OnClickListener {

@@ -46,6 +46,7 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.3.4'
     compile 'com.github.manuelpeinado.fadingactionbar:fadingactionbar-abc:+'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
+    compile 'com.melnykov:floatingactionbutton:1.0.7'
     compile 'joda-time:joda-time:2.5'
     compile 'org.apache.commons:commons-lang3:+'
     compile 'uk.me.lewisdeane.ldialogs:ldialogs@aar'

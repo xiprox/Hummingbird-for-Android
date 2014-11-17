@@ -2,46 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white"
     android:animateLayoutChanges="true"
+    android:background="@android:color/white"
     android:orientation="vertical">
-
-    <LinearLayout
-        android:id="@+id/anime_details_buttons_holder"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:animateLayoutChanges="true"
-        android:background="@color/neutral"
-        android:orientation="horizontal"
-        android:padding="16dp">
-
-        <Button
-            android:id="@+id/anime_details_view_trailer_button"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:layout_marginRight="16dp"
-            android:layout_weight="1"
-            android:animateLayoutChanges="true"
-            android:background="@drawable/btn_ps_stroke_only"
-            android:fontFamily="sans-serif-light"
-            android:text="@string/content_view_trailer"
-            android:textAllCaps="true"
-            android:textColor="@android:color/white"
-            android:textSize="14sp" />
-
-        <Button
-            android:id="@+id/anime_details_add_to_list_button"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:layout_weight="1"
-            android:animateLayoutChanges="true"
-            android:background="@drawable/btn_ps"
-            android:fontFamily="sans-serif-light"
-            android:text="@string/content_add_to_list"
-            android:textAllCaps="true"
-            android:textColor="@color/neutral"
-            android:textSize="14sp" />
-    </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -59,9 +22,8 @@
             android:id="@+id/anime_details_library_holder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/neutral"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <Spinner
                 android:id="@+id/anime_details_status_spinner"
@@ -228,14 +190,26 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginBottom="16dp"
+        android:background="@color/divider_light" />
+
+    <TextView
+        android:id="@+id/anime_details_synopsis"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:fontFamily="sans-serif-light"
+        android:textColor="@color/text_gray"
+        android:textSize="16sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
         android:background="@color/divider_light" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_margin="16dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -415,22 +389,4 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="16dp"
-        android:background="@color/divider_light" />
-
-    <TextView
-        android:id="@+id/anime_details_synopsis"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:fontFamily="sans-serif-light"
-        android:textColor="@color/text_gray"
-        android:textSize="16sp" />
 </LinearLayout>

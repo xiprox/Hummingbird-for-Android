@@ -43,6 +43,7 @@
     <string name="action_copy_title">Copy Title</string>
     <string name="toast_copy_title"> Copied</string>
     <string name="action_share">Share</string>
+    <string name="action_remove">Remove</string>
     <string name="content_favorited">Favorited</string>
     <string name="content_episodes">Episodes</string>
     <string name="content_private">Private</string>
