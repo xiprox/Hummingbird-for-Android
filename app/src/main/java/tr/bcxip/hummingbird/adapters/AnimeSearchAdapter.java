@@ -1,7 +1,9 @@
 package tr.bcxip.hummingbird.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import java.util.List;
 import tr.bcxip.hummingbird.AnimeDetailsActivity;
 import tr.bcxip.hummingbird.R;
 import tr.bcxip.hummingbird.api.objects.Anime;
+import tr.bcxip.hummingbird.utils.Utils;
 
 /**
  * Created by ix on 11/7/14.
@@ -84,7 +87,12 @@ public class AnimeSearchAdapter extends RecyclerView.Adapter<AnimeSearchAdapter.
             Intent intent = new Intent(context, AnimeDetailsActivity.class);
             intent.putExtra(AnimeDetailsActivity.ARG_ID, mDataset.get(position).getId());
             intent.putExtra(AnimeDetailsActivity.ARG_ANIME_OBJ, mDataset.get(position));
-            context.startActivity(intent);
+
+            ActivityOptionsCompat transition =
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(
+                            (Activity) context, view.findViewById(R.id.cover), "anime_cover");
+
+            Utils.startActivityWithTransition(context, intent, transition);
         }
     }
 }

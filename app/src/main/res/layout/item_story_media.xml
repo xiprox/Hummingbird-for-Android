@@ -21,7 +21,8 @@
                 android:id="@+id/item_story_media_cover"
                 android:layout_width="106dp"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                android:transitionName="anime_cover" />
         </FrameLayout>
 
         <LinearLayout

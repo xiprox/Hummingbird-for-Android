@@ -1,6 +1,10 @@
 package tr.bcxip.hummingbird.utils;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 
 import org.joda.time.format.ISODateTimeFormat;
 
@@ -58,5 +62,13 @@ public class Utils {
 
     public static int dpToPx(Context context, float dp) {
         return (int) (dp * context.getResources().getDisplayMetrics().density);
+    }
+
+    public static void startActivityWithTransition(Context context, Intent intent,
+                                                   ActivityOptionsCompat transition) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+            context.startActivity(intent, transition.toBundle());
+        else
+            context.startActivity(intent);
     }
 }

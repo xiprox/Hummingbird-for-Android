@@ -10,7 +10,8 @@
         android:id="@+id/item_library_cover"
         android:layout_width="match_parent"
         android:layout_height="270dp"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        android:transitionName="anime_cover" />
 
     <LinearLayout
         android:id="@+id/item_library_info_holder"

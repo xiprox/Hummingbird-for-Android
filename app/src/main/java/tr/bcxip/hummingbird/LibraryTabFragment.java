@@ -1,9 +1,11 @@
 package tr.bcxip.hummingbird;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +25,7 @@ import tr.bcxip.hummingbird.api.HummingbirdApi;
 import tr.bcxip.hummingbird.api.Results;
 import tr.bcxip.hummingbird.api.objects.LibraryEntry;
 import tr.bcxip.hummingbird.managers.PrefManager;
+import tr.bcxip.hummingbird.utils.Utils;
 import tr.xip.widget.errorview.ErrorView;
 
 /**
@@ -159,7 +162,14 @@ public class LibraryTabFragment extends Fragment implements ErrorView.RetryListe
                                 mLibrary.get(position).getAnime().getId());
                         intent.putExtra(AnimeDetailsActivity.ARG_ANIME_OBJ,
                                 mLibrary.get(position).getAnime());
-                        context.startActivity(intent);
+
+                        ActivityOptionsCompat transition =
+                                ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                        (Activity) context,
+                                        view.findViewById(R.id.item_library_cover),
+                                        "anime_cover");
+
+                        Utils.startActivityWithTransition(context, intent, transition);
                     }
                 });
 

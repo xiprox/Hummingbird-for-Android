@@ -1,9 +1,11 @@
 package tr.bcxip.hummingbird.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,8 +114,8 @@ public class FeedTimelineAdapter extends InfiniteScrollListAdapter {
             if (storyType.equals(Story.STORY_TYPE_MEDIA)) {
                 final CardView mCard = (CardView) rootView.findViewById(R.id.item_story_media_card);
                 FrameLayout mCoverHolder = (FrameLayout) rootView.findViewById(R.id.item_story_media_cover_holder);
-                ImageView mCover = (ImageView) rootView.findViewById(R.id.item_story_media_cover);
-                TextView mTitle = (TextView) rootView.findViewById(R.id.item_story_media_title);
+                final ImageView mCover = (ImageView) rootView.findViewById(R.id.item_story_media_cover);
+                final TextView mTitle = (TextView) rootView.findViewById(R.id.item_story_media_title);
                 final LinearLayout mSubstories = (LinearLayout) rootView.findViewById(R.id.item_story_media_substories);
                 final TextView mMoreIndicator = (TextView) rootView.findViewById(R.id.item_story_media_more);
 
@@ -129,7 +131,12 @@ public class FeedTimelineAdapter extends InfiniteScrollListAdapter {
                         Intent intent = new Intent(context, AnimeDetailsActivity.class);
                         intent.putExtra(AnimeDetailsActivity.ARG_ID, item.getMedia().getId());
                         intent.putExtra(AnimeDetailsActivity.ARG_ANIME_OBJ, item.getMedia());
-                        context.startActivity(intent);
+
+                        ActivityOptionsCompat transition =
+                                ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                        (Activity) context, mCover, "anime_cover");
+
+                        Utils.startActivityWithTransition(context, intent, transition);
                     }
                 });
 
