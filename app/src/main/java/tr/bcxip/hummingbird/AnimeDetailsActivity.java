@@ -270,7 +270,7 @@ public class AnimeDetailsActivity extends ActionBarActivity {
         if (mAddToLibrary != null && mAddToLibraryBackground != null) {
             mAddToLibrary.animate().scaleX(1).scaleY(1).setDuration(200).setStartDelay(500);
             mAddToLibraryBackground.setVisibility(View.VISIBLE);
-g
+
             if (mAddToLibrary.getVisibility() == View.GONE)
                 mAddToLibrary.setVisibility(View.VISIBLE);
         }
