@@ -23,7 +23,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="visible"
+            android:transitionName="anime_library_holder">
 
             <Spinner
                 android:id="@+id/anime_details_status_spinner"
@@ -49,7 +50,7 @@
                     android:layout_weight="1"
                     android:text="@string/content_episodes"
                     android:textAllCaps="true"
-                    android:textColor="@color/text_light"
+                    android:textColor="@color/text_gray"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -59,7 +60,7 @@
                     android:layout_height="wrap_content"
                     android:text="0/0"
                     android:textAllCaps="true"
-                    android:textColor="@color/text_light"
+                    android:textColor="@color/text_gray"
                     android:textSize="14sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -78,7 +79,7 @@
                     android:layout_weight="1"
                     android:text="@string/content_rewatching"
                     android:textAllCaps="true"
-                    android:textColor="@color/text_light"
+                    android:textColor="@color/text_gray"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -104,7 +105,7 @@
                     android:layout_weight="1"
                     android:text="@string/content_rewatched"
                     android:textAllCaps="true"
-                    android:textColor="@color/text_light"
+                    android:textColor="@color/text_gray"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -114,7 +115,7 @@
                     android:layout_height="wrap_content"
                     android:text="0"
                     android:textAllCaps="true"
-                    android:textColor="@color/text_light"
+                    android:textColor="@color/text_gray"
                     android:textSize="14sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -133,7 +134,7 @@
                     android:layout_weight="1"
                     android:text="@string/content_private"
                     android:textAllCaps="true"
-                    android:textColor="@color/text_light"
+                    android:textColor="@color/text_gray"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -157,7 +158,7 @@
                     android:layout_weight="1"
                     android:text="@string/content_rating"
                     android:textAllCaps="true"
-                    android:textColor="@color/text_light"
+                    android:textColor="@color/text_gray"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -166,9 +167,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:numStars="5"
-                    android:progressBackgroundTint="#60ffffff"
-                    android:progressTint="@android:color/white"
-                    android:secondaryProgressTint="#60ffffff" />
+                    android:progressBackgroundTint="#60ff5722"
+                    android:progressTint="@color/apptheme_primary"
+                    android:secondaryProgressTint="#60ff5722" />
 
                 <TextView
                     android:id="@+id/anime_deatails_library_rating_simple"

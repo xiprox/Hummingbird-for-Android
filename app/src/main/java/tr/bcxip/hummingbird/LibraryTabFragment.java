@@ -165,9 +165,7 @@ public class LibraryTabFragment extends Fragment implements ErrorView.RetryListe
 
                         ActivityOptionsCompat transition =
                                 ActivityOptionsCompat.makeSceneTransitionAnimation(
-                                        (Activity) context,
-                                        view.findViewById(R.id.item_library_cover),
-                                        "anime_cover");
+                                        (Activity) context, view, "anime_cover");
 
                         Utils.startActivityWithTransition(context, intent, transition);
                     }

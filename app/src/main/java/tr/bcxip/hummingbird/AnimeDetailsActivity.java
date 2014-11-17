@@ -448,9 +448,6 @@ public class AnimeDetailsActivity extends ActionBarActivity {
         mAddToLibrary.setColorNormal(vibrantColor);
         mAddToLibrary.setColorPressed(vibrantColor);
 
-        mAddToLibraryBackground.setBackgroundColor(darkMutedColor);
-        mLibraryHolder.setBackgroundColor(darkMutedColor);
-
         Point size = new Point();
         getWindowManager().getDefaultDisplay().getSize(size);
         mHeaderImage.getLayoutParams().height = (size.y / 3) * 2;
