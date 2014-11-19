@@ -1,5 +1,6 @@
 package tr.bcxip.hummingbird;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
@@ -69,20 +70,24 @@ public class LibraryFragment extends Fragment {
         mViewPager.setAdapter(adapter);
 
         mFab = (FloatingActionButton) rootView.findViewById(R.id.fab);
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(context, AnimeSearchActivity.class));
+            }
+        });
 
         mTabs = (PagerSlidingTabStrip) rootView.findViewById(R.id.library_tabs);
         mTabs.setViewPager(mViewPager);
-
-        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mTabs.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float v, int i2) {
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
             }
 
             @Override
             public void onPageSelected(int position) {
                 GridView mGrid = ((LibraryTabFragment) adapter.getItem(position)).getGrid();
-                Log.d("TAG", position + " -- " + mGrid + " -- ");
                 if (mGrid != null) mFab.attachToListView(mGrid);
             }
 

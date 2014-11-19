@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,6 +58,8 @@ public class LibraryTabFragment extends Fragment implements ErrorView.RetryListe
     String FILTER;
     String AUTH_TOKEN;
 
+    View rootView;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +73,7 @@ public class LibraryTabFragment extends Fragment implements ErrorView.RetryListe
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_library_tab, container, false);
+        rootView = inflater.inflate(R.layout.fragment_library_tab, container, false);
 
         Bundle args = getArguments();
 
@@ -111,8 +114,10 @@ public class LibraryTabFragment extends Fragment implements ErrorView.RetryListe
     }
 
     public GridView getGrid() {
+        Log.wtf("GRID", mGrid + "");
         return mGrid;
     }
+
 
     private class LoadTask extends AsyncTask<Void, Void, Integer> {
 
