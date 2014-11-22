@@ -2,12 +2,14 @@ package tr.bcxip.hummingbird.api.objects;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 import tr.bcxip.hummingbird.utils.Utils;
 
 /**
  * Created by Hikari on 10/8/14.
  */
-public class LibraryEntry {
+public class LibraryEntry implements Serializable {
     String id; // Should be ignored according to the API docs
     int episodes_watched;
     String last_watched;

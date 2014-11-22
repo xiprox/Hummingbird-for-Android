@@ -22,4 +22,10 @@
     <!-- Buttons -->
     <dimen name="button_width">88dp</dimen>
     <dimen name="button_height">36dp</dimen>
+
+    <!-- Anime Details Activity dimens -->
+    <dimen name="margin_details_card_side">0dp</dimen>
+    <dimen name="margin_details_cover_card_top">-32dp</dimen>
+    <dimen name="height_header_image">248dp</dimen>
+    <dimen name="offset_details_info_card">32dp</dimen>
 </resources>

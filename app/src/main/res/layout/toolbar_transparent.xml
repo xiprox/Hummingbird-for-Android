@@ -5,5 +5,5 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="@dimen/abc_action_bar_default_height_material"
-    android:background="@color/apptheme_primary"
+    android:background="@android:color/transparent"
     app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />

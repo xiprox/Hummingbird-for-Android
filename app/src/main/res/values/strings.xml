@@ -41,6 +41,7 @@
 
     <!--  Anime Details Strings -->
     <string name="action_copy_title">Copy Title</string>
+    <string name="action_read_more">Read more</string>
     <string name="toast_copy_title"> Copied</string>
     <string name="action_share">Share</string>
     <string name="action_remove">Remove</string>
@@ -50,6 +51,7 @@
     <string name="content_rewatching">Rewatching</string>
     <string name="content_rewatched">Rewatched</string>
     <string name="content_rating">Rating</string>
+    <string name="content_my_rating">My rating</string>
     <string name="title_remove">Remove</string>
     <string name="content_remove_are_you_sure">Are you sure you\'d like to remove {anime-name} from your library?</string>
     <string name="content_not_yet_aired">Not Yet Aired</string>

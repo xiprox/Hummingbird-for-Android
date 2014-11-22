@@ -6,9 +6,8 @@
     android:layout_height="54dp"
     android:ellipsize="marquee"
     android:gravity="center_vertical"
+    android:paddingLeft="4dp"
     android:singleLine="true"
     android:textAlignment="inherit"
-    android:textAllCaps="true"
     android:textColor="@color/text_gray"
-    android:textSize="14sp"
-    android:textStyle="bold" />
+    android:textSize="14sp" />

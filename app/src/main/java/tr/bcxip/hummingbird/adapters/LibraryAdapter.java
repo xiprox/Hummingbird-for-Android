@@ -49,7 +49,6 @@ public class LibraryAdapter extends ArrayAdapter<LibraryEntry> {
 
             holder = new ViewHolder();
             holder.cover = (ImageView) convertView.findViewById(R.id.item_library_cover);
-            holder.infoHolder = (LinearLayout) convertView.findViewById(R.id.item_library_info_holder);
             holder.title = (TextView) convertView.findViewById(R.id.item_library_title);
             holder.desc = (TextView) convertView.findViewById(R.id.item_library_desc);
 
@@ -72,7 +71,6 @@ public class LibraryAdapter extends ArrayAdapter<LibraryEntry> {
                             int color = Palette.generate(bitmap)
                                     .getDarkMutedSwatch().getRgb();
                             ColorDrawable background = new ColorDrawable(color);
-                            holder.infoHolder.setBackgroundDrawable(background);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -114,7 +112,6 @@ public class LibraryAdapter extends ArrayAdapter<LibraryEntry> {
 
     static class ViewHolder {
         ImageView cover;
-        LinearLayout infoHolder;
         TextView title;
         TextView desc;
     }

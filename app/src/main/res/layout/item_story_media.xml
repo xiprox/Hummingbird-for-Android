@@ -6,6 +6,13 @@
     android:layout_height="160dp"
     android:background="@drawable/selector_dark">
 
+    <View
+        android:id="@+id/item_story_media_paper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:transitionName="anime_paper" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

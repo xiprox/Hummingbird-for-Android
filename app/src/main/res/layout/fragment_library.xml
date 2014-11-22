@@ -4,6 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="148dp"
+            android:background="@color/apptheme_primary" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/action_bar_shadow_height"
+            android:background="@drawable/actionbar_shadow" />
+    </LinearLayout>
+
     <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,7 +29,7 @@
             android:id="@+id/library_tabs"
             android:layout_width="match_parent"
             android:layout_height="48dip"
-            android:background="@color/apptheme_primary"
+            android:background="@android:color/transparent"
             android:textColor="@android:color/white"
             app:pstsDividerColor="@android:color/transparent"
             app:pstsIndicatorColor="@android:color/white"
@@ -22,20 +38,10 @@
             app:pstsTextAllCaps="true"
             app:pstsUnderlineColor="@android:color/transparent" />
 
-        <FrameLayout
+        <android.support.v4.view.ViewPager
+            android:id="@+id/library_view_pager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <android.support.v4.view.ViewPager
-                android:id="@+id/library_view_pager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/action_bar_shadow_height"
-                android:background="@drawable/actionbar_shadow" />
-        </FrameLayout>
+            android:layout_height="match_parent" />
     </LinearLayout>
 
     <com.melnykov.fab.FloatingActionButton

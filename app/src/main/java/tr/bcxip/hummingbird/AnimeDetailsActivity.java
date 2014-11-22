@@ -1,30 +1,39 @@
 package tr.bcxip.hummingbird;
 
+import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Point;
+import android.graphics.Outline;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.SwitchCompat;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewOutlineProvider;
+import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
@@ -34,7 +43,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.manuelpeinado.fadingactionbar.extras.actionbarcompat.FadingActionBarHelper;
 import com.melnykov.fab.FloatingActionButton;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -51,30 +59,63 @@ import tr.bcxip.hummingbird.api.objects.Anime;
 import tr.bcxip.hummingbird.api.objects.LibraryEntry;
 import tr.bcxip.hummingbird.api.objects.Rating;
 import tr.bcxip.hummingbird.managers.PrefManager;
+import tr.bcxip.hummingbird.utils.Utils;
+import tr.bcxip.hummingbird.widget.ObservableScrollView;
 import uk.me.lewisdeane.ldialogs.CustomDialog;
 
 /**
  * Created by Hikari on 10/8/14.
  */
-public class AnimeDetailsActivity extends ActionBarActivity {
+public class AnimeDetailsActivity extends ActionBarActivity implements
+        ObservableScrollView.Callbacks {
 
     private static final String TAG = "ANIME DETAILS ACTIVITY";
 
     public static final String ARG_ID = "arg_id";
     public static final String ARG_ANIME_OBJ = "arg_anime_obj";
 
+    public static final String STATE_ANIME = "state_anime";
+    public static final String STATE_LIBRARY_ENTRY = "state_library_entry";
+
+    private static final int STATE_ONSCREEN = 0;
+    private static final int STATE_OFFSCREEN = 1;
+    private static final int STATE_RETURNING = 2;
+
+    private int lastDampedScroll;
+    private int lastHeaderHeight = -1;
+    private boolean firstGlobalLayoutPerformed;
+    private boolean lastToolbarVisibility = true;
+    private boolean lastHeaderVisibility = true;
+
+    Toolbar toolbar;
     ActionBar mActionBar;
-    FadingActionBarHelper mActionBarHelper;
 
     HummingbirdApi api;
     PrefManager prefMan;
 
     Palette mPalette;
 
-    FloatingActionButton mAddToLibrary;
-    View mAddToLibraryBackground;
+    FloatingActionButton mActionButton;
 
+    private Toolbar mQuickReturnView;
+    private View mPlaceholderView;
+    private ObservableScrollView mObservableScrollView;
+    private int mMinRawY = 0;
+    private int mState = STATE_ONSCREEN;
+    private int mQuickReturnHeight;
+    private int mMaxScrollY;
+
+    private Drawable mActionBarBackgroundDrawable;
+
+    LinearLayout mContentsHolder;
+    FrameLayout mInfoHolder;
+    LinearLayout mMoreInfoHolder;
+    FrameLayout mLibraryInfoHolder;
+    FrameLayout mHeaderHolder;
     ImageView mHeaderImage;
+    FrameLayout mCoverHolder;
+    ImageView mCoverImage;
+    TextView mTitle;
     TextView mType;
     TextView mGenre;
     TextView mEpisodeCount;
@@ -82,12 +123,13 @@ public class AnimeDetailsActivity extends ActionBarActivity {
     TextView mAgeRating;
     TextView mAired;
     TextView mCommunityRating;
+    LinearLayout mSynopsisHolder;
     TextView mSynopsis;
+    LinearLayout mMoreSimilarAnime;
 
     MenuItem mRemove;
 
     ProgressBar mLibraryProgressBar;
-    LinearLayout mLibraryHolder;
     Spinner mStatusSpinner;
     LinearLayout mEpisodesHolder;
     TextView mEpisodes;
@@ -96,7 +138,7 @@ public class AnimeDetailsActivity extends ActionBarActivity {
     TextView mRewatchedTimes;
     SwitchCompat mPrivate;
     RatingBar mRatingBar;
-    TextView mRatingSimple;
+//    TextView mRatingSimple;
 
     String ANIME_ID;
 
@@ -114,10 +156,18 @@ public class AnimeDetailsActivity extends ActionBarActivity {
 
     int darkMutedColor;
     int vibrantColor;
+    int darkVibrantColor;
 
+    ObjectAnimator toolbarBgFadeAnim;
+
+    @TargetApi(Build.VERSION_CODES.L)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_anime_details);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         mActionBar = getSupportActionBar();
         api = new HummingbirdApi(this);
@@ -128,17 +178,128 @@ public class AnimeDetailsActivity extends ActionBarActivity {
         anime = (Anime) getIntent().getSerializableExtra(ARG_ANIME_OBJ);
         ANIME_ID = getIntent().getStringExtra(ARG_ID);
 
+        if (savedInstanceState != null) {
+            Anime savedAnime = (Anime) savedInstanceState.getSerializable(STATE_ANIME);
+            if (savedAnime != null) anime = savedAnime;
+
+            LibraryEntry savedLibraryEntry =
+                    (LibraryEntry) savedInstanceState.getSerializable(STATE_LIBRARY_ENTRY);
+            if (savedLibraryEntry != null)
+                libraryEntry = savedLibraryEntry;
+        }
+
+        mActionBarBackgroundDrawable = new ColorDrawable(darkMutedColor != 0 ? darkMutedColor
+                : getResources().getColor(R.color.neutral_darker));
+        mActionBarBackgroundDrawable.setAlpha(0);
+        toolbar.setBackgroundDrawable(mActionBarBackgroundDrawable);
+
+        mActionButton = (FloatingActionButton) findViewById(R.id.fab);
+
+        mQuickReturnView = toolbar;
+        mPlaceholderView = findViewById(R.id.placeholder);
+        mObservableScrollView = (ObservableScrollView) findViewById(R.id.anime_details_scroll_view);
+        mObservableScrollView.setCallbacks(this);
+        mObservableScrollView.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        onScrollChanged(mObservableScrollView.getScrollY());
+                        mMaxScrollY = mObservableScrollView.computeVerticalScrollRange()
+                                - mObservableScrollView.getHeight();
+                        mQuickReturnHeight = mQuickReturnView.getHeight();
+
+                        int headerHeight = mHeaderImage.getHeight();
+                        if (!firstGlobalLayoutPerformed && headerHeight != 0) {
+                            updateHeaderHeight(headerHeight);
+                            firstGlobalLayoutPerformed = true;
+                        }
+                    }
+                });
+
+        mContentsHolder = (LinearLayout) findViewById(R.id.anime_details_content_holder);
+        mInfoHolder = (FrameLayout) findViewById(R.id.anime_details_info_holder);
+        mMoreInfoHolder = (LinearLayout) findViewById(R.id.anime_details_more_info_holder);
+        mLibraryInfoHolder = (FrameLayout) findViewById(R.id.anime_details_library_info_holder);
+        mHeaderHolder = (FrameLayout) findViewById(R.id.anime_details_header_holder);
+        mHeaderImage = (ImageView) findViewById(R.id.anime_details_header);
+        mCoverHolder = (FrameLayout) findViewById(R.id.anime_details_cover_image_holder);
+        mCoverImage = (ImageView) findViewById(R.id.anime_details_cover_image);
+        mTitle = (TextView) findViewById(R.id.anime_details_title);
+        mType = (TextView) findViewById(R.id.anime_details_type);
+        mGenre = (TextView) findViewById(R.id.anime_details_genres);
+        mEpisodeCount = (TextView) findViewById(R.id.anime_details_episode_count);
+        mEpisodeLength = (TextView) findViewById(R.id.anime_details_episode_duration);
+        mAgeRating = (TextView) findViewById(R.id.anime_details_age_rating);
+        mAired = (TextView) findViewById(R.id.anime_details_aired);
+        mCommunityRating = (TextView) findViewById(R.id.anime_details_community_rating);
+        mSynopsisHolder = (LinearLayout) findViewById(R.id.anime_details_synopsis_holder);
+        mSynopsis = (TextView) findViewById(R.id.anime_details_synopsis);
+        mMoreSimilarAnime = (LinearLayout) findViewById(R.id.anime_details_more_similar_anime);
+
+        mLibraryProgressBar = (ProgressBar) findViewById(R.id.anime_details_library_progress_bar);
+        mStatusSpinner = (Spinner) findViewById(R.id.anime_details_status_spinner);
+        mEpisodesHolder = (LinearLayout) findViewById(R.id.anime_details_library_episodes_holder);
+        mEpisodes = (TextView) findViewById(R.id.anime_details_library_episodes);
+        mRewatching = (SwitchCompat) findViewById(R.id.anime_details_library_rewatching);
+        mRewatchedTimesHolder = (LinearLayout) findViewById(R.id.anime_details_library_rewatched_holder);
+        mRewatchedTimes = (TextView) findViewById(R.id.anime_details_library_rewatched);
+        mPrivate = (SwitchCompat) findViewById(R.id.anime_details_library_private);
+        mRatingBar = (RatingBar) findViewById(R.id.anime_details_library_rating);
+//        mRatingSimple = (TextView) findViewById(R.id.anime_deatails_library_rating_simple);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ViewOutlineProvider infoOutlineProvider = new ViewOutlineProvider() {
+                @Override
+                public void getOutline(View view, Outline outline) {
+                    outline.setRect(
+                            0,
+                            Utils.dpToPx(AnimeDetailsActivity.this,
+                                    getResources().getDimension(R.dimen.offset_details_info_card)),
+                            view.getWidth(),
+                            view.getHeight()
+                    );
+                }
+            };
+            mInfoHolder.setOutlineProvider(infoOutlineProvider);
+        }
+
+        ViewCompat.setElevation(mInfoHolder, Utils.dpToPx(this, 2));
+        ViewCompat.setElevation(mMoreInfoHolder, Utils.dpToPx(this, 2));
+        ViewCompat.setElevation(mLibraryInfoHolder, Utils.dpToPx(this, 2));
+
         if (anime != null) {
             displayAnimeInfo();
-            new LibraryEntryTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+            if (libraryEntry == null)
+                new LibraryEntryTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            else
+                displayLibraryElements();
         } else
             new AnimeInfoTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, true);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (anime != null)
+            outState.putSerializable(STATE_ANIME, anime);
+
+        if (libraryEntry != null)
+            outState.putSerializable(STATE_LIBRARY_ENTRY, libraryEntry);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.anime_details, menu);
         mRemove = menu.findItem(R.id.action_remove);
+
+        // Update library info once again if entry was loaded from saved instance. This is done
+        // because when the #displayLibraryElements() method is run, mRemove is null. Thus, it is
+        // not made VISIBLE. Updating thins here makes it visible... Nah, you get the point.
+        if (libraryEntry != null)
+            displayLibraryElements();
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -205,6 +366,124 @@ public class AnimeDetailsActivity extends ActionBarActivity {
     }
 
     @Override
+    public void onScrollChanged(int scrollY) {
+        int originalScrollY = scrollY;
+        scrollY = Math.min(mMaxScrollY, scrollY);
+
+        int rawY = mPlaceholderView.getTop() - scrollY;
+        int translationY = 0;
+
+        switch (mState) {
+            case STATE_OFFSCREEN:
+                if (rawY <= mMinRawY) {
+                    mMinRawY = rawY;
+                } else {
+                    mState = STATE_RETURNING;
+                }
+                translationY = rawY;
+                break;
+
+            case STATE_ONSCREEN:
+                if (rawY < -mQuickReturnHeight) {
+                    mState = STATE_OFFSCREEN;
+                    mMinRawY = rawY;
+                }
+                translationY = rawY;
+                break;
+
+            case STATE_RETURNING:
+                translationY = (rawY - mMinRawY) - mQuickReturnHeight;
+                if (translationY > 0) {
+                    translationY = 0;
+                    mMinRawY = rawY - mQuickReturnHeight;
+                }
+
+                if (rawY > 0) {
+                    mState = STATE_ONSCREEN;
+                    translationY = rawY;
+                }
+
+                if (translationY < -mQuickReturnHeight) {
+                    mState = STATE_OFFSCREEN;
+                    mMinRawY = rawY;
+                }
+                break;
+        }
+        mQuickReturnView.animate().cancel();
+        mQuickReturnView.setTranslationY(translationY + scrollY);
+
+        /** Header image parallax stuff */
+        int currentHeaderHeight = mHeaderImage.getHeight();
+
+        if (currentHeaderHeight != lastHeaderHeight)
+            updateHeaderHeight(currentHeaderHeight);
+
+        float damping = 0.5f;
+        int dampedScroll = (int) (originalScrollY * damping);
+        int offset = lastDampedScroll - dampedScroll;
+        mHeaderImage.offsetTopAndBottom(-offset);
+
+        if (firstGlobalLayoutPerformed)
+            lastDampedScroll = dampedScroll;
+
+        /** Action bar background stuff */
+        boolean toolbarVisibility = isToolbarVisibleOnScreen();
+        boolean headerVisibility = isHeaderVisibleOnScreen();
+
+        if (lastToolbarVisibility != toolbarVisibility || lastHeaderVisibility != headerVisibility)
+            updateToolbarBackgroundColor(!headerVisibility);
+
+        lastToolbarVisibility = toolbarVisibility;
+        lastHeaderVisibility = headerVisibility;
+    }
+
+    private void updateHeaderHeight(int headerHeight) {
+        lastHeaderHeight = headerHeight;
+    }
+
+    private void updateToolbarBackgroundColor(boolean show) {
+        if (toolbarBgFadeAnim == null)
+            toolbarBgFadeAnim = ObjectAnimator.ofInt(mActionBarBackgroundDrawable, "alpha", 255, 0)
+                    .setDuration(400);
+
+        if (show) {
+            if (!toolbarBgFadeAnim.isStarted())
+                mActionBarBackgroundDrawable.setAlpha(255);
+        } else if (((ColorDrawable) mActionBarBackgroundDrawable).getAlpha() != 0)
+            toolbarBgFadeAnim.start();
+    }
+
+    private boolean isHeaderVisibleOnScreen() {
+        Rect headerBounds = new Rect();
+        mHeaderHolder.getHitRect(headerBounds);
+        return Rect.intersects(getScrollViewBounds(), headerBounds);
+    }
+
+    private boolean isToolbarVisibleOnScreen() {
+        Rect toolbarBounds = new Rect();
+        toolbar.getHitRect(toolbarBounds);
+        return Rect.intersects(getScrollViewBounds(), toolbarBounds);
+    }
+
+    private Rect getScrollViewBounds() {
+        return new Rect(
+                mObservableScrollView.getScrollX(),
+                mObservableScrollView.getScrollY(),
+                mObservableScrollView.getScrollX() + mObservableScrollView.getWidth(),
+                mObservableScrollView.getScrollY() + mObservableScrollView.getHeight());
+    }
+
+    @Override
+    public void onDownMotionEvent() {
+        /* empty */
+    }
+
+    @Override
+    public void onUpOrCancelMotionEvent() {
+        /* empty */
+    }
+
+    @Override
     public boolean onSupportNavigateUp() {
         super.onBackPressed();
         return true;
@@ -260,26 +539,25 @@ public class AnimeDetailsActivity extends ActionBarActivity {
                 newPrivate != entry.isPrivate() ||
                 !newRating.equals(entry.getRating().getAdvancedRating() != null ?
                         entry.getRating().getAdvancedRating() : "0")) {
-            showFAB();
+            enableFAB();
         } else {
-            hideFAB();
+            disableFAB();
         }
     }
 
-    private void showFAB() {
-        if (mAddToLibrary != null && mAddToLibraryBackground != null) {
-            mAddToLibrary.animate().scaleX(1).scaleY(1).setDuration(200).setStartDelay(500);
-            mAddToLibraryBackground.setVisibility(View.VISIBLE);
-
-            if (mAddToLibrary.getVisibility() == View.GONE)
-                mAddToLibrary.setVisibility(View.VISIBLE);
+    private void enableFAB() {
+        if (mActionButton != null) {
+            mActionButton.setEnabled(true);
+            ObjectAnimator anim = ObjectAnimator.ofInt(mActionButton.getDrawable(), "alpha", 255);
+            anim.setDuration(200).start();
         }
     }
 
-    private void hideFAB() {
-        if (mAddToLibrary != null && mAddToLibraryBackground != null) {
-            mAddToLibrary.animate().scaleX(0).scaleY(0).setDuration(200);
-            mAddToLibraryBackground.setVisibility(View.GONE);
+    private void disableFAB() {
+        if (mActionButton != null) {
+            mActionButton.setEnabled(false);
+            ObjectAnimator anim = ObjectAnimator.ofInt(mActionButton.getDrawable(), "alpha", 100);
+            anim.setDuration(200).start();
         }
     }
 
@@ -356,11 +634,11 @@ public class AnimeDetailsActivity extends ActionBarActivity {
             if (mLibraryProgressBar != null)
                 mLibraryProgressBar.setVisibility(View.VISIBLE);
 
-            if (mLibraryHolder != null)
-                mLibraryHolder.setVisibility(View.GONE);
+            if (mLibraryInfoHolder != null)
+                mLibraryInfoHolder.setVisibility(View.GONE);
 
-            if (mAddToLibrary != null)
-                hideFAB();
+            if (mActionButton != null)
+                disableFAB();
         }
 
         @Override
@@ -404,6 +682,7 @@ public class AnimeDetailsActivity extends ActionBarActivity {
             if (mPalette != null) {
                 darkMutedColor = mPalette.getDarkMutedColor(res.getColor(R.color.neutral_darker));
                 vibrantColor = mPalette.getVibrantColor(res.getColor(R.color.apptheme_primary));
+                darkVibrantColor = mPalette.getDarkVibrantColor(res.getColor(R.color.apptheme_primary_dark));
             }
         } else
             darkMutedColor = res.getColor(R.color.neutral_darker);
@@ -411,50 +690,34 @@ public class AnimeDetailsActivity extends ActionBarActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             getWindow().setStatusBarColor(darkMutedColor);
 
-        mActionBarHelper = new FadingActionBarHelper()
-                .actionBarBackground(new ColorDrawable(darkMutedColor))
-                .headerLayout(R.layout.header_anime_details)
-                .headerOverlayLayout(R.layout.header_overlay_anime_details)
-                .contentLayout(R.layout.content_anime_details);
-        setContentView(mActionBarHelper.createView(AnimeDetailsActivity.this));
-        mActionBarHelper.initActionBar(AnimeDetailsActivity.this);
+        int alpha = mActionBarBackgroundDrawable.getAlpha();
+        mActionBarBackgroundDrawable = new ColorDrawable(darkMutedColor);
+        mActionBarBackgroundDrawable.setAlpha(alpha);
+        if (toolbar != null)
+            toolbar.setBackgroundDrawable(mActionBarBackgroundDrawable);
 
-        mAddToLibrary = (FloatingActionButton) findViewById(R.id.fab);
-        mAddToLibraryBackground = findViewById(R.id.header_fab_background);
+        mActionButton.setOnClickListener(new OnAddToLibraryClickListener());
+        mActionButton.setColorNormal(vibrantColor);
+        mActionButton.setColorPressed(darkVibrantColor);
 
-        mHeaderImage = (ImageView) findViewById(R.id.anime_details_cover_image);
-        mType = (TextView) findViewById(R.id.anime_details_type);
-        mGenre = (TextView) findViewById(R.id.anime_details_genres);
-        mEpisodeCount = (TextView) findViewById(R.id.anime_details_episode_count);
-        mEpisodeLength = (TextView) findViewById(R.id.anime_details_episode_duration);
-        mAgeRating = (TextView) findViewById(R.id.anime_details_age_rating);
-        mAired = (TextView) findViewById(R.id.anime_details_aired);
-        mCommunityRating = (TextView) findViewById(R.id.anime_details_community_rating);
-        mSynopsis = (TextView) findViewById(R.id.anime_details_synopsis);
+        mCoverImage.setImageBitmap(coverBitmap);
+        mCoverHolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO - Fullscreen
+            }
+        });
 
-        mLibraryProgressBar = (ProgressBar) findViewById(R.id.anime_details_library_progress_bar);
-        mLibraryHolder = (LinearLayout) findViewById(R.id.anime_details_library_holder);
-        mStatusSpinner = (Spinner) findViewById(R.id.anime_details_status_spinner);
-        mEpisodesHolder = (LinearLayout) findViewById(R.id.anime_details_library_episodes_holder);
-        mEpisodes = (TextView) findViewById(R.id.anime_details_library_episodes);
-        mRewatching = (SwitchCompat) findViewById(R.id.anime_details_library_rewatching);
-        mRewatchedTimesHolder = (LinearLayout) findViewById(R.id.anime_details_library_rewatched_holder);
-        mRewatchedTimes = (TextView) findViewById(R.id.anime_details_library_rewatched);
-        mPrivate = (SwitchCompat) findViewById(R.id.anime_details_library_private);
-        mRatingBar = (RatingBar) findViewById(R.id.anime_details_library_rating);
-        mRatingSimple = (TextView) findViewById(R.id.anime_deatails_library_rating_simple);
-
-        mAddToLibrary.setOnClickListener(new OnAddToLibraryClickListener());
-        mAddToLibrary.setColorNormal(vibrantColor);
-        mAddToLibrary.setColorPressed(vibrantColor);
-
-        Point size = new Point();
-        getWindowManager().getDefaultDisplay().getSize(size);
-        mHeaderImage.getLayoutParams().height = (size.y / 3) * 2;
-
+        // TODO - Put something else here
         mHeaderImage.setImageBitmap(coverBitmap);
+        mHeaderHolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO - Fullscreen
+            }
+        });
 
-        mActionBar.setTitle(anime.getTitle());
+        mTitle.setText(anime.getTitle());
 
         mType.setText(anime.getShowType());
 
@@ -536,12 +799,26 @@ public class AnimeDetailsActivity extends ActionBarActivity {
         mCommunityRating.setText(comRating);
 
         mSynopsis.setText(anime.getSynopsis());
+        mSynopsisHolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO - Show more
+            }
+        });
+
+        mMoreSimilarAnime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO - More similar activity...
+            }
+        });
     }
 
     /* If Anime exist in user library, show library related elements... */
     public void displayLibraryElements() {
         if (libraryEntry != null) {
-            mRemove.setVisible(true);
+            if (mRemove != null)
+                mRemove.setVisible(true);
 
             final String animeEpisodeCount = anime.getEpisodeCount() != 0 ? anime.getEpisodeCount() + "" : "?";
 
@@ -561,15 +838,15 @@ public class AnimeDetailsActivity extends ActionBarActivity {
                     mRatingBar.setRating(0);
 
                 mRatingBar.setVisibility(View.VISIBLE);
-                mRatingSimple.setVisibility(View.GONE);
+//                mRatingSimple.setVisibility(View.GONE);
             } else {
-                if (rating.getSimpleRating() != null)
-                    mRatingSimple.setText(rating.getSimpleRating());
-                else
-                    mRatingSimple.setText(Rating.RATING_SIMPLE_NEUTRAL);
+//                if (rating.getSimpleRating() != null)
+//                    mRatingSimple.setText(rating.getSimpleRating());
+//                else
+//                    mRatingSimple.setText(Rating.RATING_SIMPLE_NEUTRAL);
 
                 mRatingBar.setVisibility(View.GONE);
-                mRatingSimple.setVisibility(View.VISIBLE);
+//                mRatingSimple.setVisibility(View.VISIBLE);
             }
 
             newWatchStatus = libraryEntry.getStatus();
@@ -607,7 +884,7 @@ public class AnimeDetailsActivity extends ActionBarActivity {
                             R.string.content_episodes,
                             R.string.ok);
                     builder.negativeText(R.string.cancel);
-                    builder.positiveColor(getResources().getColor(R.color.apptheme_primary));
+                    builder.positiveColor(vibrantColor);
 
                     CustomDialog dialog = builder.build();
 
@@ -660,7 +937,7 @@ public class AnimeDetailsActivity extends ActionBarActivity {
                             R.string.content_rewatched,
                             R.string.ok);
                     builder.negativeText(R.string.cancel);
-                    builder.positiveColor(getResources().getColor(R.color.apptheme_primary));
+                    builder.positiveColor(vibrantColor);
 
                     CustomDialog dialog = builder.build();
 
@@ -738,7 +1015,7 @@ public class AnimeDetailsActivity extends ActionBarActivity {
                 }
             });
 
-            mRatingSimple.setOnClickListener(new View.OnClickListener() {
+            /*mRatingSimple.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     String rating = mRatingSimple.getText().toString();
@@ -758,17 +1035,17 @@ public class AnimeDetailsActivity extends ActionBarActivity {
                     updateUpdateButtonStatus(libraryEntry);
                 }
             });
-
-            mAddToLibrary.setImageResource(R.drawable.ic_upload_white_24dp);
-            mAddToLibrary.setOnClickListener(new OnLibraryUpdateClickListener());
+*/
+            mActionButton.setImageResource(R.drawable.ic_upload_white_24dp);
+            mActionButton.setOnClickListener(new OnLibraryUpdateClickListener());
 
             mLibraryProgressBar.setVisibility(View.GONE);
-            mLibraryHolder.setVisibility(View.VISIBLE);
+            mLibraryInfoHolder.setVisibility(View.VISIBLE);
         } else {
-            showFAB();
+            enableFAB();
             mRemove.setVisible(false);
             mLibraryProgressBar.setVisibility(View.GONE);
-            mLibraryHolder.setVisibility(View.GONE);
+            mLibraryInfoHolder.setVisibility(View.GONE);
         }
     }
 

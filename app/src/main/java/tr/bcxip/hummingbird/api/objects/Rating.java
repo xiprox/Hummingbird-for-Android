@@ -1,9 +1,11 @@
 package tr.bcxip.hummingbird.api.objects;
 
+import java.io.Serializable;
+
 /**
  * Created by Hikari on 10/9/14.
  */
-public class Rating {
+public class Rating implements Serializable {
     String type;
     String value;
 

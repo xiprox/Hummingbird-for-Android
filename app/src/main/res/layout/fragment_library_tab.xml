@@ -22,15 +22,20 @@
             android:id="@+id/library_grid"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/neutral_darker"
+            android:layout_marginTop="8dp"
+            android:clipToPadding="false"
             android:columnWidth="160dp"
             android:drawSelectorOnTop="true"
             android:fastScrollEnabled="true"
-            android:horizontalSpacing="0dp"
-            android:listSelector="@drawable/selector_light_no_mask"
+            android:horizontalSpacing="8dp"
+            android:listSelector="@drawable/selector_light"
             android:numColumns="auto_fit"
+            android:paddingBottom="8dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:scrollbarStyle="outsideOverlay"
             android:stretchMode="columnWidth"
-            android:verticalSpacing="0dp" />
+            android:verticalSpacing="8dp" />
 
         <tr.xip.widget.errorview.ErrorView
             android:id="@+id/library_error_view"

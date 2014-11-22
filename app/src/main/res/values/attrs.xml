@@ -9,4 +9,8 @@
     <declare-styleable name="ScrimInsetsView">
         <attr name="insetForeground" format="reference|color" />
     </declare-styleable>
+
+    <declare-styleable name="ParallaxScrollView">
+        <attr name="zoomRatio" format="float" />
+    </declare-styleable>
 </resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Anime Details Activity dimens -->
+    <dimen name="margin_details_card_side">54dp</dimen>
+    <dimen name="margin_details_cover_card_top">-64dp</dimen>
+    <dimen name="height_header_image">216dp</dimen>
+</resources>

@@ -41,8 +41,9 @@
 
         <activity
             android:name=".AnimeDetailsActivity"
+            android:label=""
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme_DetailsActivity">
+            android:theme="@style/AppTheme_NoActionBar">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

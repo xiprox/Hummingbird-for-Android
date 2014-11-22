@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -182,17 +181,14 @@ public class LibraryTabFragment extends Fragment implements ErrorView.RetryListe
                         intent.putExtra(AnimeDetailsActivity.ARG_ANIME_OBJ,
                                 mLibrary.get(position).getAnime());
 
-                        ActivityOptionsCompat transition;
-                        if (parent != null) {
-                            transition = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                                    (Activity) context,
-                                    Pair.create(view, "anime_cover"),
-                                    Pair.create((View) parent.getFab(), "fab")
-                            );
-                        } else {
-                            transition = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                                    (Activity) context, view, "anime_cover");
-                        }
+                        ActivityOptionsCompat transition =
+                                ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                        (Activity) context,
+                                        Pair.create(view, "anime_cover"),
+                                        Pair.create((View) parent.getFab(), "fab"),
+                                        Pair.create(view.findViewById(R.id.item_library_paper),
+                                                "anime_paper")
+                                );
 
                         Utils.startActivityWithTransition(context, intent, transition);
                     }

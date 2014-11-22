@@ -3,8 +3,8 @@ package tr.bcxip.hummingbird.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +35,7 @@ import tr.bcxip.hummingbird.widget.RelativeTimeTextView;
  */
 public class FeedTimelineAdapter extends InfiniteScrollListAdapter {
 
+    View rootView;
     Context context;
     List<Story> mItems;
 
@@ -66,7 +67,7 @@ public class FeedTimelineAdapter extends InfiniteScrollListAdapter {
         if (getCount() != 0) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            View rootView = new View(context);
+            rootView = new View(context);
 
             final Story item = mItems.get(position);
             storyType = item.getStoryType();
@@ -134,7 +135,9 @@ public class FeedTimelineAdapter extends InfiniteScrollListAdapter {
 
                         ActivityOptionsCompat transition =
                                 ActivityOptionsCompat.makeSceneTransitionAnimation(
-                                        (Activity) context, mCover, "anime_cover");
+                                        (Activity) context,
+                                        Pair.create((View) mCover, "anime_cover")
+                                );
 
                         Utils.startActivityWithTransition(context, intent, transition);
                     }
