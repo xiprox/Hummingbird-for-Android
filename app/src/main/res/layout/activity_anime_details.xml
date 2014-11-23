@@ -483,7 +483,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_details_card_side"
                     android:layout_marginRight="@dimen/margin_details_card_side"
-                    android:layout_marginTop="8dp"git
+                    android:layout_marginTop="8dp"
                     android:background="@drawable/selector_dark"
                     android:orientation="horizontal"
                     android:padding="8dp">
