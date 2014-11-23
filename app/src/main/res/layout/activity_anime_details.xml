@@ -77,7 +77,8 @@
                                 android:id="@+id/anime_details_cover_image_holder"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="16dp"
+                                android:layout_marginLeft="@dimen/margin_left_header_image"
+                                android:layout_marginTop="@dimen/margin_top_header_image"
                                 android:foreground="@drawable/selector_light">
 
                                 <ImageView

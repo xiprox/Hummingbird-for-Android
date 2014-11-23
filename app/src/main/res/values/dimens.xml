@@ -27,5 +27,7 @@
     <dimen name="margin_details_card_side">0dp</dimen>
     <dimen name="margin_details_cover_card_top">-32dp</dimen>
     <dimen name="height_header_image">248dp</dimen>
+    <dimen name="margin_top_header_image">0dp</dimen>
+    <dimen name="margin_left_header_image">16dp</dimen>
     <dimen name="offset_details_info_card">32dp</dimen>
 </resources>
