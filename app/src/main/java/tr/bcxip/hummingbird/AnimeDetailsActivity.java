@@ -61,6 +61,7 @@ import tr.bcxip.hummingbird.api.objects.Rating;
 import tr.bcxip.hummingbird.managers.PrefManager;
 import tr.bcxip.hummingbird.utils.Utils;
 import tr.bcxip.hummingbird.widget.ObservableScrollView;
+import tr.xip.widget.simpleratingview.SimpleRatingView;
 import uk.me.lewisdeane.ldialogs.CustomDialog;
 
 /**
@@ -138,7 +139,7 @@ public class AnimeDetailsActivity extends ActionBarActivity implements
     TextView mRewatchedTimes;
     SwitchCompat mPrivate;
     RatingBar mRatingBar;
-//    TextView mRatingSimple;
+    SimpleRatingView mSimpleRatingView;
 
     String ANIME_ID;
 
@@ -244,8 +245,8 @@ public class AnimeDetailsActivity extends ActionBarActivity implements
         mRewatchedTimesHolder = (LinearLayout) findViewById(R.id.anime_details_library_rewatched_holder);
         mRewatchedTimes = (TextView) findViewById(R.id.anime_details_library_rewatched);
         mPrivate = (SwitchCompat) findViewById(R.id.anime_details_library_private);
-        mRatingBar = (RatingBar) findViewById(R.id.anime_details_library_rating);
-//        mRatingSimple = (TextView) findViewById(R.id.anime_deatails_library_rating_simple);
+        mRatingBar = (RatingBar) findViewById(R.id.anime_details_library_rating_advanced);
+        mSimpleRatingView = (SimpleRatingView) findViewById(R.id.anime_details_library_rating_simple);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ViewOutlineProvider infoOutlineProvider = new ViewOutlineProvider() {
@@ -838,15 +839,16 @@ public class AnimeDetailsActivity extends ActionBarActivity implements
                     mRatingBar.setRating(0);
 
                 mRatingBar.setVisibility(View.VISIBLE);
-//                mRatingSimple.setVisibility(View.GONE);
+                mSimpleRatingView.setVisibility(View.GONE);
             } else {
-//                if (rating.getSimpleRating() != null)
-//                    mRatingSimple.setText(rating.getSimpleRating());
-//                else
-//                    mRatingSimple.setText(Rating.RATING_SIMPLE_NEUTRAL);
+                if (rating.getSimpleRating() != null)
+                    mSimpleRatingView.setSelectedRating(
+                            Utils.getRatingFromString(rating.getSimpleRating()));
+                else
+                    mSimpleRatingView.setSelectedRating(SimpleRatingView.Rating.NEUTRAL);
 
                 mRatingBar.setVisibility(View.GONE);
-//                mRatingSimple.setVisibility(View.VISIBLE);
+                mSimpleRatingView.setVisibility(View.VISIBLE);
             }
 
             newWatchStatus = libraryEntry.getStatus();
@@ -1015,27 +1017,25 @@ public class AnimeDetailsActivity extends ActionBarActivity implements
                 }
             });
 
-            /*mRatingSimple.setOnClickListener(new View.OnClickListener() {
+            mSimpleRatingView.setOnRatingChangedListener(new SimpleRatingView.OnRatingChangeListener() {
                 @Override
-                public void onClick(View view) {
-                    String rating = mRatingSimple.getText().toString();
-                    if (rating.equals(Rating.RATING_SIMPLE_POSITIVE)) {
-                        mRatingSimple.setText(Rating.RATING_SIMPLE_NEGATIVE);
-                        newRating = "1";
-                    }
-                    if (rating.equals(Rating.RATING_SIMPLE_NEGATIVE)) {
-                        mRatingSimple.setText(Rating.RATING_SIMPLE_NEUTRAL);
-                        newRating = "3";
-                    }
-                    if (rating.equals(Rating.RATING_SIMPLE_NEUTRAL)) {
-                        mRatingSimple.setText(Rating.RATING_SIMPLE_POSITIVE);
-                        newRating = "5";
+                public void onRatingChanged(SimpleRatingView.Rating rating) {
+                    switch (rating) {
+                        case POSITIVE:
+                            newRating = "1";
+                            break;
+                        case NEUTRAL:
+                            newRating = "3";
+                            break;
+                        case NEGATIVE:
+                            newRating = "5";
+                            break;
                     }
 
                     updateUpdateButtonStatus(libraryEntry);
                 }
             });
-*/
+
             mActionButton.setImageResource(R.drawable.ic_upload_white_24dp);
             mActionButton.setOnClickListener(new OnLibraryUpdateClickListener());
 

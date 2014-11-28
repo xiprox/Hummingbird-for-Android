@@ -42,6 +42,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:+'
     compile 'com.android.support:cardview-v7:+'
     compile 'com.android.support:recyclerview-v7:+'
+    compile 'com.github.xiprox.simpleratingview:library:+'
     compile 'com.squareup.retrofit:retrofit:1.7.0'
     compile 'com.squareup.picasso:picasso:2.3.4'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'

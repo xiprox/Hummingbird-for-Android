@@ -3,7 +3,6 @@ package tr.bcxip.hummingbird.utils;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 
 import org.joda.time.format.ISODateTimeFormat;
@@ -15,8 +14,10 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import tr.bcxip.hummingbird.api.objects.Rating;
 import tr.bcxip.hummingbird.api.objects.Story;
 import tr.bcxip.hummingbird.api.objects.Substory;
+import tr.xip.widget.simpleratingview.SimpleRatingView;
 
 /**
  * Created by Hikari on 10/19/14.
@@ -70,5 +71,15 @@ public class Utils {
             context.startActivity(intent, transition.toBundle());
         else
             context.startActivity(intent);
+    }
+
+    public static SimpleRatingView.Rating getRatingFromString(String ratingString) {
+        if (ratingString.equals(Rating.RATING_SIMPLE_POSITIVE))
+            return SimpleRatingView.Rating.POSITIVE;
+        if (ratingString.equals(Rating.RATING_SIMPLE_NEUTRAL))
+            return SimpleRatingView.Rating.NEUTRAL;
+        if (ratingString.equals(Rating.RATING_SIMPLE_NEGATIVE))
+            return SimpleRatingView.Rating.NEGATIVE;
+        return null;
     }
 }

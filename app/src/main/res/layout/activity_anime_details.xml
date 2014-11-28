@@ -189,13 +189,23 @@
                                 android:orientation="vertical">
 
                                 <RatingBar
-                                    android:id="@+id/anime_details_library_rating"
+                                    android:id="@+id/anime_details_library_rating_advanced"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:numStars="5"
                                     android:progressBackgroundTint="#60ff5722"
                                     android:progressTint="@color/apptheme_primary"
                                     android:secondaryProgressTint="#60ff5722" />
+
+                                <tr.xip.widget.simpleratingview.SimpleRatingView
+                                    android:id="@+id/anime_details_library_rating_simple"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="10dp"
+                                    android:background="@drawable/selector_dark"
+                                    android:padding="8dp"
+                                    app:srw_iconColor="@color/apptheme_primary"
+                                    android:visibility="gone" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
