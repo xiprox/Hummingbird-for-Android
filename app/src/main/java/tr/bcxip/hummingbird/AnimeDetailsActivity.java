@@ -807,7 +807,14 @@ public class AnimeDetailsActivity extends ActionBarActivity implements
         mSynopsisHolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO - Show more
+                MaterialDialog dialog = new MaterialDialog.Builder(AnimeDetailsActivity.this)
+                        .title(anime.getTitle())
+                        .customView(R.layout.dialog_text)
+                        .build();
+
+                ((TextView) dialog.getCustomView()).setText(anime.getSynopsis());
+
+                dialog.show();
             }
         });
 
