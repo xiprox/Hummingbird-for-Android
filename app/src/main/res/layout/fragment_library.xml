@@ -4,21 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="148dp"
-            android:background="@color/apptheme_primary" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/action_bar_shadow_height"
-            android:background="@drawable/actionbar_shadow" />
-    </LinearLayout>
+        android:layout_height="148dp"
+        android:background="@color/apptheme_primary" />
 
     <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
