@@ -5,4 +5,10 @@
     <dimen name="margin_details_card_side">54dp</dimen>
     <dimen name="margin_details_cover_card_top">-64dp</dimen>
     <dimen name="height_header_image">216dp</dimen>
+
+    <!-- Library dimens -->
+    <dimen name="library_cover_height">2dp</dimen>
+    <dimen name="library_cover_width">148dp</dimen>
+
+    <dimen name="padding_side_library_grid">64dp</dimen>
 </resources>

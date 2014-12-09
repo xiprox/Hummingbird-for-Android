@@ -24,18 +24,18 @@
             android:layout_height="match_parent"
             android:layout_marginTop="8dp"
             android:clipToPadding="false"
-            android:columnWidth="160dp"
+            android:columnWidth="@dimen/library_cover_width"
             android:drawSelectorOnTop="true"
             android:fastScrollEnabled="true"
-            android:horizontalSpacing="8dp"
+            android:horizontalSpacing="@dimen/library_grid_spacing"
             android:listSelector="@drawable/selector_light"
             android:numColumns="auto_fit"
-            android:paddingBottom="8dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
+            android:paddingBottom="@dimen/padding_bottom_library_grid"
+            android:paddingLeft="@dimen/padding_side_library_grid"
+            android:paddingRight="@dimen/padding_side_library_grid"
             android:scrollbarStyle="outsideOverlay"
             android:stretchMode="columnWidth"
-            android:verticalSpacing="8dp" />
+            android:verticalSpacing="@dimen/library_grid_spacing" />
 
         <tr.xip.widget.errorview.ErrorView
             android:id="@+id/library_error_view"

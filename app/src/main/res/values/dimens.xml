@@ -28,4 +28,12 @@
     <dimen name="margin_details_cover_card_top">-32dp</dimen>
     <dimen name="height_header_image">248dp</dimen>
     <dimen name="offset_details_info_card">32dp</dimen>
+
+    <!-- Library dimens -->
+    <dimen name="library_cover_height">270dp</dimen>
+    <dimen name="library_cover_width">160dp</dimen>
+    <dimen name="library_grid_spacing">4dp</dimen>
+
+    <dimen name="padding_side_library_grid">8dp</dimen>
+    <dimen name="padding_bottom_library_grid">8dp</dimen>
 </resources>
