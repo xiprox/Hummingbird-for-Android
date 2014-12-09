@@ -24,12 +24,15 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
@@ -166,7 +169,15 @@ public class AnimeDetailsActivity extends ActionBarActivity implements
     @TargetApi(Build.VERSION_CODES.L)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+
+        Transition sharedElem = TransitionInflater.from(this)
+                .inflateTransition(R.transition.move_scale_transition);
+        getWindow().setSharedElementEnterTransition(sharedElem);
+        getWindow().setSharedElementExitTransition(sharedElem);
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_anime_details);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
