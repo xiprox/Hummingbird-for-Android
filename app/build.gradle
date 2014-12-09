@@ -49,6 +49,6 @@ dependencies {
     compile 'com.melnykov:floatingactionbutton:1.0.7'
     compile 'joda-time:joda-time:2.5'
     compile 'org.apache.commons:commons-lang3:+'
-    compile 'uk.me.lewisdeane.ldialogs:ldialogs@aar'
+    compile 'com.afollestad:material-dialogs:+'
     compile 'tr.xip.widget.errorview:errorview-1.0.0@aar'
 }

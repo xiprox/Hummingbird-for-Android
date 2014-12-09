@@ -204,7 +204,7 @@
                                     android:layout_marginBottom="10dp"
                                     android:background="@drawable/selector_dark"
                                     android:padding="8dp"
-                                    app:srw_iconColor="@color/apptheme_primary"
+                                    app:srv_iconColor="@color/apptheme_primary"
                                     android:visibility="gone" />
 
                                 <TextView

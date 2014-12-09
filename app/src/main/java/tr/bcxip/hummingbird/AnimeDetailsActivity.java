@@ -43,6 +43,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -62,7 +63,6 @@ import tr.bcxip.hummingbird.managers.PrefManager;
 import tr.bcxip.hummingbird.utils.Utils;
 import tr.bcxip.hummingbird.widget.ObservableScrollView;
 import tr.xip.widget.simpleratingview.SimpleRatingView;
-import uk.me.lewisdeane.ldialogs.CustomDialog;
 
 /**
  * Created by Hikari on 10/8/14.
@@ -335,31 +335,23 @@ public class AnimeDetailsActivity extends ActionBarActivity implements
                         getResources().getString(R.string.action_share)));
                 break;
             case R.id.action_remove:
-                CustomDialog.Builder builder = new CustomDialog.Builder(
-                        AnimeDetailsActivity.this,
-                        R.string.title_remove,
-                        R.string.yes);
-                builder.negativeText(R.string.no);
-                builder.positiveColor(vibrantColor);
                 String contentText = getString(R.string.content_remove_are_you_sure);
                 contentText = contentText.replace("{anime-name}", anime.getTitle());
-                builder.content(contentText);
 
-                CustomDialog dialog = builder.build();
+                new MaterialDialog.Builder(this)
+                        .positiveText(R.string.yes)
+                        .negativeText(R.string.title_remove)
+                        .positiveColor(vibrantColor)
+                        .negativeColorRes(R.color.text_dialog_action)
+                        .content(contentText)
+                        .callback(new MaterialDialog.SimpleCallback() {
 
-                dialog.setClickListener(new CustomDialog.ClickListener() {
-                    @Override
-                    public void onConfirmClick() {
-                        new RemoveTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                    }
-
-                    @Override
-                    public void onCancelClick() {
-                                    /* empty */
-                    }
-                });
-
-                dialog.show();
+                            @Override
+                            public void onPositive(MaterialDialog materialDialog) {
+                                new RemoveTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                            }
+                        })
+                        .show();
                 break;
         }
 
@@ -881,45 +873,35 @@ public class AnimeDetailsActivity extends ActionBarActivity implements
             mEpisodesHolder.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    CustomDialog.Builder builder = new CustomDialog.Builder(
-                            AnimeDetailsActivity.this,
-                            R.string.content_episodes,
-                            R.string.ok);
-                    builder.negativeText(R.string.cancel);
-                    builder.positiveColor(vibrantColor);
-
-                    CustomDialog dialog = builder.build();
-
                     View dialogView = getLayoutInflater().inflate(R.layout.number_picker, null);
                     final NumberPicker mNumberPicker = (NumberPicker)
                             dialogView.findViewById(R.id.number_picker);
-
-                    dialog.setCustomView(dialogView);
-
                     mNumberPicker.setMaxValue(anime.getEpisodeCount() != 0 ?
                             anime.getEpisodeCount() : 1000);
                     mNumberPicker.setValue(newEpisodesWatched);
                     mNumberPicker.setWrapSelectorWheel(false);
 
-                    dialog.setClickListener(new CustomDialog.ClickListener() {
-                        @Override
-                        public void onConfirmClick() {
-                            newEpisodesWatched = mNumberPicker.getValue();
-                            mEpisodes.setText(newEpisodesWatched + "/" + animeEpisodeCount);
+                    new MaterialDialog.Builder(AnimeDetailsActivity.this)
+                            .title(R.string.content_episodes)
+                            .positiveText(R.string.ok)
+                            .negativeText(R.string.cancel)
+                            .positiveColor(vibrantColor)
+                            .negativeColorRes(R.color.text_dialog_action)
+                            .customView(dialogView)
+                            .callback(new MaterialDialog.SimpleCallback() {
 
-                            if ((newEpisodesWatched + "").equals(animeEpisodeCount))
-                                mStatusSpinner.setSelection(2); // (completed)
+                                @Override
+                                public void onPositive(MaterialDialog materialDialog) {
+                                    newEpisodesWatched = mNumberPicker.getValue();
+                                    mEpisodes.setText(newEpisodesWatched + "/" + animeEpisodeCount);
 
-                            updateUpdateButtonStatus(libraryEntry);
-                        }
+                                    if ((newEpisodesWatched + "").equals(animeEpisodeCount))
+                                        mStatusSpinner.setSelection(2); // (completed)
 
-                        @Override
-                        public void onCancelClick() {
-                                    /* empty */
-                        }
-                    });
-
-                    dialog.show();
+                                    updateUpdateButtonStatus(libraryEntry);
+                                }
+                            })
+                            .show();
                 }
             });
 
@@ -934,40 +916,30 @@ public class AnimeDetailsActivity extends ActionBarActivity implements
             mRewatchedTimesHolder.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    CustomDialog.Builder builder = new CustomDialog.Builder(
-                            AnimeDetailsActivity.this,
-                            R.string.content_rewatched,
-                            R.string.ok);
-                    builder.negativeText(R.string.cancel);
-                    builder.positiveColor(vibrantColor);
-
-                    CustomDialog dialog = builder.build();
-
                     View dialogView = getLayoutInflater().inflate(R.layout.number_picker, null);
                     final NumberPicker mNumberPicker = (NumberPicker)
                             dialogView.findViewById(R.id.number_picker);
-
-                    dialog.setCustomView(dialogView);
-
                     mNumberPicker.setMaxValue(200);
                     mNumberPicker.setValue(newRewatchedTimes);
                     mNumberPicker.setWrapSelectorWheel(false);
 
-                    dialog.setClickListener(new CustomDialog.ClickListener() {
-                        @Override
-                        public void onConfirmClick() {
-                            newRewatchedTimes = mNumberPicker.getValue();
-                            mRewatchedTimes.setText(newRewatchedTimes + "");
-                            updateUpdateButtonStatus(libraryEntry);
-                        }
+                    new MaterialDialog.Builder(AnimeDetailsActivity.this)
+                            .title(R.string.content_rewatched)
+                            .positiveText(R.string.ok)
+                            .negativeText(R.string.cancel)
+                            .positiveColor(vibrantColor)
+                            .negativeColorRes(R.color.text_dialog_action)
+                            .customView(dialogView)
+                            .callback(new MaterialDialog.SimpleCallback() {
 
-                        @Override
-                        public void onCancelClick() {
-                                    /* empty */
-                        }
-                    });
-
-                    dialog.show();
+                                @Override
+                                public void onPositive(MaterialDialog materialDialog) {
+                                    newRewatchedTimes = mNumberPicker.getValue();
+                                    mRewatchedTimes.setText(newRewatchedTimes + "");
+                                    updateUpdateButtonStatus(libraryEntry);
+                                }
+                            })
+                            .show();
                 }
             });
 

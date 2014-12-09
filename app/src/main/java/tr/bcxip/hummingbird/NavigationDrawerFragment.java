@@ -30,6 +30,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.squareup.picasso.Picasso;
 
 import retrofit.RetrofitError;
@@ -39,7 +40,6 @@ import tr.bcxip.hummingbird.api.objects.User;
 import tr.bcxip.hummingbird.managers.PrefManager;
 import tr.bcxip.hummingbird.utils.CircleTransformation;
 import tr.bcxip.hummingbird.utils.UserCoverTransformation;
-import uk.me.lewisdeane.ldialogs.CustomDialog;
 
 public class NavigationDrawerFragment extends Fragment {
 
@@ -161,30 +161,23 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     public void showLogoutDialog() {
-        CustomDialog.Builder builder = new CustomDialog.Builder(context,
-                R.string.content_log_out,
-                R.string.yes);
+        new MaterialDialog.Builder(context)
+                .title(R.string.content_log_out)
+                .positiveText(R.string.yes)
+                .negativeText(R.string.no)
+                .positiveColorRes(R.color.text_dialog_action)
+                .negativeColorRes(R.color.text_dialog_action)
+                .content(R.string.content_are_you_sure_logout)
+                .callback(new MaterialDialog.SimpleCallback() {
 
-        builder.content(getString(R.string.content_are_you_sure_logout));
-        builder.negativeText(R.string.no);
-
-        final CustomDialog dialog = builder.build();
-
-        dialog.setClickListener(new CustomDialog.ClickListener() {
-            @Override
-            public void onConfirmClick() {
-                prefMan.logout();
-                startActivity(new Intent(getActivity(), LoginActivity.class));
-                getActivity().finish();
-            }
-
-            @Override
-            public void onCancelClick() {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
+                    @Override
+                    public void onPositive(MaterialDialog materialDialog) {
+                        prefMan.logout();
+                        startActivity(new Intent(getActivity(), LoginActivity.class));
+                        getActivity().finish();
+                    }
+                })
+                .show();
     }
 
     public boolean isDrawerOpen() {
