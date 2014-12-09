@@ -7,9 +7,9 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Outline;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
@@ -156,7 +156,9 @@ public class AnimeDetailsActivity extends ActionBarActivity implements
     Bitmap coverBitmap;
 
     int darkMutedColor;
+    int darkMutedColorLighter;
     int vibrantColor;
+    int vibrantColorLighter;
     int darkVibrantColor;
 
     ObjectAnimator toolbarBgFadeAnim;
@@ -680,18 +682,28 @@ public class AnimeDetailsActivity extends ActionBarActivity implements
         } else
             darkMutedColor = res.getColor(R.color.neutral_darker);
 
+        float[] vibrantColorHsv = new float[3];
+        Color.colorToHSV(vibrantColor, vibrantColorHsv);
+        vibrantColorHsv[2] = 1.0f - 0.8f * (1.0f - vibrantColorHsv[2]);
+        vibrantColorLighter = Color.HSVToColor(vibrantColorHsv);
+
+        float[] darkMutedColorHsv = new float[3];
+        Color.colorToHSV(darkMutedColor, darkMutedColorHsv);
+        darkMutedColorHsv[2] = 1.0f - 0.9f * (1.0f - darkMutedColorHsv[2]);
+        darkMutedColorLighter = Color.HSVToColor(darkMutedColorHsv);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             getWindow().setStatusBarColor(darkMutedColor);
 
         int alpha = mActionBarBackgroundDrawable.getAlpha();
-        mActionBarBackgroundDrawable = new ColorDrawable(darkMutedColor);
+        mActionBarBackgroundDrawable = new ColorDrawable(darkMutedColorLighter);
         mActionBarBackgroundDrawable.setAlpha(alpha);
         if (toolbar != null)
             toolbar.setBackgroundDrawable(mActionBarBackgroundDrawable);
 
         mActionButton.setOnClickListener(new OnAddToLibraryClickListener());
         mActionButton.setColorNormal(vibrantColor);
-        mActionButton.setColorPressed(darkVibrantColor);
+        mActionButton.setColorPressed(vibrantColorLighter);
 
         mCoverImage.setImageBitmap(coverBitmap);
         mCoverHolder.setOnClickListener(new View.OnClickListener() {

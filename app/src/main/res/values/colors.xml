@@ -2,6 +2,7 @@
 <resources>
 
     <color name="apptheme_primary">#ff5722</color>
+    <color name="apptheme_primary_lighter">#ffff6c38</color>
     <color name="apptheme_primary_disabled">#80ff5722</color>
     <color name="apptheme_primary_dark">#e64a19</color>
     <color name="apptheme_accent">#ffff00</color>

@@ -52,6 +52,6 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_plus_white_24dp"
         app:fab_colorNormal="@color/apptheme_primary"
-        app:fab_colorPressed="@color/apptheme_primary"
+        app:fab_colorPressed="@color/apptheme_primary_lighter"
         app:fab_colorRipple="@color/selector_light" />
 </FrameLayout>
