@@ -1,10 +1,12 @@
 package tr.bcxip.hummingbird;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.graphics.Palette;
 import android.util.Log;
@@ -13,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,6 +30,7 @@ import tr.bcxip.hummingbird.api.objects.User;
 import tr.bcxip.hummingbird.managers.PrefManager;
 import tr.bcxip.hummingbird.utils.CircleTransformation;
 import tr.bcxip.hummingbird.utils.UserCoverTransformation;
+import tr.bcxip.hummingbird.utils.Utils;
 import tr.xip.widget.errorview.ErrorView;
 
 /**
@@ -47,7 +51,9 @@ public class UserInfoFragment extends Fragment implements ErrorView.RetryListene
     User user;
 
     ImageView mCover;
+    FrameLayout mCoverHolder;
     ImageView mAvatar;
+    FrameLayout mAvatartHolder;
     TextView mUsername;
     TextView mBio;
     LinearLayout mOnline;
@@ -79,7 +85,7 @@ public class UserInfoFragment extends Fragment implements ErrorView.RetryListene
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_user_info, null);
 
         /*
@@ -103,7 +109,9 @@ public class UserInfoFragment extends Fragment implements ErrorView.RetryListene
         }
 
         mCover = (ImageView) rootView.findViewById(R.id.user_info_cover);
+        mCoverHolder = (FrameLayout) rootView.findViewById(R.id.user_info_cover_holder);
         mAvatar = (ImageView) rootView.findViewById(R.id.user_info_avatar);
+        mAvatartHolder = (FrameLayout) rootView.findViewById(R.id.user_info_avatar_holder);
         mUsername = (TextView) rootView.findViewById(R.id.user_info_username);
         mBio = (TextView) rootView.findViewById(R.id.user_info_bio);
         mOnline = (LinearLayout) rootView.findViewById(R.id.user_info_online);
@@ -118,6 +126,33 @@ public class UserInfoFragment extends Fragment implements ErrorView.RetryListene
         mFlipper = (ViewFlipper) rootView.findViewById(R.id.user_info_view_flipper);
         mErrorView = (ErrorView) rootView.findViewById(R.id.user_info_error_view);
         mErrorView.setOnRetryListener(this);
+
+        mAvatartHolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, FullscreenImageActivity.class);
+                intent.putExtra(FullscreenImageActivity.ARG_IMAGE_URL, user.getAvatar());
+
+                ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        (Activity) context, mAvatar, FullscreenImageActivity.TRANSITION_NAME_IMAGE);
+
+                Utils.startActivityWithTransition(context, intent, transition);
+            }
+        });
+
+        mCoverHolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, FullscreenImageActivity.class);
+                intent.putExtra(FullscreenImageActivity.ARG_IMAGE_URL, user.getCoverImage());
+
+                ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        (Activity) context, mCover, FullscreenImageActivity.TRANSITION_NAME_IMAGE);
+
+                Utils.startActivityWithTransition(context, intent, transition);
+
+            }
+        });
 
         loadTask = new LoadTask();
         loadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);

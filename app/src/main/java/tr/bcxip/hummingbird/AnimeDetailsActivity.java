@@ -18,6 +18,7 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.graphics.Palette;
@@ -715,7 +716,13 @@ public class AnimeDetailsActivity extends ActionBarActivity implements
         mCoverHolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO - Fullscreen
+                Intent intent = new Intent(AnimeDetailsActivity.this, FullscreenImageActivity.class);
+                intent.putExtra(FullscreenImageActivity.ARG_IMAGE_URL, anime.getCoverImage());
+
+                ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        AnimeDetailsActivity.this, mCoverImage, FullscreenImageActivity.TRANSITION_NAME_IMAGE);
+
+                Utils.startActivityWithTransition(AnimeDetailsActivity.this, intent, transition);
             }
         });
 
@@ -724,7 +731,13 @@ public class AnimeDetailsActivity extends ActionBarActivity implements
         mHeaderHolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO - Fullscreen
+                Intent intent = new Intent(AnimeDetailsActivity.this, FullscreenImageActivity.class);
+                intent.putExtra(FullscreenImageActivity.ARG_IMAGE_URL, anime.getCoverImage());
+
+                ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        AnimeDetailsActivity.this, mHeaderImage, FullscreenImageActivity.TRANSITION_NAME_IMAGE);
+
+                Utils.startActivityWithTransition(AnimeDetailsActivity.this, intent, transition);
             }
         });
 

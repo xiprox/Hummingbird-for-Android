@@ -32,22 +32,36 @@
                     android:layout_height="148dp"
                     android:animateLayoutChanges="true">
 
-                    <ImageView
-                        android:id="@+id/user_info_cover"
-                        android:layout_width="match_parent"
-                        android:layout_height="84dp"
-                        android:scaleType="centerCrop"
-                        android:src="@color/text_gray_light" />
+                    <FrameLayout
+                        android:id="@+id/user_info_cover_holder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:foreground="@drawable/selector_light">
 
-                    <ImageView
-                        android:id="@+id/user_info_avatar"
-                        android:layout_width="84dp"
-                        android:layout_height="84dp"
+                        <ImageView
+                            android:id="@+id/user_info_cover"
+                            android:layout_width="match_parent"
+                            android:layout_height="84dp"
+                            android:scaleType="centerCrop"
+                            android:src="@color/text_gray_light" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/user_info_avatar_holder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="16dp"
-                        android:elevation="2dp"
-                        android:src="@drawable/avatar" />
+                        android:foreground="@drawable/selector_light_oval">
+
+                        <ImageView
+                            android:id="@+id/user_info_avatar"
+                            android:layout_width="84dp"
+                            android:layout_height="84dp"
+                            android:elevation="2dp"
+                            android:src="@drawable/avatar" />
+                    </FrameLayout>
 
                     <LinearLayout
                         android:id="@+id/user_info_online"
