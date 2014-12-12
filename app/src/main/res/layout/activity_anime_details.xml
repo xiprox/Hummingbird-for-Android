@@ -53,7 +53,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_details_card_side"
                     android:layout_marginRight="@dimen/margin_details_card_side"
-                    android:background="@android:color/transparent">
+                    android:background="@android:color/transparent"
+                    android:elevation="2dp">
 
                     <View
                         android:layout_width="match_parent"
@@ -76,7 +77,8 @@
                                 android:id="@+id/anime_details_cover_image_holder"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="16dp"
+                                android:layout_marginLeft="@dimen/margin_left_header_image"
+                                android:layout_marginTop="@dimen/margin_top_header_image"
                                 android:foreground="@drawable/selector_light">
 
                                 <ImageView
@@ -244,7 +246,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_details_card_side"
                     android:layout_marginRight="@dimen/margin_details_card_side"
-                    android:background="@android:color/white">
+                    android:background="@android:color/white"
+                    android:elevation="2dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -354,23 +357,24 @@
                 </LinearLayout>
 
                 <FrameLayout
-                    android:id="@+id/anime_details_library_info_holder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_details_card_side"
                     android:layout_marginRight="@dimen/margin_details_card_side"
                     android:layout_marginTop="12dp"
                     android:animateLayoutChanges="true"
-                    android:background="@android:color/white">
+                    android:background="@android:color/white"
+                    android:elevation="2dp">
 
                     <ProgressBar
                         android:id="@+id/anime_details_library_progress_bar"
-                        style="@style/Widget.AppCompat.ProgressBar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center" />
+                        android:layout_gravity="center"
+                        android:layout_margin="16dp" />
 
                     <LinearLayout
+                        android:id="@+id/anime_details_library_info_holder"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"

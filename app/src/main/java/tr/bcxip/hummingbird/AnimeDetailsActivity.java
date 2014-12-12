@@ -114,7 +114,7 @@ public class AnimeDetailsActivity extends ActionBarActivity implements
     LinearLayout mContentsHolder;
     FrameLayout mInfoHolder;
     LinearLayout mMoreInfoHolder;
-    FrameLayout mLibraryInfoHolder;
+    LinearLayout mLibraryInfoHolder;
     FrameLayout mHeaderHolder;
     ImageView mHeaderImage;
     FrameLayout mCoverHolder;
@@ -233,7 +233,7 @@ public class AnimeDetailsActivity extends ActionBarActivity implements
         mContentsHolder = (LinearLayout) findViewById(R.id.anime_details_content_holder);
         mInfoHolder = (FrameLayout) findViewById(R.id.anime_details_info_holder);
         mMoreInfoHolder = (LinearLayout) findViewById(R.id.anime_details_more_info_holder);
-        mLibraryInfoHolder = (FrameLayout) findViewById(R.id.anime_details_library_info_holder);
+        mLibraryInfoHolder = (LinearLayout) findViewById(R.id.anime_details_library_info_holder);
         mHeaderHolder = (FrameLayout) findViewById(R.id.anime_details_header_holder);
         mHeaderImage = (ImageView) findViewById(R.id.anime_details_header);
         mCoverHolder = (FrameLayout) findViewById(R.id.anime_details_cover_image_holder);
@@ -276,10 +276,6 @@ public class AnimeDetailsActivity extends ActionBarActivity implements
             };
             mInfoHolder.setOutlineProvider(infoOutlineProvider);
         }
-
-        ViewCompat.setElevation(mInfoHolder, Utils.dpToPx(this, 2));
-        ViewCompat.setElevation(mMoreInfoHolder, Utils.dpToPx(this, 2));
-        ViewCompat.setElevation(mLibraryInfoHolder, Utils.dpToPx(this, 2));
 
         if (anime != null) {
             displayAnimeInfo();

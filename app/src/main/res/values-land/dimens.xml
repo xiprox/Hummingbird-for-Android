@@ -5,6 +5,8 @@
     <dimen name="margin_details_card_side">54dp</dimen>
     <dimen name="margin_details_cover_card_top">-64dp</dimen>
     <dimen name="height_header_image">216dp</dimen>
+    <dimen name="margin_top_header_image">@dimen/offset_details_info_card</dimen>
+    <dimen name="margin_left_header_image">0dp</dimen>
 
     <!-- Library dimens -->
     <dimen name="library_cover_height">2dp</dimen>
