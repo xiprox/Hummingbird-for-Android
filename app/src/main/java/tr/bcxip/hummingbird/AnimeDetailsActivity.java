@@ -18,7 +18,6 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.graphics.Palette;
@@ -739,16 +738,16 @@ public class AnimeDetailsActivity extends ActionBarActivity implements
             object. Gotta find a solution for this. God! I really don't wanna have to load all data
             just because of a few damn genres!
          */
+        String genres = null;
         if (anime.getGenres() != null) {
-            String genres = "";
             for (int i = 0; i < anime.getGenres().size(); i++) {
                 if (i == 0)
                     genres = anime.getGenres().get(i).getName();
                 else
                     genres += ", " + anime.getGenres().get(i).getName();
             }
-            mGenre.setText(genres);
         }
+        mGenre.setText(genres != null ? genres : getString(R.string.content_unknown));
 
         int episodeCount = anime.getEpisodeCount();
         mEpisodeCount.setText(episodeCount != 0 ?
@@ -760,7 +759,9 @@ public class AnimeDetailsActivity extends ActionBarActivity implements
                 episodeLength + " " + getString(R.string.content_minutes).toLowerCase() :
                 getString(R.string.content_unknown));
 
-        mAgeRating.setText(anime.getAgeRating());
+        mAgeRating.setText(anime.getAgeRating() != null ?
+                anime.getAgeRating() :
+                getString(R.string.content_unknown));
 
         SimpleDateFormat airDateFormat = new SimpleDateFormat("d MMMM yyyy");
 
@@ -807,7 +808,7 @@ public class AnimeDetailsActivity extends ActionBarActivity implements
         if (comRating.length() > 3)
             comRating = comRating.substring(0, 4);
         else if (comRating.equals("0.0"))
-            comRating = getResources().getString(R.string.content_not_yet_rated);
+            comRating = "?";
         mCommunityRating.setText(comRating);
 
         mSynopsis.setText(anime.getSynopsis());
