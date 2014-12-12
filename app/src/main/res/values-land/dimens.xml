@@ -9,7 +9,7 @@
     <dimen name="margin_left_header_image">0dp</dimen>
 
     <!-- Library dimens -->
-    <dimen name="library_cover_height">2dp</dimen>
+    <dimen name="library_cover_height">224dp</dimen>
     <dimen name="library_cover_width">148dp</dimen>
 
     <dimen name="padding_side_library_grid">64dp</dimen>
