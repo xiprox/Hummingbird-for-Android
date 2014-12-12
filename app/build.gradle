@@ -13,7 +13,7 @@ android {
     }
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -47,6 +47,7 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.3.4'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile 'com.melnykov:floatingactionbutton:1.0.7'
+    compile 'com.github.xiprox.simpleratingview:library:1.0.0'
     compile 'joda-time:joda-time:2.5'
     compile 'org.apache.commons:commons-lang3:+'
     compile 'com.afollestad:material-dialogs:+'
