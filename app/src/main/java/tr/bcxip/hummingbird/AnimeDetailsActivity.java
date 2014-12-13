@@ -349,7 +349,7 @@ public class AnimeDetailsActivity extends ActionBarActivity implements
 
                 new MaterialDialog.Builder(this)
                         .positiveText(R.string.yes)
-                        .negativeText(R.string.title_remove)
+                        .negativeText(R.string.no)
                         .positiveColor(vibrantColor)
                         .negativeColorRes(R.color.text_dialog_action)
                         .content(contentText)
