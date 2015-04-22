@@ -5,6 +5,9 @@ A cool, modern client app for the anime tracking website <a href="https://hummin
 
 ![hbfa](https://cloud.githubusercontent.com/assets/2550945/7003454/ed7e4766-dc5a-11e4-99e9-8ab724a6de64.png)
 
+##Preview
+In case you'd like to see how this whole thing actually looks like, you can download the apk <a href="https://github.com/xiprox/Hummingbird-for-Android/releases/tag/v0.0.0">here</a>.
+
 ##License
 ```
 Copyright (C) 2015 Ihsan Isik
