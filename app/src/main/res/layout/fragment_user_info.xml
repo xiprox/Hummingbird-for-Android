@@ -230,7 +230,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                app:ew_retryButtonTextColor="@color/apptheme_primary" />
+                app:ev_retryButtonTextColor="@color/apptheme_primary" />
         </ViewFlipper>
 
         <View

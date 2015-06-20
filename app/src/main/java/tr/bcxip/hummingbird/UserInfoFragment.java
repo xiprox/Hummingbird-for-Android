@@ -31,7 +31,7 @@ import tr.bcxip.hummingbird.managers.PrefManager;
 import tr.bcxip.hummingbird.utils.CircleTransformation;
 import tr.bcxip.hummingbird.utils.UserCoverTransformation;
 import tr.bcxip.hummingbird.utils.Utils;
-import tr.xip.widget.errorview.ErrorView;
+import tr.xip.errorview.ErrorView;
 
 /**
  * Created by Hikari on 10/12/14.
@@ -292,9 +292,9 @@ public class UserInfoFragment extends Fragment implements ErrorView.RetryListene
                 if (errorKind == RetrofitError.Kind.HTTP)
                     mErrorView.setError(result);
                 else if (errorKind == RetrofitError.Kind.NETWORK)
-                    mErrorView.setErrorDetail(R.string.error_connection);
+                    mErrorView.setSubtitle(R.string.error_connection);
                 else
-                    mErrorView.setErrorDetail(R.string.error_unknown);
+                    mErrorView.setSubtitle(R.string.error_unknown);
 
                 if (mFlipper.getDisplayedChild() == 0) {
                     mFlipper.showNext();

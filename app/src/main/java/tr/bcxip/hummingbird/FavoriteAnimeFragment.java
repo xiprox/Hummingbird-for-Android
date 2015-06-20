@@ -22,7 +22,7 @@ import tr.bcxip.hummingbird.api.Results;
 import tr.bcxip.hummingbird.api.objects.FavoriteAnime;
 import tr.bcxip.hummingbird.managers.PrefManager;
 import tr.bcxip.hummingbird.widget.ExpandableHeightGridView;
-import tr.xip.widget.errorview.ErrorView;
+import tr.xip.errorview.ErrorView;
 
 /**
  * Created by Hikari on 10/22/14.
@@ -175,9 +175,9 @@ public class FavoriteAnimeFragment extends Fragment implements ErrorView.RetryLi
                 if (errorKind == RetrofitError.Kind.HTTP)
                     mErrorView.setError(result);
                 else if (errorKind == RetrofitError.Kind.NETWORK)
-                    mErrorView.setErrorDetail(R.string.error_connection);
+                    mErrorView.setSubtitle(R.string.error_connection);
                 else
-                    mErrorView.setErrorDetail(R.string.error_unknown);
+                    mErrorView.setSubtitle(R.string.error_unknown);
 
                 if (mFlipper.getDisplayedChild() == 0) {
                     mFlipper.showNext();
