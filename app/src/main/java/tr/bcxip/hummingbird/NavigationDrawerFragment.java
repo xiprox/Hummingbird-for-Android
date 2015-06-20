@@ -168,7 +168,7 @@ public class NavigationDrawerFragment extends Fragment {
                 .positiveColorRes(R.color.text_dialog_action)
                 .negativeColorRes(R.color.text_dialog_action)
                 .content(R.string.content_are_you_sure_logout)
-                .callback(new MaterialDialog.SimpleCallback() {
+                .callback(new MaterialDialog.ButtonCallback() {
 
                     @Override
                     public void onPositive(MaterialDialog materialDialog) {

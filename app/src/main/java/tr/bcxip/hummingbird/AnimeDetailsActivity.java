@@ -166,7 +166,7 @@ public class AnimeDetailsActivity extends ActionBarActivity implements
 
     ObjectAnimator toolbarBgFadeAnim;
 
-    @TargetApi(Build.VERSION_CODES.L)
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
@@ -353,7 +353,7 @@ public class AnimeDetailsActivity extends ActionBarActivity implements
                         .positiveColor(vibrantColor)
                         .negativeColorRes(R.color.text_dialog_action)
                         .content(contentText)
-                        .callback(new MaterialDialog.SimpleCallback() {
+                        .callback(new MaterialDialog.ButtonCallback() {
 
                             @Override
                             public void onPositive(MaterialDialog materialDialog) {
@@ -830,7 +830,7 @@ public class AnimeDetailsActivity extends ActionBarActivity implements
             public void onClick(View view) {
                 MaterialDialog dialog = new MaterialDialog.Builder(AnimeDetailsActivity.this)
                         .title(anime.getTitle())
-                        .customView(R.layout.dialog_text)
+                        .customView(R.layout.dialog_text, true)
                         .build();
 
                 ((TextView) dialog.getCustomView()).setText(anime.getSynopsis());
@@ -927,8 +927,8 @@ public class AnimeDetailsActivity extends ActionBarActivity implements
                             .negativeText(R.string.cancel)
                             .positiveColor(vibrantColor)
                             .negativeColorRes(R.color.text_dialog_action)
-                            .customView(dialogView)
-                            .callback(new MaterialDialog.SimpleCallback() {
+                            .customView(dialogView, true)
+                            .callback(new MaterialDialog.ButtonCallback() {
 
                                 @Override
                                 public void onPositive(MaterialDialog materialDialog) {
@@ -969,8 +969,8 @@ public class AnimeDetailsActivity extends ActionBarActivity implements
                             .negativeText(R.string.cancel)
                             .positiveColor(vibrantColor)
                             .negativeColorRes(R.color.text_dialog_action)
-                            .customView(dialogView)
-                            .callback(new MaterialDialog.SimpleCallback() {
+                            .customView(dialogView, true)
+                            .callback(new MaterialDialog.ButtonCallback() {
 
                                 @Override
                                 public void onPositive(MaterialDialog materialDialog) {
